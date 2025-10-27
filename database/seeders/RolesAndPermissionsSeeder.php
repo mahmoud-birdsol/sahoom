@@ -21,7 +21,8 @@ class RolesAndPermissionsSeeder extends Seeder
         $collection = collect([
             'User',
             'Role',
-            'Permission'
+            'Permission',
+            'Landlord',
             // ... // List all your Models you want to have Permissions for.
         ]);
 
