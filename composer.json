@@ -8,20 +8,33 @@
         "framework"
     ],
     "license": "MIT",
+    "repositories": {
+        "flux-pro": {
+            "type": "composer",
+            "url": "https://composer.fluxui.dev"
+        },
+        "0": {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    },
     "require": {
         "php": "^8.2",
         "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",
         "laravel/horizon": "^5.37",
+        "laravel/nova": "5.4.2",
         "laravel/pennant": "^1.18",
         "laravel/pulse": "^1.4",
         "laravel/telescope": "^5.14",
         "laravel/tinker": "^2.10.1",
-        "livewire/flux": "^2.1.1",
+        "livewire/flux": "^2.6",
+        "livewire/flux-pro": "^2.6",
         "livewire/volt": "^1.7.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "laravel/nova-devtool": "^1.8",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.25",
         "laravel/sail": "^1.46",
