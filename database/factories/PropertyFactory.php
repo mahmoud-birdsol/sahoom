@@ -31,21 +31,21 @@ class PropertyFactory extends Factory
         return [
             'landlord_id' => Landlord::factory(),
             'title' => fake()->sentence(3),
-            'slug' => fake()->slug(3),
-            'description' => fake()->text(100),
+            'slug' => fake()->unique()->slug(3),
+            'description' => fake()->paragraph(),
             'status' => PropertyStatus::DRAFT,
-            'address_line_1' => fake()->address(),
-            'address_line_2' => fake()->address(),
+            'address_line_1' => fake()->streetAddress(),
+            'address_line_2' => fake()->optional(0.3)->secondaryAddress(),
             'city' => fake()->city(),
-            'state' => fake()->state(),
+            'state' => fake()->optional()->state(),
             'postal_code' => fake()->postcode(),
             'country' => fake()->country(),
             'latitude' => fake()->latitude(),
             'longitude' => fake()->longitude(),
-            'size_sqm' => fake()->numberBetween(100, 1000),
+            'size_sqm' => fake()->numberBetween(50, 500),
             'traffic_score' => fake()->numberBetween(1, 10),
-            'is_featured' => fake()->boolean(10),
-            'rejection_reason' => fake()->text(100),
+            'is_featured' => false,
+            'rejection_reason' => null, // Only set when status is REJECTED
         ];
     }
 }

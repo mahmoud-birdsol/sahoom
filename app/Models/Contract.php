@@ -24,6 +24,14 @@ class Contract extends Model
         'renter_company',
         'start_date',
         'end_date',
+        'pricing_type',
+        'monthly_rent',
+        'weekly_rent',
+        'yearly_rent',
+        'daily_rent',
+        'security_deposit',
+        'service_fee',
+        'cleaning_fee',
         'total_value',
         'currency',
         'payment_status',
@@ -34,6 +42,14 @@ class Contract extends Model
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
+        'pricing_type' => \App\Models\States\PricingType::class,
+        'monthly_rent' => 'decimal:2',
+        'weekly_rent' => 'decimal:2',
+        'yearly_rent' => 'decimal:2',
+        'daily_rent' => 'decimal:2',
+        'security_deposit' => 'decimal:2',
+        'service_fee' => 'decimal:2',
+        'cleaning_fee' => 'decimal:2',
         'total_value' => 'decimal:2',
         'payment_status' => PaymentStatus::class,
         'contract_status' => ContractStatus::class,
@@ -69,6 +85,62 @@ class Contract extends Model
     public function getContractReferenceAttribute(): string
     {
         return "CONTRACT-{$this->id}";
+    }
+
+    /**
+     * Get the active rent amount based on pricing type.
+     */
+    public function getActiveRentAttribute(): ?float
+    {
+        return match ($this->pricing_type) {
+            \App\Models\States\PricingType::MONTHLY => $this->monthly_rent,
+            \App\Models\States\PricingType::WEEKLY => $this->weekly_rent,
+            \App\Models\States\PricingType::YEARLY => $this->yearly_rent,
+            \App\Models\States\PricingType::DAILY => $this->daily_rent,
+            default => $this->monthly_rent,
+        };
+    }
+
+    /**
+     * Get contract duration in days.
+     */
+    public function getDurationInDaysAttribute(): int
+    {
+        return $this->start_date->diffInDays($this->end_date);
+    }
+
+    /**
+     * Get contract duration in months.
+     */
+    public function getDurationInMonthsAttribute(): int
+    {
+        return $this->start_date->diffInMonths($this->end_date);
+    }
+
+    /**
+     * Check if contract is currently active (within date range).
+     */
+    public function isCurrentlyActive(): bool
+    {
+        return $this->contract_status === \App\Models\States\ContractStatus::ACTIVE
+            && now()->between($this->start_date, $this->end_date);
+    }
+
+    /**
+     * Check if contract is upcoming (starts in the future).
+     */
+    public function isUpcoming(): bool
+    {
+        return $this->contract_status === \App\Models\States\ContractStatus::ACTIVE
+            && now()->isBefore($this->start_date);
+    }
+
+    /**
+     * Check if contract has expired.
+     */
+    public function isExpired(): bool
+    {
+        return now()->isAfter($this->end_date);
     }
 
     /**
@@ -137,6 +209,12 @@ class Contract extends Model
             'renter_name' => $this->renter_name,
             'start_date' => $this->start_date?->toDateString(),
             'end_date' => $this->end_date?->toDateString(),
+            'pricing_type' => $this->pricing_type?->value,
+            'monthly_rent' => $this->monthly_rent,
+            'weekly_rent' => $this->weekly_rent,
+            'yearly_rent' => $this->yearly_rent,
+            'daily_rent' => $this->daily_rent,
+            'security_deposit' => $this->security_deposit,
             'total_value' => $this->total_value,
             'currency' => $this->currency,
             'contract_status' => $this->contract_status?->value,

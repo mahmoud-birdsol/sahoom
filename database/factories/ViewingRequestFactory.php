@@ -32,9 +32,9 @@ class ViewingRequestFactory extends Factory
             'renter_email' => fake()->safeEmail(),
             'renter_phone' => fake()->optional(0.8)->phoneNumber(),
             'message' => fake()->optional(0.7)->paragraph(),
-            'preferred_date' => fake()->optional(0.6)->dateTimeBetween('now', '+30 days'),
+            'preferred_date' => fake()->optional(0.6)->date('+30 days'),
             'status' => fake()->randomElement(\App\Models\States\ViewingRequestStatus::toArray()),
-            'handled_by_user_id' => fake()->optional(0.4)->randomDigit(), // Will need real user IDs
+            'handled_by_user_id' => null, // Set manually in seeder if needed
         ];
     }
 }

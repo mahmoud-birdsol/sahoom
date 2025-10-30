@@ -30,6 +30,21 @@ class ContractFactory extends Factory
         $startDate = fake()->dateTimeBetween('now', '+3 months');
         $endDate = fake()->dateTimeBetween($startDate, $startDate->format('Y-m-d') . ' +1 year');
         
+        // Generate pricing based on pricing type
+        $pricingType = fake()->randomElement(\App\Models\States\PricingType::toArray());
+        $monthlyRent = fake()->numberBetween(2000, 15000);
+        
+        // Calculate other pricing options
+        $weeklyRent = round($monthlyRent / 4.33, 2); // Average weeks per month
+        $yearlyRent = $monthlyRent * 12;
+        $dailyRent = round($monthlyRent / 30, 2);
+        
+        // Calculate total value based on contract duration
+        $startDateTime = new \DateTime($startDate->format('Y-m-d'));
+        $endDateTime = new \DateTime($endDate->format('Y-m-d'));
+        $durationMonths = $startDateTime->diff($endDateTime)->m + ($startDateTime->diff($endDateTime)->y * 12);
+        $totalValue = $monthlyRent * max($durationMonths, 1);
+        
         return [
             'property_id' => $property->id,
             'landlord_id' => $property->landlord_id,
@@ -37,8 +52,16 @@ class ContractFactory extends Factory
             'renter_company' => fake()->optional(0.4)->company(),
             'start_date' => $startDate,
             'end_date' => $endDate,
-            'total_value' => fake()->randomFloat(2, 5000, 50000),
-            'currency' => fake()->randomElement(['USD', 'EUR', 'GBP']),
+            'pricing_type' => $pricingType,
+            'monthly_rent' => $monthlyRent,
+            'weekly_rent' => $weeklyRent,
+            'yearly_rent' => $yearlyRent,
+            'daily_rent' => $dailyRent,
+            'security_deposit' => fake()->optional(0.7)->numberBetween($monthlyRent, $monthlyRent * 2),
+            'service_fee' => fake()->optional(0.5)->numberBetween(100, 500),
+            'cleaning_fee' => fake()->optional(0.4)->numberBetween(50, 300),
+            'total_value' => $totalValue,
+            'currency' => fake()->randomElement(['SAR', 'USD', 'EUR', 'AED']),
             'payment_status' => fake()->randomElement(\App\Models\States\PaymentStatus::toArray()),
             'contract_status' => fake()->randomElement(\App\Models\States\ContractStatus::toArray()),
             'notes_internal' => fake()->optional(0.5)->paragraph(),

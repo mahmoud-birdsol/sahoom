@@ -4,12 +4,14 @@ namespace App\Nova;
 
 use App\Models\States\ContractStatus;
 use App\Models\States\PaymentStatus;
+use App\Models\States\PricingType;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
@@ -99,12 +101,96 @@ class Contract extends Resource
                 ->filterable()
                 ->rules('required', 'date', 'after_or_equal:start_date'),
 
+            Heading::make('Pricing Information')->onlyOnForms(),
+
+            Select::make('Pricing Type')
+                ->options([
+                    PricingType::MONTHLY->value => PricingType::MONTHLY->label(),
+                    PricingType::WEEKLY->value => PricingType::WEEKLY->label(),
+                    PricingType::YEARLY->value => PricingType::YEARLY->label(),
+                    PricingType::DAILY->value => PricingType::DAILY->label(),
+                ])
+                ->displayUsingLabels()
+                ->sortable()
+                ->filterable()
+                ->default(PricingType::MONTHLY->value)
+                ->rules('required')
+                ->help('Select the primary pricing model for this contract'),
+
+            Currency::make('Monthly Rent')
+                ->currency('USD')
+                ->sortable()
+                ->nullable()
+                ->rules('nullable', 'numeric', 'min:0')
+                ->help('Rent amount per month'),
+
+            Currency::make('Weekly Rent')
+                ->currency('USD')
+                ->sortable()
+                ->nullable()
+                ->hideFromIndex()
+                ->rules('nullable', 'numeric', 'min:0')
+                ->help('Rent amount per week'),
+
+            Currency::make('Yearly Rent')
+                ->currency('USD')
+                ->sortable()
+                ->nullable()
+                ->hideFromIndex()
+                ->rules('nullable', 'numeric', 'min:0')
+                ->help('Rent amount per year'),
+
+            Currency::make('Daily Rent')
+                ->currency('USD')
+                ->sortable()
+                ->nullable()
+                ->hideFromIndex()
+                ->rules('nullable', 'numeric', 'min:0')
+                ->help('Rent amount per day'),
+
+            Heading::make('Additional Fees')->onlyOnForms(),
+
+            Currency::make('Security Deposit')
+                ->currency('USD')
+                ->nullable()
+                ->hideFromIndex()
+                ->rules('nullable', 'numeric', 'min:0')
+                ->help('Refundable security deposit'),
+
+            Currency::make('Service Fee')
+                ->currency('USD')
+                ->nullable()
+                ->hideFromIndex()
+                ->rules('nullable', 'numeric', 'min:0')
+                ->help('One-time service fee'),
+
+            Currency::make('Cleaning Fee')
+                ->currency('USD')
+                ->nullable()
+                ->hideFromIndex()
+                ->rules('nullable', 'numeric', 'min:0')
+                ->help('One-time cleaning fee'),
+
+            Heading::make('Contract Summary')->onlyOnForms(),
+
+            Text::make('Duration', function () {
+                return "{$this->duration_in_months} months ({$this->duration_in_days} days)";
+            })
+                ->onlyOnDetail()
+                ->help('Contract duration'),
+
+            Currency::make('Active Rent', 'active_rent')
+                ->currency('USD')
+                ->onlyOnDetail()
+                ->help('Current rent based on selected pricing type'),
+
             Number::make('Total Value')
                 ->sortable()
                 ->filterable()
                 ->rules('required', 'numeric', 'min:0')
                 ->step(0.01)
-                ->displayUsing(fn ($value) => number_format($value, 2)),
+                ->displayUsing(fn ($value) => number_format($value, 2))
+                ->help('Total contract value (calculated from pricing + fees)'),
 
             Select::make('Currency')
                 ->options([
@@ -191,7 +277,9 @@ class Contract extends Resource
      */
     public function cards(NovaRequest $request): array
     {
-        return [];
+        return [
+            new Metrics\ContractsByPricingType,
+        ];
     }
 
     /**
@@ -205,6 +293,7 @@ class Contract extends Resource
             new Filters\UpcomingBookings,
             new Filters\ContractStatus,
             new Filters\ContractPaymentStatus,
+            new Filters\PricingTypeFilter,
             new Filters\ContractLandlord,
             new Filters\ContractProperty,
             new Filters\ContractStartDate,

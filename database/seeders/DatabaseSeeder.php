@@ -9,6 +9,7 @@ use App\Models\Property;
 use App\Models\States\AvailabilityBlockSource;
 use App\Models\States\AvailabilityBlockStatus;
 use App\Models\States\ContractStatus;
+use App\Models\States\PricingType;
 use App\Models\States\LandlordKycStatus;
 use App\Models\States\LandlordStatus;
 use App\Models\States\PropertyStatus;
@@ -203,65 +204,131 @@ class DatabaseSeeder extends Seeder
         // 6. Create Contracts
         $this->command->info('📋 Creating contracts...');
 
-        // Active Contracts (5)
-        for ($i = 0; $i < 5; $i++) {
+        $totalPublishedProperties = count($publishedProperties);
+        $this->command->info("   Using {$totalPublishedProperties} published properties for contracts");
+
+        // Calculate how many contracts we can create
+        $maxContracts = min($totalPublishedProperties, 10);
+        $activeContracts = min(5, $maxContracts);
+        $upcomingContracts = min(3, $maxContracts - $activeContracts);
+        $pendingContracts = min(2, $maxContracts - $activeContracts - $upcomingContracts);
+
+        // Active Contracts
+        for ($i = 0; $i < $activeContracts; $i++) {
             $property = $publishedProperties[$i];
+            $monthlyRent = fake()->numberBetween(3000, 10000);
+            $startDate = now()->subMonths(2);
+            $endDate = now()->addMonths(10);
+            $durationMonths = 12;
+
             Contract::factory()->create([
                 'property_id' => $property->id,
                 'landlord_id' => $property->landlord_id,
                 'contract_status' => ContractStatus::ACTIVE,
-                'start_date' => now()->subMonths(2),
-                'end_date' => now()->addMonths(10),
-                'monthly_rent' => fake()->numberBetween(3000, 10000),
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'pricing_type' => PricingType::MONTHLY,
+                'monthly_rent' => $monthlyRent,
+                'weekly_rent' => round($monthlyRent / 4.33, 2),
+                'yearly_rent' => $monthlyRent * 12,
+                'daily_rent' => round($monthlyRent / 30, 2),
+                'security_deposit' => $monthlyRent * 2,
+                'service_fee' => fake()->numberBetween(100, 500),
+                'cleaning_fee' => fake()->numberBetween(50, 300),
+                'total_value' => $monthlyRent * $durationMonths,
+                'currency' => 'SAR',
             ]);
         }
-        $this->command->info("✅ Created 5 active contracts");
+        $this->command->info("✅ Created {$activeContracts} active contracts");
 
-        // Upcoming Contracts (3) - starting in next 14 days
-        for ($i = 5; $i < 8; $i++) {
-            $property = $publishedProperties[$i];
+        // Upcoming Contracts - starting in next 14 days
+        for ($i = 0; $i < $upcomingContracts; $i++) {
+            $propertyIndex = $activeContracts + $i;
+            if ($propertyIndex >= $totalPublishedProperties) break;
+
+            $property = $publishedProperties[$propertyIndex];
+            $monthlyRent = fake()->numberBetween(3000, 10000);
+            $startDate = now()->addDays(fake()->numberBetween(1, 14));
+            $endDate = now()->addYear();
+            $durationMonths = 12;
+
             Contract::factory()->create([
                 'property_id' => $property->id,
                 'landlord_id' => $property->landlord_id,
                 'contract_status' => ContractStatus::ACTIVE,
-                'start_date' => now()->addDays(fake()->numberBetween(1, 14)),
-                'end_date' => now()->addYear(),
-                'monthly_rent' => fake()->numberBetween(3000, 10000),
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'pricing_type' => PricingType::MONTHLY,
+                'monthly_rent' => $monthlyRent,
+                'weekly_rent' => round($monthlyRent / 4.33, 2),
+                'yearly_rent' => $monthlyRent * 12,
+                'daily_rent' => round($monthlyRent / 30, 2),
+                'security_deposit' => $monthlyRent * 2,
+                'service_fee' => fake()->numberBetween(100, 500),
+                'cleaning_fee' => fake()->numberBetween(50, 300),
+                'total_value' => $monthlyRent * $durationMonths,
+                'currency' => 'SAR',
             ]);
         }
-        $this->command->info("✅ Created 3 upcoming contracts (next 14 days)");
+        $this->command->info("✅ Created {$upcomingContracts} upcoming contracts (next 14 days)");
 
-        // Pending Contracts (2)
-        for ($i = 8; $i < 10; $i++) {
-            $property = $publishedProperties[$i];
+        // Pending Contracts
+        for ($i = 0; $i < $pendingContracts; $i++) {
+            $propertyIndex = $activeContracts + $upcomingContracts + $i;
+            if ($propertyIndex >= $totalPublishedProperties) break;
+
+            $property = $publishedProperties[$propertyIndex];
+            $monthlyRent = fake()->numberBetween(3000, 10000);
+            $startDate = now()->addDays(30);
+            $endDate = now()->addDays(395);
+            $durationMonths = 12;
+
             Contract::factory()->create([
                 'property_id' => $property->id,
                 'landlord_id' => $property->landlord_id,
                 'contract_status' => ContractStatus::PENDING,
-                'start_date' => now()->addDays(30),
-                'end_date' => now()->addDays(395),
-                'monthly_rent' => fake()->numberBetween(3000, 10000),
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'pricing_type' => PricingType::MONTHLY,
+                'monthly_rent' => $monthlyRent,
+                'weekly_rent' => round($monthlyRent / 4.33, 2),
+                'yearly_rent' => $monthlyRent * 12,
+                'daily_rent' => round($monthlyRent / 30, 2),
+                'security_deposit' => $monthlyRent * 2,
+                'service_fee' => fake()->numberBetween(100, 500),
+                'cleaning_fee' => fake()->numberBetween(50, 300),
+                'total_value' => $monthlyRent * $durationMonths,
+                'currency' => 'SAR',
             ]);
         }
-        $this->command->info("✅ Created 2 pending contracts");
+        $this->command->info("✅ Created {$pendingContracts} pending contracts");
 
         // 7. Create Viewing Requests
         $this->command->info('👁️ Creating viewing requests...');
 
-        foreach (array_slice($publishedProperties, 0, 8) as $property) {
-            // Pending viewing requests
+        $availablePropertiesForViewing = min(8, count($publishedProperties));
+        foreach (array_slice($publishedProperties, 0, $availablePropertiesForViewing) as $property) {
+            // New viewing requests
             ViewingRequest::factory()->create([
                 'property_id' => $property->id,
-                'status' => ViewingRequestStatus::PENDING,
-                'requested_date' => now()->addDays(fake()->numberBetween(1, 7)),
+                'status' => ViewingRequestStatus::NEW,
+                'preferred_date' => now()->addDays(fake()->numberBetween(1, 7))->format('Y-m-d'),
+                'renter_name' => fake()->name(),
+                'renter_email' => fake()->safeEmail(),
+                'renter_phone' => fake()->phoneNumber(),
+                'message' => fake()->paragraph(),
             ]);
 
-            // Some confirmed requests
+            // Some contacted requests
             if (fake()->boolean(50)) {
                 ViewingRequest::factory()->create([
                     'property_id' => $property->id,
-                    'status' => ViewingRequestStatus::CONFIRMED,
-                    'requested_date' => now()->addDays(fake()->numberBetween(3, 10)),
+                    'status' => ViewingRequestStatus::CONTACTED,
+                    'preferred_date' => now()->addDays(fake()->numberBetween(3, 10))->format('Y-m-d'),
+                    'renter_name' => fake()->name(),
+                    'renter_email' => fake()->safeEmail(),
+                    'renter_phone' => fake()->phoneNumber(),
+                    'message' => fake()->paragraph(),
                 ]);
             }
         }
