@@ -60,6 +60,14 @@ class Property extends Model
         return $this->hasMany(AvailabilityBlock::class)->orderBy('start_date', 'asc');
     }
 
+    /**
+     * Get the viewing requests for the property.
+     */
+    public function viewingRequests(): HasMany
+    {
+        return $this->hasMany(ViewingRequest::class)->orderBy('created_at', 'desc');
+    }
+
     public function getSlugOptions() : \Spatie\Sluggable\SlugOptions
     {
         return SlugOptions::create()
