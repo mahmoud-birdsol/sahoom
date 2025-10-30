@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Models\States\PropertyStatus;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
@@ -185,6 +186,16 @@ class Property extends Resource
             Boolean::make('Featured', 'is_featured')
                 ->sortable()
                 ->filterable(),
+
+            // Relations
+            BelongsToMany::make('Amenities')
+                ->searchable()
+                ->showCreateRelationButton()
+                ->fields(function () {
+                    return [
+                        // You can add pivot fields here if needed
+                    ];
+                }),
         ];
     }
 
@@ -205,7 +216,12 @@ class Property extends Resource
      */
     public function filters(NovaRequest $request): array
     {
-        return [];
+        return [
+            new Filters\PropertyStatus,
+            new Filters\PropertyCity,
+            new Filters\PropertyLandlord,
+            new Filters\FeaturedProperties,
+        ];
     }
 
     /**
@@ -225,6 +241,11 @@ class Property extends Resource
      */
     public function actions(NovaRequest $request): array
     {
-        return [];
+        return [
+            new Actions\ApproveProperty,
+            new Actions\RejectProperty,
+            new Actions\SuspendProperty,
+            new Actions\ToggleFeaturedProperty,
+        ];
     }
 }

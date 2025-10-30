@@ -4,8 +4,63 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e976ca22c115593b15480ac4a3d8e5fc",
+    "content-hash": "d66a90e5c3057d409814120128ca85fd",
     "packages": [
+        {
+            "name": "alexazartsev/heroicon",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AlexAzartsev/heroicon.git",
+                "reference": "7e429c5517ce313952a2056d07f5ffc2ec20745f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AlexAzartsev/heroicon/zipball/7e429c5517ce313952a2056d07f5ffc2ec20745f",
+                "reference": "7e429c5517ce313952a2056d07f5ffc2ec20745f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AlexAzartsev\\Heroicon\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AlexAzartsev\\Heroicon\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Azartsev",
+                    "email": "alex.azarsecond@gmail.com",
+                    "homepage": "https://github.com/AlexAzartsev/heroicon",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel Nova field for managing icons.",
+            "keywords": [
+                "Heroicons",
+                "laravel",
+                "nova",
+                "svg"
+            ],
+            "support": {
+                "issues": "https://github.com/AlexAzartsev/heroicon/issues",
+                "source": "https://github.com/AlexAzartsev/heroicon/tree/v1.0.3"
+            },
+            "time": "2021-11-09T14:25:09+00:00"
+        },
         {
             "name": "bacon/bacon-qr-code",
             "version": "v3.0.1",

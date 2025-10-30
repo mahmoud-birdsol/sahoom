@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -40,6 +41,14 @@ class Property extends Model
     public function landlord(): BelongsTo
     {
         return $this->belongsTo(Landlord::class);
+    }
+
+    /**
+     * Get the amenities for the property.
+     */
+    public function amenities(): BelongsToMany
+    {
+        return $this->belongsToMany(Amenity::class);
     }
 
     public function getSlugOptions() : \Spatie\Sluggable\SlugOptions
