@@ -8,6 +8,7 @@ use App\Nova\Metrics\PublishedPropertiesCount;
 use App\Nova\Metrics\RecentAdminActivity;
 use App\Nova\Metrics\UpcomingContractsCount;
 use App\Nova\Metrics\VacancyRate;
+use Illuminate\Http\Request;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -36,10 +37,10 @@ class Main extends Dashboard
             (new InReviewPropertiesCount)->width('1/4'),
             (new PendingLandlordsCount)->width('1/4'),
             (new UpcomingContractsCount)->width('1/4'),
-            
+
             // Row 2: Vacancy Rate (wider card)
             (new VacancyRate)->width('full'),
-            
+
             // Row 3: Recent Activity Feed
             (new RecentAdminActivity)->width('full'),
         ];
@@ -51,7 +52,7 @@ class Main extends Dashboard
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return bool
      */
-    public function authorizedToSee(NovaRequest $request)
+    public function authorizedToSee(Request $request)
     {
         // Only admin and super_admin roles can see the dashboard
         return $request->user()?->isAdmin() ?? false;
