@@ -8,6 +8,7 @@ use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
@@ -196,6 +197,8 @@ class Property extends Resource
                         // You can add pivot fields here if needed
                     ];
                 }),
+
+            HasMany::make('Availability Blocks', 'availabilityBlocks', AvailabilityBlock::class),
         ];
     }
 
@@ -246,6 +249,7 @@ class Property extends Resource
             new Actions\RejectProperty,
             new Actions\SuspendProperty,
             new Actions\ToggleFeaturedProperty,
+            new Actions\AddAvailabilityBlock,
         ];
     }
 }

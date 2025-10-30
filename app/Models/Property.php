@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -49,6 +50,14 @@ class Property extends Model
     public function amenities(): BelongsToMany
     {
         return $this->belongsToMany(Amenity::class);
+    }
+
+    /**
+     * Get the availability blocks for the property.
+     */
+    public function availabilityBlocks(): HasMany
+    {
+        return $this->hasMany(AvailabilityBlock::class)->orderBy('start_date', 'asc');
     }
 
     public function getSlugOptions() : \Spatie\Sluggable\SlugOptions
