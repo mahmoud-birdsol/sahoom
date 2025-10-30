@@ -18,8 +18,8 @@ class PublishedPropertiesCount extends Value
      */
     public function calculate(NovaRequest $request): ValueResult
     {
-        $count = Property::where('status', PropertyStatus::PUBLISHED->value)->count();
-        
+        $count = Property::where('status', PropertyStatus::APPROVED->value)->count();
+
         return $this->result($count)
             ->format('0,0')
             ->suffix('Live Properties');

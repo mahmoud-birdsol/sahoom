@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
 
         // 3. Create Landlords with Different KYC Statuses
         $this->command->info('🏢 Creating landlords...');
-        
+
         // Approved Landlords (5)
         $approvedLandlords = [];
         for ($i = 1; $i <= 5; $i++) {
@@ -64,14 +64,14 @@ class DatabaseSeeder extends Seeder
                 'is_active' => true,
                 'password' => Hash::make('password'),
             ]);
-            
+
             $landlord = Landlord::factory()->create([
                 'user_id' => $user->id,
                 'status' => LandlordStatus::ACTIVE,
                 'kyc_status' => LandlordKycStatus::APPROVED,
                 'company_name' => "Approved Landlord Company {$i}",
             ]);
-            
+
             $approvedLandlords[] = $landlord;
         }
         $this->command->info("✅ Created 5 approved landlords");
@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
                 'is_active' => true,
                 'password' => Hash::make('password'),
             ]);
-            
+
             Landlord::factory()->create([
                 'user_id' => $user->id,
                 'status' => LandlordStatus::ACTIVE,
@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
                 'is_active' => false,
                 'password' => Hash::make('password'),
             ]);
-            
+
             Landlord::factory()->create([
                 'user_id' => $user->id,
                 'status' => LandlordStatus::SUSPENDED,
@@ -113,14 +113,14 @@ class DatabaseSeeder extends Seeder
 
         // 4. Create Properties with Different Statuses
         $this->command->info('🏠 Creating properties...');
-        
+
         $publishedProperties = [];
-        
+
         // Published Properties (10)
         foreach ($approvedLandlords as $index => $landlord) {
             $property = Property::factory()->create([
                 'landlord_id' => $landlord->id,
-                'status' => PropertyStatus::PUBLISHED,
+                'status' => PropertyStatus::APPROVED,
                 'title' => "Luxury Apartment " . ($index + 1),
                 'city' => fake()->randomElement(['Riyadh', 'Jeddah', 'Dammam', 'Khobar', 'Mecca']),
                 'country' => 'Saudi Arabia',
@@ -128,12 +128,12 @@ class DatabaseSeeder extends Seeder
                 'is_featured' => $index < 2, // First 2 are featured
             ]);
             $publishedProperties[] = $property;
-            
+
             // Create a second property for some landlords
             if ($index < 3) {
                 $property2 = Property::factory()->create([
                     'landlord_id' => $landlord->id,
-                    'status' => PropertyStatus::PUBLISHED,
+                    'status' => PropertyStatus::APPROVED,
                     'title' => "Modern Villa " . ($index + 1),
                     'city' => fake()->randomElement(['Riyadh', 'Jeddah', 'Dammam']),
                     'country' => 'Saudi Arabia',
@@ -166,7 +166,7 @@ class DatabaseSeeder extends Seeder
 
         // 5. Create Availability Blocks
         $this->command->info('📅 Creating availability blocks...');
-        
+
         foreach ($publishedProperties as $property) {
             // Create some occupied blocks (past and current)
             AvailabilityBlock::factory()->create([
@@ -176,7 +176,7 @@ class DatabaseSeeder extends Seeder
                 'status' => AvailabilityBlockStatus::OCCUPIED,
                 'source' => AvailabilityBlockSource::PLATFORM,
             ]);
-            
+
             // Create some upcoming reserved blocks
             AvailabilityBlock::factory()->create([
                 'property_id' => $property->id,
@@ -185,7 +185,7 @@ class DatabaseSeeder extends Seeder
                 'status' => AvailabilityBlockStatus::RESERVED,
                 'source' => AvailabilityBlockSource::PLATFORM,
             ]);
-            
+
             // Create maintenance block for some properties
             if (fake()->boolean(30)) {
                 AvailabilityBlock::factory()->create([
@@ -202,7 +202,7 @@ class DatabaseSeeder extends Seeder
 
         // 6. Create Contracts
         $this->command->info('📋 Creating contracts...');
-        
+
         // Active Contracts (5)
         for ($i = 0; $i < 5; $i++) {
             $property = $publishedProperties[$i];
@@ -247,7 +247,7 @@ class DatabaseSeeder extends Seeder
 
         // 7. Create Viewing Requests
         $this->command->info('👁️ Creating viewing requests...');
-        
+
         foreach (array_slice($publishedProperties, 0, 8) as $property) {
             // Pending viewing requests
             ViewingRequest::factory()->create([
@@ -255,7 +255,7 @@ class DatabaseSeeder extends Seeder
                 'status' => ViewingRequestStatus::PENDING,
                 'requested_date' => now()->addDays(fake()->numberBetween(1, 7)),
             ]);
-            
+
             // Some confirmed requests
             if (fake()->boolean(50)) {
                 ViewingRequest::factory()->create([

@@ -25,7 +25,7 @@ class VacancyRate extends Value
         $daysInPeriod = 30;
 
         // Get published properties count
-        $publishedPropertiesCount = Property::where('status', PropertyStatus::PUBLISHED->value)->count();
+        $publishedPropertiesCount = Property::where('status', PropertyStatus::APPROVED->value)->count();
 
         if ($publishedPropertiesCount === 0) {
             return $this->result(0)
@@ -43,7 +43,7 @@ class VacancyRate extends Value
                 AvailabilityBlockStatus::MAINTENANCE->value,
             ])
             ->whereHas('property', function ($query) {
-                $query->where('status', PropertyStatus::PUBLISHED->value);
+                $query->where('status', PropertyStatus::APPROVED->value);
             })
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->where(function ($q) use ($startDate, $endDate) {
