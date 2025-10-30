@@ -6,6 +6,7 @@ use App\Models\States\LandlordKycStatus;
 use App\Models\States\LandlordStatus;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
@@ -68,20 +69,23 @@ class Landlord extends Resource
                 ->rules('nullable', 'string', 'max:255'),
 
             Badge::make('Status')->map(
-                collect(LandlordStatus::cases())->mapWithKeys(fn($state) => [$state->value => $state->color()])->toArray()
+                collect(LandlordStatus::cases())->mapWithKeys(fn ($state) => [$state->value => $state->color()])->toArray()
             )->icons(
-                collect(LandlordKycStatus::cases())->mapWithKeys(fn($state) => [$state->color() => $state->icon()])->toArray()
+                collect(LandlordKycStatus::cases())->mapWithKeys(fn ($state) => [$state->color() => $state->icon()])->toArray()
             )->sortable()->filterable(),
 
             Badge::make('KYC Status', 'kyc_status')->map(
-                collect(LandlordKycStatus::cases())->mapWithKeys(fn($state) => [$state->value => $state->color()])->toArray()
+                collect(LandlordKycStatus::cases())->mapWithKeys(fn ($state) => [$state->value => $state->color()])->toArray()
             )->icons(
-                collect(LandlordKycStatus::cases())->mapWithKeys(fn($state) => [$state->color() => $state->icon()])->toArray()
+                collect(LandlordKycStatus::cases())->mapWithKeys(fn ($state) => [$state->color() => $state->icon()])->toArray()
             )->sortable()->filterable(),
 
             Trix::make(__('Verification Notes'), 'verification_notes')
                 ->nullable()
                 ->rules('nullable'),
+
+            // Relations
+            HasMany::make('Properties'),
         ];
     }
 

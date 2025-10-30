@@ -3,15 +3,13 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -28,12 +26,12 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $collection->each(function ($item, $key) {
             // create permissions for each collection item
-            Permission::create(['group' => $item, 'name' => 'viewAny' . $item]);
-            Permission::create(['group' => $item, 'name' => 'view' . $item]);
-            Permission::create(['group' => $item, 'name' => 'update' . $item]);
-            Permission::create(['group' => $item, 'name' => 'create' . $item]);
-            Permission::create(['group' => $item, 'name' => 'delete' . $item]);
-            Permission::create(['group' => $item, 'name' => 'destroy' . $item]);
+            Permission::create(['group' => $item, 'name' => 'viewAny'.$item]);
+            Permission::create(['group' => $item, 'name' => 'view'.$item]);
+            Permission::create(['group' => $item, 'name' => 'update'.$item]);
+            Permission::create(['group' => $item, 'name' => 'create'.$item]);
+            Permission::create(['group' => $item, 'name' => 'delete'.$item]);
+            Permission::create(['group' => $item, 'name' => 'destroy'.$item]);
         });
 
         // Create a Super-Admin Role and assign all Permissions
