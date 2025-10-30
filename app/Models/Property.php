@@ -68,6 +68,14 @@ class Property extends Model
         return $this->hasMany(ViewingRequest::class)->orderBy('created_at', 'desc');
     }
 
+    /**
+     * Get the contracts for the property.
+     */
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(Contract::class)->orderBy('start_date', 'desc');
+    }
+
     public function getSlugOptions() : \Spatie\Sluggable\SlugOptions
     {
         return SlugOptions::create()
