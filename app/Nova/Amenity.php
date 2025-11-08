@@ -47,30 +47,30 @@ class Amenity extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Name')
+            Text::make(__('Name'), 'name')
                 ->sortable()
                 ->filterable()
                 ->rules('required', 'max:255')
                 ->showOnPreview(),
 
-            Textarea::make('Description')
+            Textarea::make(__('Description'), 'description')
                 ->nullable()
                 ->hideFromIndex()
                 ->showOnPreview(),
 
-            Heroicon::make('Icon')
+            Heroicon::make(__('Icon'), 'icon')
                 ->sortable()
                 ->filterable()
                 ->nullable()
-                ->help('Select an icon from Heroicons or Font Awesome'),
+                ->help(__('Select an icon from Heroicons or Font Awesome')),
 
-            Boolean::make('Active', 'is_active')
+            Boolean::make(__('Active'), 'is_active')
                 ->sortable()
                 ->filterable()
                 ->default(true),
 
             // Relations
-            BelongsToMany::make('Properties', 'properties', Property::class),
+            BelongsToMany::make(__('Properties'), 'properties', Property::class),
         ];
     }
 

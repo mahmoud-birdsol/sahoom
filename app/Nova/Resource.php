@@ -3,12 +3,29 @@
 namespace App\Nova;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource as NovaResource;
-use Laravel\Scout\Builder as ScoutBuilder;
+//use Laravel\Scout\Builder as ScoutBuilder;
 
 abstract class Resource extends NovaResource
 {
+    /**
+     * Get the displayable label of the resource.
+     */
+    public static function label(): string
+    {
+        return __(Str::headline(Str::plural(class_basename(static::class))));
+    }
+
+    /**
+     * Get the displayable singular label of the resource.
+     */
+    public static function singularLabel(): string
+    {
+        return __(Str::headline(class_basename(static::class)));
+    }
+
     /**
      * Build an "index" query for the given resource.
      */
@@ -17,13 +34,13 @@ abstract class Resource extends NovaResource
         return $query;
     }
 
-    /**
-     * Build a Scout search query for the given resource.
-     */
-    public static function scoutQuery(NovaRequest $request, ScoutBuilder $query): ScoutBuilder
-    {
-        return $query;
-    }
+//    /**
+//     * Build a Scout search query for the given resource.
+//     */
+//    public static function scoutQuery(NovaRequest $request, ScoutBuilder $query): ScoutBuilder
+//    {
+//        return $query;
+//    }
 
     /**
      * Build a "detail" query for the given resource.

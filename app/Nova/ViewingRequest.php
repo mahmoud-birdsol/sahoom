@@ -63,18 +63,18 @@ class ViewingRequest extends Resource
             ID::make()->sortable(),
 
             // Index columns: renter_name, property, status, created_at
-            Text::make('Renter Name')
+            Text::make(__('Renter Name'), 'renter_name')
                 ->sortable()
                 ->filterable()
                 ->rules('required', 'max:255'),
 
-            BelongsTo::make('Property')
+            BelongsTo::make(__('Property'), 'property', Property::class)
                 ->sortable()
                 ->filterable()
                 ->required()
                 ->showCreateRelationButton(),
 
-            Select::make('Status')
+            Select::make(__('Status'), 'status')
                 ->options([
                     ViewingRequestStatus::NEW->value => ViewingRequestStatus::NEW->label(),
                     ViewingRequestStatus::CONTACTED->value => ViewingRequestStatus::CONTACTED->label(),
@@ -88,7 +88,7 @@ class ViewingRequest extends Resource
                 ->rules('required')
                 ->hideFromIndex(),
 
-            Badge::make('Status')
+            Badge::make(__('Status'), 'status')
                 ->map([
                     ViewingRequestStatus::NEW->value => ViewingRequestStatus::NEW->color(),
                     ViewingRequestStatus::CONTACTED->value => ViewingRequestStatus::CONTACTED->color(),
@@ -103,48 +103,48 @@ class ViewingRequest extends Resource
                 ])
                 ->onlyOnIndex(),
 
-            DateTime::make('Created At')
+            DateTime::make(__('Created At'), 'created_at')
                 ->sortable()
                 ->filterable()
                 ->exceptOnForms(),
 
             // Contact Information (detail view)
-            Text::make('Renter Email')
+            Text::make(__('Renter Email'), 'renter_email')
                 ->sortable()
                 ->filterable()
                 ->rules('required', 'email', 'max:255')
                 ->hideFromIndex(),
 
-            Text::make('Renter Phone')
+            Text::make(__('Renter Phone'), 'renter_phone')
                 ->sortable()
                 ->filterable()
                 ->nullable()
                 ->hideFromIndex()
-                ->help('Optional phone number'),
+                ->help(__('Optional phone number')),
 
             // Request Details
-            Date::make('Preferred Date')
+            Date::make(__('Preferred Date'), 'preferred_date')
                 ->sortable()
                 ->filterable()
                 ->nullable()
                 ->hideFromIndex()
-                ->help('Preferred date for property viewing'),
+                ->help(__('Preferred date for property viewing')),
 
-            Textarea::make('Message')
+            Textarea::make(__('Message'), 'message')
                 ->nullable()
                 ->hideFromIndex()
-                ->help('Message from the renter'),
+                ->help(__('Message from the renter')),
 
             // Handler Assignment
-            BelongsTo::make('Handled By', 'handledBy', User::class)
+            BelongsTo::make(__('Handled By'), 'handledBy', User::class)
                 ->sortable()
                 ->filterable()
                 ->nullable()
                 ->searchable()
                 ->hideFromIndex()
-                ->help('Internal account manager handling this request'),
+                ->help(__('Internal account manager handling this request')),
 
-            DateTime::make('Updated At')
+            DateTime::make(__('Updated At'), 'updated_at')
                 ->sortable()
                 ->exceptOnForms()
                 ->hideFromIndex(),

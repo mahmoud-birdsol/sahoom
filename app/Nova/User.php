@@ -67,31 +67,31 @@ class User extends Resource
             Gravatar::make()->maxWidth(50)->onlyOnDetail(),
 
             // Index columns: name, email, role, is_active, last_login_at
-            Text::make('Name')
+            Text::make(__('Name'), 'name')
                 ->sortable()
                 ->filterable()
                 ->rules('required', 'max:255'),
 
-            Text::make('Email')
+            Text::make(__('Email'), 'email')
                 ->sortable()
                 ->filterable()
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
 
-            Text::make('Phone')
+            Text::make(__('Phone'), 'phone')
                 ->sortable()
                 ->filterable()
                 ->nullable()
                 ->hideFromIndex()
                 ->rules('nullable', 'max:20'),
 
-            Password::make('Password')
+            Password::make(__('Password'), 'password')
                 ->onlyOnForms()
                 ->creationRules($this->passwordRules())
                 ->updateRules($this->optionalPasswordRules()),
 
-            Select::make('Role')
+            Select::make(__('Role'), 'role')
                 ->options([
                     UserRole::LANDLORD->value => UserRole::LANDLORD->label(),
                     UserRole::ADMIN->value => UserRole::ADMIN->label(),
@@ -103,10 +103,10 @@ class User extends Resource
                 ->default(UserRole::LANDLORD->value)
                 ->rules('required')
                 ->readonly(fn () => !auth()->user()?->isSuperAdmin())
-                ->help(fn () => auth()->user()?->isSuperAdmin() ? 'Only super admins can change roles' : 'Contact super admin to change role')
+                ->help(fn () => auth()->user()?->isSuperAdmin() ? __('Only super admins can change roles') : __('Contact super admin to change role'))
                 ->hideFromIndex(),
 
-            Badge::make('Role')
+            Badge::make(__('Role'), 'role')
                 ->map([
                     UserRole::LANDLORD->value => UserRole::LANDLORD->color(),
                     UserRole::ADMIN->value => UserRole::ADMIN->color(),
@@ -119,24 +119,24 @@ class User extends Resource
                 ])
                 ->onlyOnIndex(),
 
-            Boolean::make('Active', 'is_active')
+            Boolean::make(__('Active'), 'is_active')
                 ->sortable()
                 ->filterable()
-                ->help('Deactivated users cannot log in'),
+                ->help(__('Deactivated users cannot log in')),
 
-            DateTime::make('Last Login', 'last_login_at')
+            DateTime::make(__('Last Login'), 'last_login_at')
                 ->sortable()
                 ->filterable()
                 ->nullable()
                 ->exceptOnForms()
-                ->displayUsing(fn ($value) => $value ? $value->diffForHumans() : 'Never'),
+                ->displayUsing(fn ($value) => $value ? $value->diffForHumans() : __('Never')),
 
             // Landlord relationship (only for users with landlord role)
-            HasOne::make('Landlord Profile', 'landlord', Landlord::class),
+            HasOne::make(__('Landlord Profile'), 'landlord', Landlord::class),
 
             // Spatie permissions
-            MorphToMany::make('Roles', 'roles', Role::class),
-            MorphToMany::make('Permissions', 'permissions', Permission::class),
+            MorphToMany::make(__('Roles'), 'roles', Role::class),
+            MorphToMany::make(__('Permissions'), 'permissions', Permission::class),
         ];
     }
 

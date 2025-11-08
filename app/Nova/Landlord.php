@@ -68,13 +68,13 @@ class Landlord extends Resource
                 ->nullable()
                 ->rules('nullable', 'string', 'max:255'),
 
-            Badge::make('Status')->map(
+            Badge::make(__('Status'), 'status')->map(
                 collect(LandlordStatus::cases())->mapWithKeys(fn ($state) => [$state->value => $state->color()])->toArray()
             )->icons(
                 collect(LandlordKycStatus::cases())->mapWithKeys(fn ($state) => [$state->color() => $state->icon()])->toArray()
             )->sortable()->filterable(),
 
-            Badge::make('KYC Status', 'kyc_status')->map(
+            Badge::make(__('KYC Status'), 'kyc_status')->map(
                 collect(LandlordKycStatus::cases())->mapWithKeys(fn ($state) => [$state->value => $state->color()])->toArray()
             )->icons(
                 collect(LandlordKycStatus::cases())->mapWithKeys(fn ($state) => [$state->color() => $state->icon()])->toArray()
@@ -85,7 +85,7 @@ class Landlord extends Resource
                 ->rules('nullable'),
 
             // Relations
-            HasMany::make('Properties'),
+            HasMany::make(__('Properties'), 'properties', Property::class),
         ];
     }
 

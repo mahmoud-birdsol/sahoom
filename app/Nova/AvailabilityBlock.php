@@ -60,25 +60,25 @@ class AvailabilityBlock extends Resource
         return [
             ID::make()->sortable(),
 
-            BelongsTo::make('Property')
+            BelongsTo::make(__('Property'), 'property', Property::class)
                 ->sortable()
                 ->filterable()
                 ->required()
                 ->showCreateRelationButton(),
 
-            Date::make('Start Date')
+            Date::make(__('Start Date'), 'start_date')
                 ->sortable()
                 ->filterable()
                 ->rules('required', 'date', 'before_or_equal:end_date')
-                ->help('The first day of the availability block'),
+                ->help(__('The first day of the availability block')),
 
-            Date::make('End Date')
+            Date::make(__('End Date'), 'end_date')
                 ->sortable()
                 ->filterable()
                 ->rules('required', 'date', 'after_or_equal:start_date')
-                ->help('The last day of the availability block'),
+                ->help(__('The last day of the availability block')),
 
-            Select::make('Status')
+            Select::make(__('Status'), 'status')
                 ->options([
                     AvailabilityBlockStatus::OCCUPIED->value => AvailabilityBlockStatus::OCCUPIED->label(),
                     AvailabilityBlockStatus::RESERVED->value => AvailabilityBlockStatus::RESERVED->label(),
@@ -90,10 +90,10 @@ class AvailabilityBlock extends Resource
                 ->filterable()
                 ->rules('required')
                 ->default(AvailabilityBlockStatus::OCCUPIED->value)
-                ->help('The availability status for this period')
+                ->help(__('The availability status for this period'))
                 ->hideFromIndex(),
 
-            Badge::make('Status')
+            Badge::make(__('Status'), 'status')
                 ->map([
                     AvailabilityBlockStatus::OCCUPIED->value => AvailabilityBlockStatus::OCCUPIED->color(),
                     AvailabilityBlockStatus::RESERVED->value => AvailabilityBlockStatus::RESERVED->color(),
@@ -108,7 +108,7 @@ class AvailabilityBlock extends Resource
                 ])
                 ->onlyOnIndex(),
 
-            Select::make('Source')
+            Select::make(__('Source'), 'source')
                 ->options([
                     AvailabilityBlockSource::PLATFORM->value => AvailabilityBlockSource::PLATFORM->label(),
                     AvailabilityBlockSource::OFFLINE->value => AvailabilityBlockSource::OFFLINE->label(),
@@ -121,19 +121,19 @@ class AvailabilityBlock extends Resource
                 ->filterable()
                 ->default(AvailabilityBlockSource::ADMIN->value)
                 ->rules('required')
-                ->help('The origin of this availability block'),
+                ->help(__('The origin of this availability block')),
 
-            Text::make('Contract Reference')
+            Text::make(__('Contract Reference'), 'contract_reference')
                 ->sortable()
                 ->filterable()
                 ->nullable()
                 ->hideFromIndex()
-                ->help('Reference number for platform/offline/landlord contract'),
+                ->help(__('Reference number for platform/offline/landlord contract')),
 
-            Textarea::make('Notes')
+            Textarea::make(__('Notes'), 'notes')
                 ->nullable()
                 ->hideFromIndex()
-                ->help('Additional notes about this availability block'),
+                ->help(__('Additional notes about this availability block')),
         ];
     }
 

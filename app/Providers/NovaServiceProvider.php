@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use Badinansoft\LanguageSwitch\LanguageSwitch;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Fortify\Features;
 use Laravel\Nova\Nova;
@@ -82,6 +83,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             NovaPermissions::make(),
+            LanguageSwitch::make(),
         ];
     }
 

@@ -59,19 +59,19 @@ class Property extends Resource
             ID::make()->sortable(),
 
             // Relation
-            BelongsTo::make('Landlord')
+            BelongsTo::make(__('Landlord'), 'landlord', Landlord::class)
                 ->sortable()
                 ->filterable()
                 ->required(),
 
             // Basic Information
-            Text::make('Title')
+            Text::make(__('Title'), 'title')
                 ->sortable()
                 ->filterable()
                 ->rules('required', 'max:255')
                 ->showOnPreview(),
 
-            Slug::make('Slug')
+            Slug::make(__('Slug'), 'slug')
                 ->from('Title')
                 ->separator('-')
                 ->sortable()
@@ -79,13 +79,13 @@ class Property extends Resource
                 ->hideWhenUpdating()
                 ->showOnPreview(),
 
-            Textarea::make('Description')
+            Textarea::make(__('Description'), 'description')
                 ->rules('required')
                 ->alwaysShow()
                 ->showOnPreview(),
 
             // Status
-            Select::make('Status')
+            Select::make(__('Status'), 'status')
                 ->options([
                     PropertyStatus::DRAFT->value => 'Draft',
                     PropertyStatus::IN_REVIEW->value => 'In Review',
@@ -100,7 +100,7 @@ class Property extends Resource
                 ->rules('required')
                 ->hideFromIndex(),
 
-            Badge::make('Status')
+            Badge::make(__('Status'), 'status')
                 ->map([
                     PropertyStatus::DRAFT->value => 'info',
                     PropertyStatus::IN_REVIEW->value => 'info',
@@ -117,7 +117,7 @@ class Property extends Resource
                 ])
                 ->onlyOnIndex(),
 
-            Textarea::make('Rejection Reason')
+            Textarea::make(__('Rejection Reason'), 'rejection_reason')
                 ->hideFromIndex()
                 ->hideWhenCreating()
                 ->dependsOn(['status'], function (Textarea $field, NovaRequest $request, $formData) {
@@ -129,42 +129,42 @@ class Property extends Resource
                 }),
 
             // Address Fields
-            Text::make('Address Line 1')
+            Text::make(__('Address Line 1'), 'address_line_1')
                 ->sortable()
                 ->filterable()
                 ->hideFromIndex(),
 
-            Text::make('Address Line 2')
+            Text::make(__('Address Line 2'), 'address_line_2')
                 ->sortable()
                 ->filterable()
                 ->hideFromIndex(),
 
-            Text::make('City')
+            Text::make(__('City'), 'city')
                 ->sortable()
                 ->filterable(),
 
-            Text::make('State')
+            Text::make(__('State'), 'state')
                 ->sortable()
                 ->filterable(),
 
-            Text::make('Postal Code')
+            Text::make(__('Postal Code'), 'postal_code')
                 ->sortable()
                 ->filterable()
                 ->hideFromIndex(),
 
-            Text::make('Country')
+            Text::make(__('Country'), 'country')
                 ->sortable()
                 ->filterable(),
 
             // Coordinates
-            Number::make('Latitude')
+            Number::make(__('Latitude'), 'latitude')
                 ->step(0.00000001)
                 ->min(-90)
                 ->max(90)
                 ->sortable()
                 ->hideFromIndex(),
 
-            Number::make('Longitude')
+            Number::make(__('Longitude'), 'longitude')
                 ->step(0.00000001)
                 ->min(-180)
                 ->max(180)
@@ -172,24 +172,24 @@ class Property extends Resource
                 ->hideFromIndex(),
 
             // Property Details
-            Number::make('Size (sqm)', 'size_sqm')
+            Number::make(__('Size (sqm)'), 'size_sqm')
                 ->min(0)
                 ->sortable()
                 ->filterable(),
 
-            Number::make('Traffic Score')
+            Number::make(__('Traffic Score'), 'traffic_score')
                 ->min(0)
                 ->max(10)
                 ->sortable()
                 ->filterable()
                 ->hideFromIndex(),
 
-            Boolean::make('Featured', 'is_featured')
+            Boolean::make(__('Featured'), 'is_featured')
                 ->sortable()
                 ->filterable(),
 
             // Relations
-            BelongsToMany::make('Amenities')
+            BelongsToMany::make(__('Amenities'), 'amenities', Amenity::class)
                 ->searchable()
                 ->showCreateRelationButton()
                 ->fields(function () {
@@ -198,7 +198,7 @@ class Property extends Resource
                     ];
                 }),
 
-            HasMany::make('Availability Blocks', 'availabilityBlocks', AvailabilityBlock::class),
+            HasMany::make(__('Availability Blocks'), 'availabilityBlocks', AvailabilityBlock::class),
         ];
     }
 
