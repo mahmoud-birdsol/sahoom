@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker = \Faker\Factory::create();
         $this->command->info('🌱 Starting database seeding...');
 
         // 1. Create Super Admin User
@@ -123,9 +124,9 @@ class DatabaseSeeder extends Seeder
                 'landlord_id' => $landlord->id,
                 'status' => PropertyStatus::APPROVED,
                 'title' => "Luxury Apartment " . ($index + 1),
-                'city' => fake()->randomElement(['Riyadh', 'Jeddah', 'Dammam', 'Khobar', 'Mecca']),
+                'city' => $faker->randomElement(['Riyadh', 'Jeddah', 'Dammam', 'Khobar', 'Mecca']),
                 'country' => 'Saudi Arabia',
-                'size_sqm' => fake()->numberBetween(80, 300),
+                'size_sqm' => $faker->numberBetween(80, 300),
                 'is_featured' => $index < 2, // First 2 are featured
             ]);
             $publishedProperties[] = $property;
@@ -136,9 +137,9 @@ class DatabaseSeeder extends Seeder
                     'landlord_id' => $landlord->id,
                     'status' => PropertyStatus::APPROVED,
                     'title' => "Modern Villa " . ($index + 1),
-                    'city' => fake()->randomElement(['Riyadh', 'Jeddah', 'Dammam']),
+                    'city' => $faker->randomElement(['Riyadh', 'Jeddah', 'Dammam']),
                     'country' => 'Saudi Arabia',
-                    'size_sqm' => fake()->numberBetween(200, 500),
+                    'size_sqm' => $faker->numberBetween(200, 500),
                 ]);
                 $publishedProperties[] = $property2;
             }
@@ -188,7 +189,7 @@ class DatabaseSeeder extends Seeder
             ]);
 
             // Create maintenance block for some properties
-            if (fake()->boolean(30)) {
+            if ($faker->boolean(30)) {
                 AvailabilityBlock::factory()->create([
                     'property_id' => $property->id,
                     'start_date' => now()->addDays(20),
@@ -216,7 +217,7 @@ class DatabaseSeeder extends Seeder
         // Active Contracts
         for ($i = 0; $i < $activeContracts; $i++) {
             $property = $publishedProperties[$i];
-            $monthlyRent = fake()->numberBetween(3000, 10000);
+            $monthlyRent = $faker->numberBetween(3000, 10000);
             $startDate = now()->subMonths(2);
             $endDate = now()->addMonths(10);
             $durationMonths = 12;
@@ -233,8 +234,8 @@ class DatabaseSeeder extends Seeder
                 'yearly_rent' => $monthlyRent * 12,
                 'daily_rent' => round($monthlyRent / 30, 2),
                 'security_deposit' => $monthlyRent * 2,
-                'service_fee' => fake()->numberBetween(100, 500),
-                'cleaning_fee' => fake()->numberBetween(50, 300),
+                'service_fee' => $faker->numberBetween(100, 500),
+                'cleaning_fee' => $faker->numberBetween(50, 300),
                 'total_value' => $monthlyRent * $durationMonths,
                 'currency' => 'SAR',
             ]);
@@ -247,8 +248,8 @@ class DatabaseSeeder extends Seeder
             if ($propertyIndex >= $totalPublishedProperties) break;
 
             $property = $publishedProperties[$propertyIndex];
-            $monthlyRent = fake()->numberBetween(3000, 10000);
-            $startDate = now()->addDays(fake()->numberBetween(1, 14));
+            $monthlyRent = $faker->numberBetween(3000, 10000);
+            $startDate = now()->addDays($faker->numberBetween(1, 14));
             $endDate = now()->addYear();
             $durationMonths = 12;
 
@@ -264,8 +265,8 @@ class DatabaseSeeder extends Seeder
                 'yearly_rent' => $monthlyRent * 12,
                 'daily_rent' => round($monthlyRent / 30, 2),
                 'security_deposit' => $monthlyRent * 2,
-                'service_fee' => fake()->numberBetween(100, 500),
-                'cleaning_fee' => fake()->numberBetween(50, 300),
+                'service_fee' => $faker->numberBetween(100, 500),
+                'cleaning_fee' => $faker->numberBetween(50, 300),
                 'total_value' => $monthlyRent * $durationMonths,
                 'currency' => 'SAR',
             ]);
@@ -278,7 +279,7 @@ class DatabaseSeeder extends Seeder
             if ($propertyIndex >= $totalPublishedProperties) break;
 
             $property = $publishedProperties[$propertyIndex];
-            $monthlyRent = fake()->numberBetween(3000, 10000);
+            $monthlyRent = $faker->numberBetween(3000, 10000);
             $startDate = now()->addDays(30);
             $endDate = now()->addDays(395);
             $durationMonths = 12;
@@ -295,8 +296,8 @@ class DatabaseSeeder extends Seeder
                 'yearly_rent' => $monthlyRent * 12,
                 'daily_rent' => round($monthlyRent / 30, 2),
                 'security_deposit' => $monthlyRent * 2,
-                'service_fee' => fake()->numberBetween(100, 500),
-                'cleaning_fee' => fake()->numberBetween(50, 300),
+                'service_fee' => $faker->numberBetween(100, 500),
+                'cleaning_fee' => $faker->numberBetween(50, 300),
                 'total_value' => $monthlyRent * $durationMonths,
                 'currency' => 'SAR',
             ]);
@@ -312,23 +313,23 @@ class DatabaseSeeder extends Seeder
             ViewingRequest::factory()->create([
                 'property_id' => $property->id,
                 'status' => ViewingRequestStatus::NEW,
-                'preferred_date' => now()->addDays(fake()->numberBetween(1, 7))->format('Y-m-d'),
-                'renter_name' => fake()->name(),
-                'renter_email' => fake()->safeEmail(),
-                'renter_phone' => fake()->phoneNumber(),
-                'message' => fake()->paragraph(),
+                'preferred_date' => now()->addDays($faker->numberBetween(1, 7))->format('Y-m-d'),
+                'renter_name' => $faker->name(),
+                'renter_email' => $faker->safeEmail(),
+                'renter_phone' => $faker->phoneNumber(),
+                'message' => $faker->paragraph(),
             ]);
 
             // Some contacted requests
-            if (fake()->boolean(50)) {
+            if ($faker->boolean(50)) {
                 ViewingRequest::factory()->create([
                     'property_id' => $property->id,
                     'status' => ViewingRequestStatus::CONTACTED,
-                    'preferred_date' => now()->addDays(fake()->numberBetween(3, 10))->format('Y-m-d'),
-                    'renter_name' => fake()->name(),
-                    'renter_email' => fake()->safeEmail(),
-                    'renter_phone' => fake()->phoneNumber(),
-                    'message' => fake()->paragraph(),
+                    'preferred_date' => now()->addDays($faker->numberBetween(3, 10))->format('Y-m-d'),
+                    'renter_name' => $faker->name(),
+                    'renter_email' => $faker->safeEmail(),
+                    'renter_phone' => $faker->phoneNumber(),
+                    'message' => $faker->paragraph(),
                 ]);
             }
         }

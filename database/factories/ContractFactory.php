@@ -27,12 +27,12 @@ class ContractFactory extends Factory
     public function definition(): array
     {
         $property = \App\Models\Property::factory()->create();
-        $startDate = fake()->dateTimeBetween('now', '+3 months');
-        $endDate = fake()->dateTimeBetween($startDate, $startDate->format('Y-m-d') . ' +1 year');
+        $startDate = $this->faker->dateTimeBetween('now', '+3 months');
+        $endDate = $this->faker->dateTimeBetween($startDate, $startDate->format('Y-m-d') . ' +1 year');
         
         // Generate pricing based on pricing type
-        $pricingType = fake()->randomElement(\App\Models\States\PricingType::toArray());
-        $monthlyRent = fake()->numberBetween(2000, 15000);
+        $pricingType = $this->faker->randomElement(\App\Models\States\PricingType::toArray());
+        $monthlyRent = $this->faker->numberBetween(2000, 15000);
         
         // Calculate other pricing options
         $weeklyRent = round($monthlyRent / 4.33, 2); // Average weeks per month
@@ -48,8 +48,8 @@ class ContractFactory extends Factory
         return [
             'property_id' => $property->id,
             'landlord_id' => $property->landlord_id,
-            'renter_name' => fake()->name(),
-            'renter_company' => fake()->optional(0.4)->company(),
+            'renter_name' => $this->faker->name(),
+            'renter_company' => $this->faker->optional(0.4)->company(),
             'start_date' => $startDate,
             'end_date' => $endDate,
             'pricing_type' => $pricingType,
@@ -57,14 +57,14 @@ class ContractFactory extends Factory
             'weekly_rent' => $weeklyRent,
             'yearly_rent' => $yearlyRent,
             'daily_rent' => $dailyRent,
-            'security_deposit' => fake()->optional(0.7)->numberBetween($monthlyRent, $monthlyRent * 2),
-            'service_fee' => fake()->optional(0.5)->numberBetween(100, 500),
-            'cleaning_fee' => fake()->optional(0.4)->numberBetween(50, 300),
+            'security_deposit' => $this->faker->optional(0.7)->numberBetween($monthlyRent, $monthlyRent * 2),
+            'service_fee' => $this->faker->optional(0.5)->numberBetween(100, 500),
+            'cleaning_fee' => $this->faker->optional(0.4)->numberBetween(50, 300),
             'total_value' => $totalValue,
-            'currency' => fake()->randomElement(['SAR', 'USD', 'EUR', 'AED']),
-            'payment_status' => fake()->randomElement(\App\Models\States\PaymentStatus::toArray()),
-            'contract_status' => fake()->randomElement(\App\Models\States\ContractStatus::toArray()),
-            'notes_internal' => fake()->optional(0.5)->paragraph(),
+            'currency' => $this->faker->randomElement(['SAR', 'USD', 'EUR', 'AED']),
+            'payment_status' => $this->faker->randomElement(\App\Models\States\PaymentStatus::toArray()),
+            'contract_status' => $this->faker->randomElement(\App\Models\States\ContractStatus::toArray()),
+            'notes_internal' => $this->faker->optional(0.5)->paragraph(),
         ];
     }
 }

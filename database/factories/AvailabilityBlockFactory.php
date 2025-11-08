@@ -26,17 +26,17 @@ class AvailabilityBlockFactory extends Factory
      */
     public function definition(): array
     {
-        $startDate = fake()->dateTimeBetween('now', '+6 months');
-        $endDate = fake()->dateTimeBetween($startDate, $startDate->format('Y-m-d') . ' +30 days');
+        $startDate = $this->faker->dateTimeBetween('now', '+6 months');
+        $endDate = $this->faker->dateTimeBetween($startDate, $startDate->format('Y-m-d') . ' +30 days');
         
         return [
             'property_id' => \App\Models\Property::factory(),
             'start_date' => $startDate,
             'end_date' => $endDate,
-            'status' => fake()->randomElement(\App\Models\States\AvailabilityBlockStatus::toArray()),
-            'source' => fake()->randomElement(\App\Models\States\AvailabilityBlockSource::toArray()),
-            'contract_reference' => fake()->optional(0.6)->bothify('CONTRACT-####-??'),
-            'notes' => fake()->optional(0.5)->sentence(),
+            'status' => $this->faker->randomElement(\App\Models\States\AvailabilityBlockStatus::toArray()),
+            'source' => $this->faker->randomElement(\App\Models\States\AvailabilityBlockSource::toArray()),
+            'contract_reference' => $this->faker->optional(0.6)->bothify('CONTRACT-####-??'),
+            'notes' => $this->faker->optional(0.5)->sentence(),
         ];
     }
 }

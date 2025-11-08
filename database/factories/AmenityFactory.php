@@ -40,13 +40,13 @@ class AmenityFactory extends Factory
             'Backup Power' => 'font-awesome-solid battery-full',
         ];
 
-        $name = fake()->randomElement(array_keys($amenities));
+        $name = $this->faker->randomElement(array_keys($amenities));
         
         return [
             'name' => $name,
-            'description' => fake()->sentence(),
+            'description' => $this->faker->sentence(),
             'icon' => $amenities[$name],
-            'is_active' => fake()->boolean(90),
+            'is_active' => $this->faker->boolean(90),
         ];
     }
 }

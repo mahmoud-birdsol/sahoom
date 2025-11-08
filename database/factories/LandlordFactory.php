@@ -31,13 +31,13 @@ class LandlordFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'company_name' => fake()->word(),
-            'contact_name' => fake()->name(),
-            'contact_phone' => fake()->phoneNumber(),
-            'contact_email' => fake()->email(),
-            'status' => fake()->randomElement(LandlordStatus::toArray()),
-            'kyc_status' => fake()->randomElement(LandlordKycStatus::toArray()),
-            'verification_notes' => fake()->text(),
+            'company_name' => $this->faker->word(),
+            'contact_name' => $this->faker->name(),
+            'contact_phone' => $this->faker->phoneNumber(),
+            'contact_email' => $this->faker->email(),
+            'status' => $this->faker->randomElement(LandlordStatus::toArray()),
+            'kyc_status' => $this->faker->randomElement(LandlordKycStatus::toArray()),
+            'verification_notes' => $this->faker->text(),
         ];
     }
 }

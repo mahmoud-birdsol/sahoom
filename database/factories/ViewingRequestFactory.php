@@ -28,12 +28,12 @@ class ViewingRequestFactory extends Factory
     {
         return [
             'property_id' => \App\Models\Property::factory(),
-            'renter_name' => fake()->name(),
-            'renter_email' => fake()->safeEmail(),
-            'renter_phone' => fake()->optional(0.8)->phoneNumber(),
-            'message' => fake()->optional(0.7)->paragraph(),
-            'preferred_date' => fake()->optional(0.6)->date('+30 days'),
-            'status' => fake()->randomElement(\App\Models\States\ViewingRequestStatus::toArray()),
+            'renter_name' => $this->faker->name(),
+            'renter_email' => $this->faker->safeEmail(),
+            'renter_phone' => $this->faker->optional(0.8)->phoneNumber(),
+            'message' => $this->faker->optional(0.7)->paragraph(),
+            'preferred_date' => $this->faker->optional(0.6)->date('+30 days'),
+            'status' => $this->faker->randomElement(\App\Models\States\ViewingRequestStatus::toArray()),
             'handled_by_user_id' => null, // Set manually in seeder if needed
         ];
     }
