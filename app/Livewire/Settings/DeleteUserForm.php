@@ -4,6 +4,7 @@ namespace App\Livewire\Settings;
 
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class DeleteUserForm extends Component
