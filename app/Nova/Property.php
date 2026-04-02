@@ -188,6 +188,12 @@ class Property extends Resource
                 ->sortable()
                 ->filterable(),
 
+            Boolean::make(__('Active'), 'is_active')
+                ->sortable()
+                ->filterable()
+                ->trueValue(true)
+                ->falseValue(false),
+
             // Relations
             BelongsToMany::make(__('Amenities'), 'amenities', Amenity::class)
                 ->searchable()

@@ -60,7 +60,6 @@ class Amenity extends Resource
 
             Heroicon::make(__('Icon'), 'icon')
                 ->sortable()
-                ->filterable()
                 ->nullable()
                 ->help(__('Select an icon from Heroicons or Font Awesome')),
 

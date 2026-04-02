@@ -50,6 +50,8 @@ class ContractFactory extends Factory
             'landlord_id' => $property->landlord_id,
             'renter_name' => $this->faker->name(),
             'renter_company' => $this->faker->optional(0.4)->company(),
+            'renter_email' => $this->faker->optional(0.8)->safeEmail(),
+            'renter_phone' => $this->faker->optional(0.8)->phoneNumber(),
             'start_date' => $startDate,
             'end_date' => $endDate,
             'pricing_type' => $pricingType,

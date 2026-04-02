@@ -7,13 +7,26 @@ use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', App\Livewire\Home::class)->name('home');
+Route::get('/properties', App\Livewire\PropertyList::class)->name('properties.index');
+Route::get('/properties/{slug}', App\Livewire\PropertyShow::class)->name('properties.show');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::middleware(['auth', 'landlord'])->prefix('landlord')->group(function () {
+    Route::get('dashboard', App\Livewire\Landlord\Dashboard::class)->name('landlord.dashboard');
+    Route::get('properties', App\Livewire\Landlord\PropertiesIndex::class)->name('landlord.properties');
+    Route::get('bookings', App\Livewire\Landlord\BookingsIndex::class)->name('landlord.bookings');
+    Route::get('traffic', App\Livewire\Landlord\TrafficIndex::class)->name('landlord.traffic');
+    Route::get('notifications', App\Livewire\Landlord\NotificationsIndex::class)->name('landlord.notifications');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('account', App\Livewire\UserAccount::class)->name('account');
+    Route::get('account/{section}', App\Livewire\UserAccount::class)->name('account.section');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

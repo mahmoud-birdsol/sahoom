@@ -70,6 +70,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the properties favorited by this user.
+     */
+    public function propertyFavorites(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PropertyFavorite::class);
+    }
+
+    /**
+     * Get the property reviews written by this user.
+     */
+    public function propertyReviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PropertyReview::class);
+    }
+
+    /**
      * Check if user is a super admin.
      */
     public function isSuperAdmin(): bool

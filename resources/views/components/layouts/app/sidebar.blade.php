@@ -15,6 +15,12 @@
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group>
+
+                @if(auth()->user()->landlord)
+                    <flux:navlist.group :heading="__('Landlord')" class="grid">
+                        <flux:navlist.item icon="building-office-2" :href="route('landlord.dashboard')" :current="request()->routeIs('landlord.*')" wire:navigate>{{ __('My Dashboard') }}</flux:navlist.item>
+                    </flux:navlist.group>
+                @endif
             </flux:navlist>
 
             <flux:spacer />

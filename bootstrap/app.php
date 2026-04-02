@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \Badinansoft\LanguageSwitch\Http\Middleware\LanguageSwitch::class,
         ]);
+
+        $middleware->alias([
+            'landlord' => \App\Http\Middleware\EnsureUserIsLandlord::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

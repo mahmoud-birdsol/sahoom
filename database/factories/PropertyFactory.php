@@ -45,7 +45,18 @@ class PropertyFactory extends Factory
             'size_sqm' => $this->faker->numberBetween(50, 500),
             'traffic_score' => $this->faker->numberBetween(1, 10),
             'is_featured' => false,
-            'rejection_reason' => null, // Only set when status is REJECTED
+            'is_active'   => true,
+            'rejection_reason' => null,
         ];
+    }
+
+    public function approved(): static
+    {
+        return $this->state(['status' => PropertyStatus::APPROVED]);
+    }
+
+    public function inactive(): static
+    {
+        return $this->state(['is_active' => false]);
     }
 }

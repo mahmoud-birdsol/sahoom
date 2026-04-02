@@ -15,6 +15,12 @@
                 <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
+
+                @if(auth()->user()->landlord)
+                    <flux:navbar.item icon="building-office-2" :href="route('landlord.dashboard')" :current="request()->routeIs('landlord.*')" wire:navigate>
+                        {{ __('My Dashboard') }}
+                    </flux:navbar.item>
+                @endif
             </flux:navbar>
 
             <flux:spacer />
@@ -102,6 +108,14 @@
                       {{ __('Dashboard') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
+
+                @if(auth()->user()->landlord)
+                    <flux:navlist.group :heading="__('Landlord')">
+                        <flux:navlist.item icon="building-office-2" :href="route('landlord.dashboard')" :current="request()->routeIs('landlord.*')" wire:navigate>
+                            {{ __('My Dashboard') }}
+                        </flux:navlist.item>
+                    </flux:navlist.group>
+                @endif
             </flux:navlist>
 
             <flux:spacer />

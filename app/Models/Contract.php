@@ -22,6 +22,8 @@ class Contract extends Model
         'landlord_id',
         'renter_name',
         'renter_company',
+        'renter_email',
+        'renter_phone',
         'start_date',
         'end_date',
         'pricing_type',
