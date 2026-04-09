@@ -14,6 +14,8 @@ class NewApplicationNotification extends Notification
     public function __construct(
         public string $applicantName,
         public string $propertyTitle,
+        public string $linkUrl = '',
+        public string $linkLabel = '',
     ) {}
 
     public function via(object $notifiable): array
@@ -34,6 +36,8 @@ class NewApplicationNotification extends Notification
             'subtitle'       => "{$this->propertyTitle} — {$this->applicantName}",
             'applicant_name' => $this->applicantName,
             'property_title' => $this->propertyTitle,
+            'link_url'       => $this->linkUrl,
+            'link_label'     => $this->linkLabel,
         ];
     }
 }

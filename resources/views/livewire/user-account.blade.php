@@ -333,7 +333,7 @@
         <div class="mx-auto max-w-7xl px-6 py-12 lg:px-10">
             <div class="grid grid-cols-1 gap-10 lg:grid-cols-4">
                 <div class="lg:col-span-1">
-                    <span class="text-base font-extrabold tracking-widest text-amber-600 uppercase">SAHOOME</span>
+                    <x-public.logo />
                     <p class="mt-3 text-xs leading-relaxed text-zinc-500">It Refers To The Practice Of Sharing<br>Access To Real Estate (Such As<br>Homes, Offices, Or Tourist Rentals).</p>
                     <div class="mt-4 h-px w-16 bg-zinc-200"></div>
                     <p class="mt-3 text-xs font-semibold text-zinc-500">{{ __('Social Links') }}</p>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -25,9 +26,18 @@ class FortifyServiceProvider extends ServiceProvider
                 {
                     $redirectTo = $request->user()?->landlord
                         ? route('landlord.dashboard')
-                        : config('fortify.home');
+                        : route('properties.index');
 
                     return redirect()->intended($redirectTo);
+                }
+            };
+        });
+
+        $this->app->singleton(RegisterResponse::class, function () {
+            return new class implements RegisterResponse {
+                public function toResponse($request): \Symfony\Component\HttpFoundation\Response
+                {
+                    return redirect()->route('properties.index');
                 }
             };
         });

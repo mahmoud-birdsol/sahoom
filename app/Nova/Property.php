@@ -177,6 +177,14 @@ class Property extends Resource
                 ->sortable()
                 ->filterable(),
 
+            Text::make(__('Floor'), 'floor')
+                ->nullable()
+                ->hideFromIndex(),
+
+            Text::make(__('Space Number'), 'space_number')
+                ->nullable()
+                ->hideFromIndex(),
+
             Number::make(__('Traffic Score'), 'traffic_score')
                 ->min(0)
                 ->max(10)
@@ -193,6 +201,89 @@ class Property extends Resource
                 ->filterable()
                 ->trueValue(true)
                 ->falseValue(false),
+
+            // Pricing
+            Select::make(__('Pricing Type'), 'pricing_type')
+                ->options([
+                    'daily'   => __('Daily'),
+                    'weekly'  => __('Weekly'),
+                    'monthly' => __('Monthly'),
+                    'yearly'  => __('Yearly'),
+                ])
+                ->displayUsingLabels()
+                ->nullable()
+                ->hideFromIndex(),
+
+            Number::make(__('Monthly Rent'), 'monthly_rent')
+                ->min(0)
+                ->step(0.01)
+                ->nullable()
+                ->sortable()
+                ->filterable(),
+
+            Number::make(__('Weekly Rent'), 'weekly_rent')
+                ->min(0)
+                ->step(0.01)
+                ->nullable()
+                ->hideFromIndex(),
+
+            Number::make(__('Daily Rent'), 'daily_rent')
+                ->min(0)
+                ->step(0.01)
+                ->nullable()
+                ->hideFromIndex(),
+
+            Number::make(__('Yearly Rent'), 'yearly_rent')
+                ->min(0)
+                ->step(0.01)
+                ->nullable()
+                ->hideFromIndex(),
+
+            Select::make(__('Currency'), 'currency')
+                ->options([
+                    'USD' => 'USD ($)',
+                    'SAR' => 'SAR (ر.س)',
+                    'EUR' => 'EUR (€)',
+                    'GBP' => 'GBP (£)',
+                ])
+                ->displayUsingLabels()
+                ->default('USD')
+                ->hideFromIndex(),
+
+            Number::make(__('Security Deposit'), 'security_deposit')
+                ->min(0)
+                ->step(0.01)
+                ->nullable()
+                ->hideFromIndex()
+                ->help(__('Leave blank to default to 1× monthly rent.')),
+
+            Number::make(__('Application Fee'), 'application_fee')
+                ->min(0)
+                ->step(0.01)
+                ->nullable()
+                ->hideFromIndex()
+                ->help(__('Leave blank for no application fee.')),
+
+            Number::make(__('Min Lease (months)'), 'min_lease_months')
+                ->min(1)
+                ->max(120)
+                ->nullable()
+                ->hideFromIndex()
+                ->help(__('Minimum lease duration in months.')),
+
+            Number::make(__('Max Lease (months)'), 'max_lease_months')
+                ->min(1)
+                ->max(120)
+                ->nullable()
+                ->hideFromIndex()
+                ->help(__('Maximum lease duration in months.')),
+
+            \Laravel\Nova\Fields\KeyValue::make(__('Nearby Places'), 'nearby_places')
+                ->keyLabel(__('Name'))
+                ->valueLabel(__('Distance (e.g. 2 min walk)'))
+                ->nullable()
+                ->hideFromIndex()
+                ->help(__('JSON: each entry has "name" and optionally "distance".')),
 
             // Relations
             BelongsToMany::make(__('Amenities'), 'amenities', Amenity::class)

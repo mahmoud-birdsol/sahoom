@@ -43,10 +43,18 @@ class PropertyFactory extends Factory
             'latitude' => $this->faker->latitude(),
             'longitude' => $this->faker->longitude(),
             'size_sqm' => $this->faker->numberBetween(50, 500),
-            'traffic_score' => $this->faker->numberBetween(1, 10),
-            'is_featured' => false,
-            'is_active'   => true,
+            'traffic_score'    => $this->faker->numberBetween(1, 10),
+            'is_featured'      => false,
+            'is_active'        => true,
             'rejection_reason' => null,
+            'pricing_type'     => 'monthly',
+            'monthly_rent'     => $this->faker->numberBetween(1000, 10000),
+            'currency'         => 'USD',
+            'security_deposit' => null,
+            'application_fee'  => null,
+            'min_lease_months' => null,
+            'max_lease_months' => null,
+            'nearby_places'    => null,
         ];
     }
 

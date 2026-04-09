@@ -14,7 +14,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Symfony\Component\HttpFoundation\Response;
 
-#[Layout('components.layouts.app')]
+#[Layout('components.layouts.landlord')]
 class TwoFactor extends Component
 {
     #[Locked]

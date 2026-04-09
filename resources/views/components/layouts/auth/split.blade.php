@@ -18,8 +18,8 @@
 
                 {{-- Top nav bar --}}
                 <div class="flex items-center justify-between px-8 py-5">
-                    <a href="{{ route('home') }}" class="flex items-center gap-2" wire:navigate>
-                        <span class="font-bold tracking-widest text-amber-600 text-sm uppercase">SAHOOME</span>
+                    <a href="{{ route('home') }}" wire:navigate>
+                        <x-public.logo size="sm" />
                     </a>
                     <nav class="hidden items-center gap-6 text-sm text-zinc-500 sm:flex">
                         <a href="#" class="transition hover:text-zinc-800">{{ __('Support') }}</a>
@@ -60,7 +60,7 @@
 
                 {{-- Branding content --}}
                 <div class="relative z-10 flex w-full flex-col items-center justify-center px-16 text-center">
-                    <span class="mb-4 text-4xl font-extrabold tracking-widest text-white">SAHOOME</span>
+                    <x-public.logo :white="true" size="2xl" class="mb-4 justify-center" />
                     <p class="max-w-xs text-sm leading-relaxed text-amber-100">
                         {{ __('Your smart property management platform — find, manage, and grow your real estate portfolio.') }}
                     </p>

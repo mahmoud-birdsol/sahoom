@@ -149,6 +149,52 @@
                         </div>
                     </div>
 
+                    {{-- Currency --}}
+                    <flux:field>
+                        <flux:label>{{ __('Currency') }}</flux:label>
+                        <flux:select wire:model="formCurrency">
+                            <flux:select.option value="USD">USD ($)</flux:select.option>
+                            <flux:select.option value="SAR">SAR (ر.س)</flux:select.option>
+                            <flux:select.option value="EUR">EUR (€)</flux:select.option>
+                            <flux:select.option value="GBP">GBP (£)</flux:select.option>
+                        </flux:select>
+                        <flux:error name="formCurrency" />
+                    </flux:field>
+
+                    {{-- Security Deposit + Application Fee --}}
+                    <div>
+                        <flux:label class="mb-1.5 block">{{ __('Fees') }}</flux:label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <flux:field>
+                                <flux:label class="text-xs">{{ __('Security Deposit') }}</flux:label>
+                                <flux:input wire:model="formSecurityDeposit" type="number" min="0" step="0.01" placeholder="{{ __('Leave blank = 1× rent') }}" />
+                                <flux:error name="formSecurityDeposit" />
+                            </flux:field>
+                            <flux:field>
+                                <flux:label class="text-xs">{{ __('Application Fee') }}</flux:label>
+                                <flux:input wire:model="formApplicationFee" type="number" min="0" step="0.01" placeholder="{{ __('0') }}" />
+                                <flux:error name="formApplicationFee" />
+                            </flux:field>
+                        </div>
+                    </div>
+
+                    {{-- Min / Max Lease --}}
+                    <div>
+                        <flux:label class="mb-1.5 block">{{ __('Lease Duration (months)') }}</flux:label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <flux:field>
+                                <flux:label class="text-xs">{{ __('Min') }}</flux:label>
+                                <flux:input wire:model="formMinLeaseMonths" type="number" min="1" max="120" placeholder="{{ __('e.g. 1') }}" />
+                                <flux:error name="formMinLeaseMonths" />
+                            </flux:field>
+                            <flux:field>
+                                <flux:label class="text-xs">{{ __('Max') }}</flux:label>
+                                <flux:input wire:model="formMaxLeaseMonths" type="number" min="1" max="120" placeholder="{{ __('e.g. 24') }}" />
+                                <flux:error name="formMaxLeaseMonths" />
+                            </flux:field>
+                        </div>
+                    </div>
+
                     {{-- Coordinates (auto-filled by Places, editable manually) --}}
                     <div>
                         <flux:label class="mb-1.5 block">{{ __('Coordinates') }} <span class="ml-1 text-xs font-normal text-zinc-400">({{ __('auto-filled from address') }})</span></flux:label>

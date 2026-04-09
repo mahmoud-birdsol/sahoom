@@ -59,6 +59,21 @@ class PropertiesIndex extends Component
     #[Validate('nullable|numeric|between:-180,180')]
     public ?float $formLongitude = null;
 
+    #[Validate('required|string|max:10')]
+    public string $formCurrency = 'USD';
+
+    #[Validate('nullable|numeric|min:0')]
+    public ?float $formSecurityDeposit = null;
+
+    #[Validate('nullable|numeric|min:0')]
+    public ?float $formApplicationFee = null;
+
+    #[Validate('nullable|integer|min:1|max:120')]
+    public ?int $formMinLeaseMonths = null;
+
+    #[Validate('nullable|integer|min:1|max:120')]
+    public ?int $formMaxLeaseMonths = null;
+
     #[Validate(['formImages.*' => 'nullable|image|max:10240'])]
     public array $formImages = [];
 
@@ -101,10 +116,15 @@ class PropertiesIndex extends Component
             default   => $property->monthly_rent,
         };
         $this->formDescription   = $property->description ?? '';
-        $this->formLatitude      = $property->latitude ? (float) $property->latitude : null;
-        $this->formLongitude     = $property->longitude ? (float) $property->longitude : null;
-        $this->formImages        = [];
-        $this->showPropertyForm  = true;
+        $this->formLatitude         = $property->latitude ? (float) $property->latitude : null;
+        $this->formLongitude        = $property->longitude ? (float) $property->longitude : null;
+        $this->formCurrency         = $property->currency ?? 'USD';
+        $this->formSecurityDeposit  = $property->security_deposit ? (float) $property->security_deposit : null;
+        $this->formApplicationFee   = $property->application_fee ? (float) $property->application_fee : null;
+        $this->formMinLeaseMonths   = $property->min_lease_months;
+        $this->formMaxLeaseMonths   = $property->max_lease_months;
+        $this->formImages           = [];
+        $this->showPropertyForm     = true;
     }
 
     public function closeForm(): void
@@ -147,9 +167,14 @@ class PropertiesIndex extends Component
             'city'           => $this->formCity ?: null,
             'latitude'       => $this->formLatitude,
             'longitude'      => $this->formLongitude,
-            'pricing_type'   => $this->formPricingType,
-            $rentField       => $this->formPrice,
-            'description'    => $this->formDescription ?: null,
+            'pricing_type'     => $this->formPricingType,
+            $rentField         => $this->formPrice,
+            'description'      => $this->formDescription,
+            'currency'         => $this->formCurrency,
+            'security_deposit' => $this->formSecurityDeposit,
+            'application_fee'  => $this->formApplicationFee,
+            'min_lease_months' => $this->formMinLeaseMonths,
+            'max_lease_months' => $this->formMaxLeaseMonths,
         ];
 
         if ($this->isEditing && $this->editingPropertyId) {
@@ -255,9 +280,14 @@ class PropertiesIndex extends Component
         $this->formFloor        = '';
         $this->formSpaceNumber  = '';
         $this->formCity         = '';
-        $this->formLatitude     = null;
-        $this->formLongitude    = null;
-        $this->formImages       = [];
+        $this->formLatitude         = null;
+        $this->formLongitude        = null;
+        $this->formCurrency         = 'USD';
+        $this->formSecurityDeposit  = null;
+        $this->formApplicationFee   = null;
+        $this->formMinLeaseMonths   = null;
+        $this->formMaxLeaseMonths   = null;
+        $this->formImages           = [];
         $this->resetValidation();
     }
 

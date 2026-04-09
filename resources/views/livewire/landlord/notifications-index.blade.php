@@ -41,11 +41,13 @@
                     @php
                         $data    = $notification->data;
                         $isRead  = ! is_null($notification->read_at);
-                        $type    = $data['type'] ?? 'info';
-                        $icon    = $data['icon'] ?? 'bell';
-                        $color   = $data['color'] ?? 'zinc';
-                        $title   = $data['title'] ?? 'Notification';
+                        $type     = $data['type'] ?? 'info';
+                        $icon     = $data['icon'] ?? 'bell';
+                        $color    = $data['color'] ?? 'zinc';
+                        $title    = $data['title'] ?? 'Notification';
                         $subtitle = $data['subtitle'] ?? '';
+                        $linkUrl  = $data['link_url'] ?? '';
+                        $linkLabel = $data['link_label'] ?? '';
 
                         $iconBg = match($color) {
                             'green' => 'bg-green-100',
@@ -87,6 +89,13 @@
                                     </p>
                                     @if($subtitle)
                                         <p class="mt-0.5 text-xs text-zinc-500">{{ $subtitle }}</p>
+                                    @endif
+                                    @if($linkUrl)
+                                        <a href="{{ $linkUrl }}" wire:navigate
+                                            class="mt-2 inline-flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 transition hover:bg-amber-100">
+                                            {{ $linkLabel ?: __('View Details') }}
+                                            <svg class="size-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+                                        </a>
                                     @endif
                                 </div>
                                 <div class="flex shrink-0 items-center gap-2">

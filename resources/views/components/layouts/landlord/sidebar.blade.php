@@ -24,13 +24,8 @@
             <flux:sidebar.toggle class="lg:hidden text-zinc-500 hover:text-zinc-900" icon="x-mark" />
 
             {{-- Logo --}}
-            <a href="{{ route('landlord.dashboard') }}" class="flex items-center gap-2.5 px-1 py-2" wire:navigate>
-                <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-amber-500">
-                    <svg class="size-4 fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L2 9.5V22h6v-7h8v7h6V9.5L12 2z"/>
-                    </svg>
-                </div>
-                <span class="text-base font-bold tracking-widest text-amber-600 uppercase">Sahoome</span>
+            <a href="{{ route('landlord.dashboard') }}" class="px-1 py-2" wire:navigate>
+                <x-public.logo />
             </a>
 
             {{-- Primary Navigation --}}
@@ -73,6 +68,24 @@
                     @if($bookingCount > 0)
                         <span class="flex size-5 items-center justify-center rounded-full bg-amber-500 text-[10px] font-semibold text-white">
                             {{ $bookingCount > 99 ? '99+' : $bookingCount }}
+                        </span>
+                    @endif
+                </a>
+
+                <a
+                    href="{{ route('landlord.viewing-requests') }}"
+                    wire:navigate
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
+                        {{ request()->routeIs('landlord.viewing-requests*')
+                            ? 'bg-amber-50 text-amber-700'
+                            : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900' }}"
+                >
+                    <flux:icon.eye class="size-4.5 shrink-0" />
+                    <span class="flex-1">{{ __('Viewing Requests') }}</span>
+                    @php($vrCount = auth()->user()->landlord?->properties()->withCount(['viewingRequests' => fn($q) => $q->where('status', 'new')])->get()->sum('viewing_requests_count') ?? 0)
+                    @if($vrCount > 0)
+                        <span class="flex size-5 items-center justify-center rounded-full bg-amber-500 text-[10px] font-semibold text-white">
+                            {{ $vrCount > 99 ? '99+' : $vrCount }}
                         </span>
                     @endif
                 </a>

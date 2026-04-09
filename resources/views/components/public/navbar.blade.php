@@ -1,50 +1,86 @@
-<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-zinc-100 shadow-sm">
+@props(['transparent' => false])
+
+<nav class="{{ $transparent
+    ? 'absolute top-0 left-0 right-0 z-50 bg-transparent border-transparent'
+    : 'sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-zinc-100 shadow-sm' }}">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-10">
 
         {{-- Logo --}}
-        <a href="{{ route('home') }}" wire:navigate class="text-base font-extrabold tracking-widest text-amber-600 uppercase">
-            SAHOOME
+        <a href="{{ route('home') }}" wire:navigate>
+            <x-public.logo :white="$transparent" />
         </a>
 
         {{-- Nav links --}}
-        <div class="hidden items-center gap-7 text-sm font-medium text-zinc-600 lg:flex">
-            <a href="{{ route('home') }}" wire:navigate class="{{ request()->routeIs('home') ? 'text-amber-600' : 'transition hover:text-zinc-900' }}">{{ __('Home') }}</a>
-            <a href="{{ route('properties.index') }}" wire:navigate class="{{ request()->routeIs('properties.*') ? 'text-amber-600' : 'transition hover:text-zinc-900' }}">{{ __('Properties') }}</a>
-            <a href="{{ route('home') }}#about" class="transition hover:text-zinc-900">{{ __('About Us') }}</a>
-            <a href="{{ route('home') }}#contact" class="transition hover:text-zinc-900">{{ __('Contact Us') }}</a>
+        <div class="hidden items-center gap-7 text-sm font-medium lg:flex {{ $transparent ? 'text-white/80' : 'text-zinc-600' }}">
+            <a href="{{ route('home') }}" wire:navigate
+                class="{{ $transparent
+                    ? (request()->routeIs('home') ? 'text-white font-semibold' : 'transition hover:text-white')
+                    : (request()->routeIs('home') ? 'text-amber-600' : 'transition hover:text-zinc-900') }}">
+                {{ __('Home') }}
+            </a>
+            <a href="{{ route('properties.index') }}" wire:navigate
+                class="{{ $transparent
+                    ? (request()->routeIs('properties.*') ? 'text-white font-semibold' : 'transition hover:text-white')
+                    : (request()->routeIs('properties.*') ? 'text-amber-600' : 'transition hover:text-zinc-900') }}">
+                {{ __('Properties') }}
+            </a>
+            <a href="{{ route('home') }}#about"
+                class="transition {{ $transparent ? 'hover:text-white' : 'hover:text-zinc-900' }}">
+                {{ __('About Us') }}
+            </a>
+            <a href="{{ route('home') }}#contact"
+                class="transition {{ $transparent ? 'hover:text-white' : 'hover:text-zinc-900' }}">
+                {{ __('Contact Us') }}
+            </a>
         </div>
 
         {{-- Search --}}
-        <form action="{{ route('properties.index') }}" method="GET" class="hidden lg:flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-sm text-zinc-500">
+        <form action="{{ route('properties.index') }}" method="GET"
+            class="hidden lg:flex items-center gap-2 rounded-full px-3 py-1.5 text-sm
+                {{ $transparent
+                    ? 'border border-white/30 bg-white/10 text-white/70 backdrop-blur-sm'
+                    : 'border border-zinc-200 bg-zinc-50 text-zinc-500' }}">
             <svg class="size-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('Search properties...') }}" class="w-40 bg-transparent outline-none placeholder-zinc-400 text-zinc-700" />
+            <input type="text" name="search" value="{{ request('search') }}"
+                placeholder="{{ __('Search...') }}"
+                class="w-36 bg-transparent outline-none {{ $transparent ? 'placeholder-white/50 text-white' : 'placeholder-zinc-400 text-zinc-700' }}" />
         </form>
 
         {{-- Auth --}}
         <div class="flex items-center gap-3">
             @auth
                 {{-- Notification bell --}}
-                <button class="relative flex size-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-500 transition hover:border-amber-300 hover:text-amber-600">
+                <button class="relative flex size-9 items-center justify-center rounded-full border transition
+                    {{ $transparent
+                        ? 'border-white/30 text-white/80 hover:border-white hover:text-white'
+                        : 'border-zinc-200 text-zinc-500 hover:border-amber-300 hover:text-amber-600' }}">
                     <svg class="size-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
                     <span class="absolute right-1 top-1 size-2 rounded-full bg-red-500"></span>
                 </button>
 
-                {{-- Settings / help icon --}}
-                <button class="flex size-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-500 transition hover:border-amber-300 hover:text-amber-600">
+                {{-- Help icon --}}
+                <button class="flex size-9 items-center justify-center rounded-full border transition
+                    {{ $transparent
+                        ? 'border-white/30 text-white/80 hover:border-white hover:text-white'
+                        : 'border-zinc-200 text-zinc-500 hover:border-amber-300 hover:text-amber-600' }}">
                     <svg class="size-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
                 </button>
 
                 {{-- User dropdown --}}
                 <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center gap-2.5 rounded-full border border-zinc-200 py-1 pl-1 pr-3 transition hover:border-amber-300">
+                    <button @click="open = !open"
+                        class="flex items-center gap-2.5 rounded-full border py-1 pl-1 pr-3 transition
+                            {{ $transparent
+                                ? 'border-white/30 hover:border-white/60'
+                                : 'border-zinc-200 hover:border-amber-300' }}">
                         <div class="flex size-7 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-xs font-extrabold text-white">
                             {{ auth()->user()->initials() }}
                         </div>
                         <div class="hidden sm:block text-left">
-                            <p class="text-[10px] text-zinc-400 leading-none">{{ __('Welcome') }}</p>
-                            <p class="text-xs font-semibold text-zinc-800 leading-tight max-w-[80px] truncate">{{ auth()->user()->name }}</p>
+                            <p class="text-[10px] leading-none {{ $transparent ? 'text-white/60' : 'text-zinc-400' }}">{{ __('Welcome') }}</p>
+                            <p class="text-xs font-semibold leading-tight max-w-[80px] truncate {{ $transparent ? 'text-white' : 'text-zinc-800' }}">{{ auth()->user()->name }}</p>
                         </div>
-                        <svg class="size-3.5 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg>
+                        <svg class="size-3.5 {{ $transparent ? 'text-white/60' : 'text-zinc-400' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg>
                     </button>
 
                     <div x-show="open" @click.outside="open = false" x-transition
@@ -90,11 +126,19 @@
                     </div>
                 </div>
             @else
-                <a href="{{ route('login') }}" wire:navigate class="rounded-full border border-zinc-200 px-4 py-1.5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50">
+                <a href="{{ route('login') }}" wire:navigate
+                    class="rounded-full border px-4 py-1.5 text-sm font-semibold transition
+                        {{ $transparent
+                            ? 'border-white/40 text-white hover:bg-white/10'
+                            : 'border-zinc-200 text-zinc-700 hover:bg-zinc-50' }}">
                     {{ __('Log in') }}
                 </a>
                 @if (Route::has('register'))
-                    <a href="{{ route('register') }}" wire:navigate class="rounded-full bg-amber-600 px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-amber-700">
+                    <a href="{{ route('register') }}" wire:navigate
+                        class="rounded-full px-4 py-1.5 text-sm font-semibold text-white transition
+                            {{ $transparent
+                                ? 'bg-white/20 hover:bg-white/30 backdrop-blur-sm'
+                                : 'bg-amber-600 hover:bg-amber-700' }}">
                         {{ __('Sign up') }}
                     </a>
                 @endif

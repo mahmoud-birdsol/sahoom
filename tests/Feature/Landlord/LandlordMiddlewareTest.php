@@ -55,6 +55,6 @@ class LandlordMiddlewareTest extends TestCase
         $this->post(route('login.store'), [
             'email'    => $user->email,
             'password' => 'password',
-        ])->assertRedirect(config('fortify.home'));
+        ])->assertRedirect(route('properties.index'));
     }
 }

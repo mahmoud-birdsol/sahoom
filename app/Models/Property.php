@@ -43,6 +43,12 @@ class Property extends Model
         'weekly_rent',
         'yearly_rent',
         'daily_rent',
+        'currency',
+        'security_deposit',
+        'application_fee',
+        'min_lease_months',
+        'max_lease_months',
+        'nearby_places',
     ];
 
     /**
@@ -144,8 +150,13 @@ class Property extends Model
     }
 
     protected $casts = [
-        'is_featured' => 'boolean',
-        'is_active'   => 'boolean',
+        'is_featured'      => 'boolean',
+        'is_active'        => 'boolean',
+        'security_deposit' => 'float',
+        'application_fee'  => 'float',
+        'min_lease_months' => 'integer',
+        'max_lease_months' => 'integer',
+        'nearby_places'    => 'array',
     ];
 
     public function getSlugOptions() : \Spatie\Sluggable\SlugOptions
