@@ -14,6 +14,11 @@ Route::view('/terms', 'pages.terms')->name('terms');
 Route::view('/privacy', 'pages.privacy')->name('privacy');
 Route::view('/faq', 'pages.faq')->name('faq');
 
+Route::post('/locale', function () {
+    session(['locale' => request('locale')]);
+    return redirect()->back();
+})->name('locale.switch');
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');

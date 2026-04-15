@@ -123,6 +123,13 @@
 
             <flux:spacer />
 
+            {{-- Locale Switcher --}}
+            <nav class="flex flex-col gap-0.5 px-2 pb-2">
+                <x-public.locale-switcher />
+            </nav>
+
+            <flux:spacer />
+
             {{-- Bottom Navigation --}}
             <nav class="flex flex-col gap-0.5 px-2 pb-2">
                 <a
