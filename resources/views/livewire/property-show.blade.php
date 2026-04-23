@@ -376,11 +376,19 @@
                             class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
                         @error('bookingPhone') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
-                    <div>
-                        <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Preferred Move-in Date') }} <span class="text-red-500">*</span></label>
-                        <input wire:model="moveInDate" type="date" min="{{ now()->toDateString() }}"
-                            class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
-                        @error('moveInDate') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Start Date') }} <span class="text-red-500">*</span></label>
+                            <input wire:model="moveInDate" type="date" min="{{ now()->toDateString() }}"
+                                class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
+                            @error('moveInDate') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('End Date') }} <span class="text-zinc-400 font-normal">({{ __('optional') }})</span></label>
+                            <input wire:model="bookingEndDate" type="date" min="{{ now()->toDateString() }}"
+                                class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
+                            @error('bookingEndDate') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        </div>
                     </div>
                     <div>
                         <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Message') }} <span class="text-zinc-400 font-normal">({{ __('optional') }})</span></label>

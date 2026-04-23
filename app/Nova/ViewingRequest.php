@@ -130,6 +130,20 @@ class ViewingRequest extends Resource
                 ->hideFromIndex()
                 ->help(__('Preferred date for property viewing')),
 
+            Date::make(__('Start Date'), 'start_date')
+                ->sortable()
+                ->filterable()
+                ->nullable()
+                ->hideFromIndex()
+                ->help(__('Desired lease start date')),
+
+            Date::make(__('End Date'), 'end_date')
+                ->sortable()
+                ->filterable()
+                ->nullable()
+                ->hideFromIndex()
+                ->help(__('Desired lease end date')),
+
             Textarea::make(__('Message'), 'message')
                 ->nullable()
                 ->hideFromIndex()
@@ -194,6 +208,7 @@ class ViewingRequest extends Resource
     public function actions(NovaRequest $request): array
     {
         return [
+            new Actions\CreateContractFromBooking,
             new Actions\MarkAsContacted,
             new Actions\MarkAsNoShow,
             new Actions\CloseLead,

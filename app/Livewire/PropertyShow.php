@@ -36,6 +36,7 @@ class PropertyShow extends Component
     public string $bookingEmail     = '';
     public string $bookingPhone     = '';
     public string $bookingMessage   = '';
+    public string $bookingEndDate   = '';
     public bool   $bookingSent      = false;
 
     // ── Review form ───────────────────────────────────────────────────────────
@@ -87,6 +88,8 @@ class PropertyShow extends Component
     {
         return match (strtoupper($this->property->currency ?? 'USD')) {
             'SAR' => 'SAR ',
+            'AED' => 'AED ',
+            'CFA' => 'CFA ',
             'EUR' => '€',
             'GBP' => '£',
             default => '$',
@@ -177,6 +180,7 @@ class PropertyShow extends Component
             'bookingEmail'   => 'required|email|max:150',
             'bookingPhone'   => 'required|string|max:30',
             'moveInDate'     => 'required|date|after_or_equal:today',
+            'bookingEndDate' => 'nullable|date|after_or_equal:moveInDate',
         ]);
 
         ViewingRequest::create([
@@ -186,6 +190,8 @@ class PropertyShow extends Component
             'renter_phone'   => $this->bookingPhone,
             'message'        => $this->bookingMessage ?: 'Booking inquiry via Book Now.',
             'preferred_date' => $this->moveInDate,
+            'start_date'     => $this->moveInDate,
+            'end_date'       => $this->bookingEndDate ?: null,
             'status'         => ViewingRequestStatus::NEW->value,
         ]);
 
@@ -199,7 +205,7 @@ class PropertyShow extends Component
             ));
         }
 
-        $this->reset(['bookingName', 'bookingEmail', 'bookingPhone', 'bookingMessage']);
+        $this->reset(['bookingName', 'bookingEmail', 'bookingPhone', 'bookingMessage', 'bookingEndDate']);
         $this->bookingSent      = true;
         $this->showBookingModal = false;
     }
@@ -220,6 +226,7 @@ class PropertyShow extends Component
             'renter_phone'   => $this->renterPhone,
             'message'        => $this->tourMessage ?: null,
             'preferred_date' => $this->moveInDate,
+            'start_date'     => $this->moveInDate,
             'status'         => ViewingRequestStatus::NEW->value,
         ]);
 

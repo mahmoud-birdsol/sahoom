@@ -63,7 +63,7 @@ class ContractFactory extends Factory
             'service_fee' => $this->faker->optional(0.5)->numberBetween(100, 500),
             'cleaning_fee' => $this->faker->optional(0.4)->numberBetween(50, 300),
             'total_value' => $totalValue,
-            'currency' => $this->faker->randomElement(['SAR', 'USD', 'EUR', 'AED']),
+            'currency' => $this->faker->randomElement(['SAR', 'USD', 'EUR', 'AED', 'CFA']),
             'payment_status' => $this->faker->randomElement(\App\Models\States\PaymentStatus::toArray()),
             'contract_status' => $this->faker->randomElement(\App\Models\States\ContractStatus::toArray()),
             'notes_internal' => $this->faker->optional(0.5)->paragraph(),

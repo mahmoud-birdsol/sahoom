@@ -154,9 +154,11 @@
                         <flux:label>{{ __('Currency') }}</flux:label>
                         <flux:select wire:model="formCurrency">
                             <flux:select.option value="USD">USD ($)</flux:select.option>
-                            <flux:select.option value="SAR">SAR (ر.س)</flux:select.option>
                             <flux:select.option value="EUR">EUR (€)</flux:select.option>
                             <flux:select.option value="GBP">GBP (£)</flux:select.option>
+                            <flux:select.option value="SAR">SAR (﷼)</flux:select.option>
+                            <flux:select.option value="AED">AED (د.إ)</flux:select.option>
+                            <flux:select.option value="CFA">CFA (Fr)</flux:select.option>
                         </flux:select>
                         <flux:error name="formCurrency" />
                     </flux:field>

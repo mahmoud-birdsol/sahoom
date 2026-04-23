@@ -156,7 +156,7 @@ class Contract extends Model
             'end_date' => $this->end_date,
             'status' => AvailabilityBlockStatus::OCCUPIED->value,
             'source' => AvailabilityBlockSource::OFFLINE->value,
-            'contract_reference' => "CONTRACT-{$this->id}",
+            'contract_reference' => (string) $this->id,
             'notes' => "Offline contract for {$this->renter_name}",
         ]);
     }
@@ -167,7 +167,7 @@ class Contract extends Model
     public function freeAvailability(): void
     {
         AvailabilityBlock::where('property_id', $this->property_id)
-            ->where('contract_reference', "CONTRACT-{$this->id}")
+            ->where('contract_reference', (string) $this->id)
             ->delete();
     }
 
@@ -232,6 +232,12 @@ class Contract extends Model
      */
     protected static function booted(): void
     {
+        static::creating(function (Contract $contract) {
+            if ($contract->property_id && ! $contract->landlord_id) {
+                $contract->landlord_id = \App\Models\Property::find($contract->property_id)?->landlord_id;
+            }
+        });
+
         static::created(function (Contract $contract) {
             $contract->auditLog('created');
             

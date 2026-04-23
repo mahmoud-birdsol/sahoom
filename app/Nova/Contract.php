@@ -18,6 +18,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
 class Contract extends Resource
 {
@@ -65,207 +66,203 @@ class Contract extends Resource
         return [
             ID::make()->sortable(),
 
-            // Index columns: property, landlord, renter_name, start_date, end_date, contract_status, payment_status, total_value
-            BelongsTo::make(__('Property'), 'property', Property::class)
-                ->sortable()
-                ->filterable()
-                ->required()
-                ->showCreateRelationButton(),
+            // ── Property & Landlord ──────────────────────────────────────────
+            Panel::make(__('Property'), [
+                BelongsTo::make(__('Property'), 'property', Property::class)
+                    ->sortable()
+                    ->filterable()
+                    ->required()
+                    ->showCreateRelationButton(),
 
-            BelongsTo::make(__('Landlord'), 'landlord', Landlord::class)
-                ->sortable()
-                ->filterable()
-                ->required()
-                ->readonly()
-                ->help(__('Auto-populated from selected property')),
+                BelongsTo::make(__('Landlord'), 'landlord', Landlord::class)
+                    ->sortable()
+                    ->filterable()
+                    ->hideWhenCreating()
+                    ->help(__('Auto-populated from selected property')),
+            ]),
 
-            Text::make(__('Renter Name'), 'renter_name')
-                ->sortable()
-                ->filterable()
-                ->rules('required', 'max:255'),
+            // ── Renter Information ───────────────────────────────────────────
+            Panel::make(__('Renter Information'), [
+                Text::make(__('Renter Name'), 'renter_name')
+                    ->sortable()
+                    ->filterable()
+                    ->rules('required', 'max:255'),
 
-            Text::make(__('Renter Company'), 'renter_company')
-                ->sortable()
-                ->filterable()
-                ->nullable()
-                ->hideFromIndex()
-                ->help(__('Optional company name')),
+                Text::make(__('Renter Company'), 'renter_company')
+                    ->nullable()
+                    ->hideFromIndex()
+                    ->rules('nullable', 'max:255'),
 
-            Date::make(__('Start Date'), 'start_date')
-                ->sortable()
-                ->filterable()
-                ->rules('required', 'date', 'before_or_equal:end_date'),
+                Text::make(__('Renter Email'), 'renter_email')
+                    ->nullable()
+                    ->hideFromIndex()
+                    ->rules('nullable', 'email', 'max:255'),
 
-            Date::make(__('End Date'), 'end_date')
-                ->sortable()
-                ->filterable()
-                ->rules('required', 'date', 'after_or_equal:start_date'),
+                Text::make(__('Renter Phone'), 'renter_phone')
+                    ->nullable()
+                    ->hideFromIndex()
+                    ->rules('nullable', 'max:50'),
+            ]),
 
-            Heading::make(__('Pricing Information'))->onlyOnForms(),
+            // ── Contract Period ──────────────────────────────────────────────
+            Panel::make(__('Contract Period'), [
+                Date::make(__('Start Date'), 'start_date')
+                    ->sortable()
+                    ->filterable()
+                    ->rules('required', 'date', 'before_or_equal:end_date'),
 
-            Select::make(__('Pricing Type'), 'pricing_type')
-                ->options([
-                    PricingType::MONTHLY->value => PricingType::MONTHLY->label(),
-                    PricingType::WEEKLY->value => PricingType::WEEKLY->label(),
-                    PricingType::YEARLY->value => PricingType::YEARLY->label(),
-                    PricingType::DAILY->value => PricingType::DAILY->label(),
-                ])
-                ->displayUsingLabels()
-                ->sortable()
-                ->filterable()
-                ->default(PricingType::MONTHLY->value)
-                ->rules('required')
-                ->help(__('Select the primary pricing model for this contract')),
+                Date::make(__('End Date'), 'end_date')
+                    ->sortable()
+                    ->filterable()
+                    ->rules('required', 'date', 'after_or_equal:start_date'),
 
-            Currency::make(__('Monthly Rent'), 'monthly_rent')
-                ->currency('USD')
-                ->sortable()
-                ->nullable()
-                ->rules('nullable', 'numeric', 'min:0')
-                ->help(__('Rent amount per month')),
+                Text::make(__('Duration'), function () {
+                    return "{$this->duration_in_months} months ({$this->duration_in_days} days)";
+                })->onlyOnDetail(),
+            ]),
 
-            Currency::make(__('Weekly Rent'), 'weekly_rent')
-                ->currency('USD')
-                ->sortable()
-                ->nullable()
-                ->hideFromIndex()
-                ->rules('nullable', 'numeric', 'min:0')
-                ->help(__('Rent amount per week')),
+            // ── Pricing ──────────────────────────────────────────────────────
+            Panel::make(__('Pricing'), [
+                Select::make(__('Pricing Type'), 'pricing_type')
+                    ->options([
+                        PricingType::MONTHLY->value => PricingType::MONTHLY->label(),
+                        PricingType::WEEKLY->value => PricingType::WEEKLY->label(),
+                        PricingType::YEARLY->value => PricingType::YEARLY->label(),
+                        PricingType::DAILY->value => PricingType::DAILY->label(),
+                    ])
+                    ->displayUsingLabels()
+                    ->sortable()
+                    ->filterable()
+                    ->default(PricingType::MONTHLY->value)
+                    ->rules('required'),
 
-            Currency::make(__('Yearly Rent'), 'yearly_rent')
-                ->currency('USD')
-                ->sortable()
-                ->nullable()
-                ->hideFromIndex()
-                ->rules('nullable', 'numeric', 'min:0')
-                ->help(__('Rent amount per year')),
+                Select::make(__('Currency'), 'currency')
+                    ->options([
+                        'USD' => 'USD ($)',
+                        'EUR' => 'EUR (€)',
+                        'GBP' => 'GBP (£)',
+                        'SAR' => 'SAR (﷼)',
+                        'AED' => 'AED (د.إ)',
+                        'CFA' => 'CFA (Fr)',
+                    ])
+                    ->displayUsingLabels()
+                    ->default('USD')
+                    ->rules('required')
+                    ->hideFromIndex(),
 
-            Currency::make(__('Daily Rent'), 'daily_rent')
-                ->currency('USD')
-                ->sortable()
-                ->nullable()
-                ->hideFromIndex()
-                ->rules('nullable', 'numeric', 'min:0')
-                ->help(__('Rent amount per day')),
+                Number::make(__('Monthly Rent'), 'monthly_rent')
+                    ->sortable()
+                    ->nullable()
+                    ->step(0.01)
+                    ->rules('nullable', 'numeric', 'min:0'),
 
-            Heading::make(__('Additional Fees'))->onlyOnForms(),
+                Number::make(__('Weekly Rent'), 'weekly_rent')
+                    ->nullable()
+                    ->step(0.01)
+                    ->hideFromIndex()
+                    ->rules('nullable', 'numeric', 'min:0'),
 
-            Currency::make(__('Security Deposit'), 'security_deposit')
-                ->currency('USD')
-                ->nullable()
-                ->hideFromIndex()
-                ->rules('nullable', 'numeric', 'min:0')
-                ->help(__('Refundable security deposit')),
+                Number::make(__('Yearly Rent'), 'yearly_rent')
+                    ->nullable()
+                    ->step(0.01)
+                    ->hideFromIndex()
+                    ->rules('nullable', 'numeric', 'min:0'),
 
-            Currency::make(__('Service Fee'), 'service_fee')
-                ->currency('USD')
-                ->nullable()
-                ->hideFromIndex()
-                ->rules('nullable', 'numeric', 'min:0')
-                ->help(__('One-time service fee')),
+                Number::make(__('Daily Rent'), 'daily_rent')
+                    ->nullable()
+                    ->step(0.01)
+                    ->hideFromIndex()
+                    ->rules('nullable', 'numeric', 'min:0'),
+            ]),
 
-            Currency::make(__('Cleaning Fee'), 'cleaning_fee')
-                ->currency('USD')
-                ->nullable()
-                ->hideFromIndex()
-                ->rules('nullable', 'numeric', 'min:0')
-                ->help(__('One-time cleaning fee')),
+            // ── Contract Summary ─────────────────────────────────────────────
+            Panel::make(__('Contract Summary'), [
+                Number::make(__('Security Deposit'), 'security_deposit')
+                    ->nullable()
+                    ->step(0.01)
+                    ->hideFromIndex()
+                    ->rules('nullable', 'numeric', 'min:0'),
 
-            Heading::make(__('Contract Summary'))->onlyOnForms(),
+                Number::make(__('Service Fee'), 'service_fee')
+                    ->nullable()
+                    ->step(0.01)
+                    ->hideFromIndex()
+                    ->rules('nullable', 'numeric', 'min:0'),
 
-            Text::make(__('Duration'), function () {
-                return "{$this->duration_in_months} months ({$this->duration_in_days} days)";
-            })
-                ->onlyOnDetail()
-                ->help(__('Contract duration')),
+                Number::make(__('Cleaning Fee'), 'cleaning_fee')
+                    ->nullable()
+                    ->step(0.01)
+                    ->hideFromIndex()
+                    ->rules('nullable', 'numeric', 'min:0'),
 
-            Currency::make(__('Active Rent'), 'active_rent')
-                ->currency('USD')
-                ->onlyOnDetail()
-                ->help(__('Current rent based on selected pricing type')),
+                Number::make(__('Total Value'), 'total_value')
+                    ->sortable()
+                    ->filterable()
+                    ->rules('required', 'numeric', 'min:0')
+                    ->step(0.01)
+                    ->displayUsing(fn ($value) => number_format((float) $value, 2)),
 
-            Number::make(__('Total Value'), 'total_value')
-                ->sortable()
-                ->filterable()
-                ->rules('required', 'numeric', 'min:0')
-                ->step(0.01)
-                ->displayUsing(fn ($value) => number_format($value, 2))
-                ->help(__('Total contract value (calculated from pricing + fees)')),
+                Select::make(__('Contract Status'), 'contract_status')
+                    ->options([
+                        ContractStatus::ACTIVE->value => ContractStatus::ACTIVE->label(),
+                        ContractStatus::COMPLETED->value => ContractStatus::COMPLETED->label(),
+                        ContractStatus::CANCELED->value => ContractStatus::CANCELED->label(),
+                    ])
+                    ->displayUsingLabels()
+                    ->sortable()
+                    ->filterable()
+                    ->default(ContractStatus::ACTIVE->value)
+                    ->rules('required')
+                    ->hideFromIndex(),
 
-            Select::make(__('Currency'), 'currency')
-                ->options([
-                    'USD' => 'USD',
-                    'EUR' => 'EUR',
-                    'GBP' => 'GBP',
-                    'SAR' => 'SAR',
-                    'AED' => 'AED',
-                ])
-                ->displayUsingLabels()
-                ->default('USD')
-                ->rules('required')
-                ->hideFromIndex(),
+                Badge::make(__('Contract Status'), 'contract_status')
+                    ->map([
+                        ContractStatus::ACTIVE->value => ContractStatus::ACTIVE->color(),
+                        ContractStatus::COMPLETED->value => ContractStatus::COMPLETED->color(),
+                        ContractStatus::CANCELED->value => ContractStatus::CANCELED->color(),
+                    ])
+                    ->labels([
+                        ContractStatus::ACTIVE->value => ContractStatus::ACTIVE->label(),
+                        ContractStatus::COMPLETED->value => ContractStatus::COMPLETED->label(),
+                        ContractStatus::CANCELED->value => ContractStatus::CANCELED->label(),
+                    ])
+                    ->onlyOnIndex(),
 
-            Select::make(__('Contract Status'), 'contract_status')
-                ->options([
-                    ContractStatus::ACTIVE->value => ContractStatus::ACTIVE->label(),
-                    ContractStatus::COMPLETED->value => ContractStatus::COMPLETED->label(),
-                    ContractStatus::CANCELED->value => ContractStatus::CANCELED->label(),
-                ])
-                ->displayUsingLabels()
-                ->sortable()
-                ->filterable()
-                ->default(ContractStatus::ACTIVE->value)
-                ->rules('required')
-                ->hideFromIndex(),
+                Select::make(__('Payment Status'), 'payment_status')
+                    ->options([
+                        PaymentStatus::NOT_COLLECTED->value => PaymentStatus::NOT_COLLECTED->label(),
+                        PaymentStatus::PARTIALLY_COLLECTED->value => PaymentStatus::PARTIALLY_COLLECTED->label(),
+                        PaymentStatus::PAID->value => PaymentStatus::PAID->label(),
+                        PaymentStatus::REFUNDED->value => PaymentStatus::REFUNDED->label(),
+                    ])
+                    ->displayUsingLabels()
+                    ->sortable()
+                    ->filterable()
+                    ->default(PaymentStatus::NOT_COLLECTED->value)
+                    ->rules('required')
+                    ->hideFromIndex(),
 
-            Badge::make(__('Contract Status'), 'contract_status')
-                ->map([
-                    ContractStatus::ACTIVE->value => ContractStatus::ACTIVE->color(),
-                    ContractStatus::COMPLETED->value => ContractStatus::COMPLETED->color(),
-                    ContractStatus::CANCELED->value => ContractStatus::CANCELED->color(),
-                ])
-                ->labels([
-                    ContractStatus::ACTIVE->value => ContractStatus::ACTIVE->label(),
-                    ContractStatus::COMPLETED->value => ContractStatus::COMPLETED->label(),
-                    ContractStatus::CANCELED->value => ContractStatus::CANCELED->label(),
-                ])
-                ->onlyOnIndex(),
+                Badge::make(__('Payment Status'), 'payment_status')
+                    ->map([
+                        PaymentStatus::NOT_COLLECTED->value => PaymentStatus::NOT_COLLECTED->color(),
+                        PaymentStatus::PARTIALLY_COLLECTED->value => PaymentStatus::PARTIALLY_COLLECTED->color(),
+                        PaymentStatus::PAID->value => PaymentStatus::PAID->color(),
+                        PaymentStatus::REFUNDED->value => PaymentStatus::REFUNDED->color(),
+                    ])
+                    ->labels([
+                        PaymentStatus::NOT_COLLECTED->value => PaymentStatus::NOT_COLLECTED->label(),
+                        PaymentStatus::PARTIALLY_COLLECTED->value => PaymentStatus::PARTIALLY_COLLECTED->label(),
+                        PaymentStatus::PAID->value => PaymentStatus::PAID->label(),
+                        PaymentStatus::REFUNDED->value => PaymentStatus::REFUNDED->label(),
+                    ])
+                    ->onlyOnIndex(),
 
-            Select::make(__('Payment Status'), 'payment_status')
-                ->options([
-                    PaymentStatus::NOT_COLLECTED->value => PaymentStatus::NOT_COLLECTED->label(),
-                    PaymentStatus::PARTIALLY_COLLECTED->value => PaymentStatus::PARTIALLY_COLLECTED->label(),
-                    PaymentStatus::PAID->value => PaymentStatus::PAID->label(),
-                    PaymentStatus::REFUNDED->value => PaymentStatus::REFUNDED->label(),
-                ])
-                ->displayUsingLabels()
-                ->sortable()
-                ->filterable()
-                ->default(PaymentStatus::NOT_COLLECTED->value)
-                ->rules('required')
-                ->hideFromIndex(),
+                Textarea::make(__('Internal Notes'), 'notes_internal')
+                    ->nullable()
+                    ->hideFromIndex(),
+            ]),
 
-            Badge::make(__('Payment Status'), 'payment_status')
-                ->map([
-                    PaymentStatus::NOT_COLLECTED->value => PaymentStatus::NOT_COLLECTED->color(),
-                    PaymentStatus::PARTIALLY_COLLECTED->value => PaymentStatus::PARTIALLY_COLLECTED->color(),
-                    PaymentStatus::PAID->value => PaymentStatus::PAID->color(),
-                    PaymentStatus::REFUNDED->value => PaymentStatus::REFUNDED->color(),
-                ])
-                ->labels([
-                    PaymentStatus::NOT_COLLECTED->value => PaymentStatus::NOT_COLLECTED->label(),
-                    PaymentStatus::PARTIALLY_COLLECTED->value => PaymentStatus::PARTIALLY_COLLECTED->label(),
-                    PaymentStatus::PAID->value => PaymentStatus::PAID->label(),
-                    PaymentStatus::REFUNDED->value => PaymentStatus::REFUNDED->label(),
-                ])
-                ->onlyOnIndex(),
-
-            Textarea::make(__('Notes Internal'), 'notes_internal')
-                ->nullable()
-                ->hideFromIndex()
-                ->help(__('Internal notes about this contract (not visible to renter or landlord)')),
-
-            // Show related availability blocks inline
+            // ── Related Records ──────────────────────────────────────────────
             HasMany::make(__('Availability Blocks'), 'availabilityBlocks', AvailabilityBlock::class),
         ];
     }

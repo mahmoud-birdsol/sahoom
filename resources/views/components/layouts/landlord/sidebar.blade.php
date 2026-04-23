@@ -112,12 +112,7 @@
                 >
                     <flux:icon.bell class="size-4.5 shrink-0" />
                     <span class="flex-1">{{ __('Notification') }}</span>
-                    @php($notifCount = auth()->user()->unreadNotifications()->count())
-                    @if($notifCount > 0)
-                        <span class="flex size-5 items-center justify-center rounded-full bg-amber-500 text-[10px] font-semibold text-white">
-                            {{ $notifCount > 99 ? '99+' : $notifCount }}
-                        </span>
-                    @endif
+                    @livewire('landlord.notification-badge')
                 </a>
             </nav>
 

@@ -23,16 +23,19 @@ class NotificationsIndex extends Component
     public function markAllRead(): void
     {
         auth()->user()->unreadNotifications->markAsRead();
+        $this->dispatch('notifications-updated');
     }
 
     public function markRead(string $id): void
     {
         auth()->user()->notifications()->where('id', $id)->update(['read_at' => now()]);
+        $this->dispatch('notifications-updated');
     }
 
     public function deleteNotification(string $id): void
     {
         auth()->user()->notifications()->where('id', $id)->delete();
+        $this->dispatch('notifications-updated');
     }
 
     public function render(): \Illuminate\Contracts\View\View

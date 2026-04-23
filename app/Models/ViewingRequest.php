@@ -20,12 +20,16 @@ class ViewingRequest extends Model
         'renter_phone',
         'message',
         'preferred_date',
+        'start_date',
+        'end_date',
         'status',
         'handled_by_user_id',
     ];
 
     protected $casts = [
         'preferred_date' => 'date',
+        'start_date' => 'date',
+        'end_date' => 'date',
         'status' => ViewingRequestStatus::class,
     ];
 

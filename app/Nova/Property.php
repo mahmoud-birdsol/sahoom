@@ -242,9 +242,11 @@ class Property extends Resource
             Select::make(__('Currency'), 'currency')
                 ->options([
                     'USD' => 'USD ($)',
-                    'SAR' => 'SAR (ر.س)',
                     'EUR' => 'EUR (€)',
                     'GBP' => 'GBP (£)',
+                    'SAR' => 'SAR (﷼)',
+                    'AED' => 'AED (د.إ)',
+                    'CFA' => 'CFA (Fr)',
                 ])
                 ->displayUsingLabels()
                 ->default('USD')

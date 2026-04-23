@@ -160,9 +160,26 @@
 
                     {{-- Preferred date --}}
                     <div class="space-y-1">
-                        <p class="text-xs font-semibold uppercase tracking-wider text-zinc-400">{{ __('Preferred Date') }}</p>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-zinc-400">{{ __('Preferred Viewing Date') }}</p>
                         <p class="text-sm text-zinc-700">{{ $req->preferred_date?->format('l, F j, Y') ?? __('Not specified') }}</p>
                     </div>
+
+                    {{-- Lease period --}}
+                    @if($req->start_date || $req->end_date)
+                        <div class="rounded-xl border border-zinc-100 bg-zinc-50 p-4 space-y-2">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-zinc-400">{{ __('Requested Lease Period') }}</p>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <p class="text-xs text-zinc-500">{{ __('Start Date') }}</p>
+                                    <p class="text-sm font-semibold text-zinc-800">{{ $req->start_date?->format('M j, Y') ?? '—' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-zinc-500">{{ __('End Date') }}</p>
+                                    <p class="text-sm font-semibold text-zinc-800">{{ $req->end_date?->format('M j, Y') ?? '—' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
 
                     {{-- Message --}}
                     @if($req->message)
