@@ -14,9 +14,9 @@
     <div class="border-b border-zinc-100 bg-white">
         <div class="mx-auto max-w-7xl px-6 py-3 lg:px-10">
             <nav class="flex items-center gap-1.5 text-xs text-zinc-400">
-                <a href="{{ route('home') }}" wire:navigate class="transition hover:text-amber-600">{{ __('Home') }}</a>
+                <a href="{{ route('home') }}" wire:navigate class="transition hover:text-teal-600">{{ __('Home') }}</a>
                 <svg class="size-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-                <a href="{{ route('properties.index') }}" wire:navigate class="transition hover:text-amber-600">{{ __('Properties') }}</a>
+                <a href="{{ route('properties.index') }}" wire:navigate class="transition hover:text-teal-600">{{ __('Properties') }}</a>
                 <svg class="size-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
                 <span class="truncate max-w-xs text-zinc-700">{{ $property->title }}</span>
             </nav>
@@ -64,7 +64,7 @@
                             {{ $isOccupied ? __('Occupied') : __('Available') }}
                         </span>
                         @if($property->is_featured)
-                            <span class="absolute left-3 bottom-3 rounded-full bg-amber-500 px-2.5 py-0.5 text-xs font-bold text-white">{{ __('Featured') }}</span>
+                            <span class="absolute left-3 bottom-3 rounded-full bg-teal-500 px-2.5 py-0.5 text-xs font-bold text-white">{{ __('Featured') }}</span>
                         @endif
                     </div>
 
@@ -126,8 +126,8 @@
                     @if($property->amenities->isNotEmpty())
                         <div class="mt-4 pt-4 border-t border-zinc-50 flex flex-wrap gap-2">
                             @foreach($property->amenities as $amenity)
-                                <span class="flex items-center gap-1 rounded-full border border-amber-100 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
-                                    <svg class="size-3 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                                <span class="flex items-center gap-1 rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-xs font-medium text-teal-700">
+                                    <svg class="size-3 text-teal-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
                                     {{ $amenity->name }}
                                 </span>
                             @endforeach
@@ -159,9 +159,9 @@
                             </div>
                             @error('reviewRating') <p class="mb-2 text-xs text-red-500">{{ $message }}</p> @enderror
                             <textarea wire:model="reviewText" rows="3" placeholder="{{ __('Optional: Share more details...') }}"
-                                class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition resize-none mb-3"></textarea>
+                                class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition resize-none mb-3"></textarea>
                             <button type="submit"
-                                class="rounded-xl bg-amber-600 px-6 py-2.5 text-sm font-bold text-white transition hover:bg-amber-700"
+                                class="rounded-xl bg-teal-600 px-6 py-2.5 text-sm font-bold text-white transition hover:bg-teal-700"
                                 wire:loading.attr="disabled" wire:loading.class="opacity-75">
                                 {{ __('Rate now') }}
                             </button>
@@ -196,7 +196,7 @@
                         <div class="mt-4 flex flex-wrap gap-3 text-xs text-zinc-500">
                             @foreach($property->nearby_places as $placeName => $placeDistance)
                                 <span class="flex items-center gap-1.5">
-                                    <svg class="size-3.5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                                    <svg class="size-3.5 text-teal-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
                                     {{ $placeName }}{{ $placeDistance ? ' · ' . $placeDistance : '' }}
                                 </span>
                             @endforeach
@@ -236,7 +236,7 @@
                     <div class="mb-4">
                         <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Move-in Date') }}</label>
                         <input wire:model="moveInDate" type="date" min="{{ now()->toDateString() }}"
-                            class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
+                            class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition" />
                         @error('moveInDate') <p class="mt-0.5 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
 
@@ -244,7 +244,7 @@
                     <div class="mb-4">
                         <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Lease Duration') }}</label>
                         <select wire:model.live="leaseDuration"
-                            class="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition">
+                            class="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition">
                             @foreach($this->leaseDurationOptions as $months)
                                 <option value="{{ $months }}">{{ $months }} {{ $months === 1 ? __('month') : __('months') }}</option>
                             @endforeach
@@ -289,7 +289,7 @@
                         </div>
                     @else
                         <button wire:click="openBookingModal"
-                            class="w-full rounded-xl bg-amber-600 py-3 text-sm font-bold text-white transition hover:bg-amber-700">
+                            class="w-full rounded-xl bg-teal-600 py-3 text-sm font-bold text-white transition hover:bg-teal-700">
                             {{ __('Book Now') }}
                         </button>
                     @endif
@@ -311,16 +311,16 @@
                                     <button wire:click="$set('showTourForm', false)" class="text-xs text-zinc-400 hover:text-zinc-600">&times; {{ __('Cancel') }}</button>
                                 </div>
                                 <input wire:model="renterName" type="text" placeholder="{{ __('Full name') }}"
-                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
+                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition" />
                                 @error('renterName') <p class="text-xs text-red-500">{{ $message }}</p> @enderror
                                 <input wire:model="renterEmail" type="email" placeholder="email@example.com"
-                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
+                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition" />
                                 @error('renterEmail') <p class="text-xs text-red-500">{{ $message }}</p> @enderror
                                 <input wire:model="renterPhone" type="tel" placeholder="+1 (555) 000-0000"
-                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
+                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition" />
                                 @error('renterPhone') <p class="text-xs text-red-500">{{ $message }}</p> @enderror
                                 <textarea wire:model="tourMessage" rows="2" placeholder="{{ __('Optional message...') }}"
-                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition resize-none"></textarea>
+                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition resize-none"></textarea>
                                 <button wire:click="scheduleTour"
                                     class="w-full rounded-xl bg-zinc-900 py-2.5 text-sm font-bold text-white transition hover:bg-zinc-800"
                                     wire:loading.attr="disabled" wire:loading.class="opacity-75">
@@ -361,39 +361,39 @@
                     <div>
                         <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Full Name') }} <span class="text-red-500">*</span></label>
                         <input wire:model="bookingName" type="text" placeholder="{{ __('Your name') }}"
-                            class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
+                            class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none placeholder-zinc-400 focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition" />
                         @error('bookingName') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Email Address') }} <span class="text-red-500">*</span></label>
                         <input wire:model="bookingEmail" type="email" placeholder="email@example.com"
-                            class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
+                            class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none placeholder-zinc-400 focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition" />
                         @error('bookingEmail') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Phone Number') }} <span class="text-red-500">*</span></label>
                         <input wire:model="bookingPhone" type="tel" placeholder="+1 (555) 000-0000"
-                            class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
+                            class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none placeholder-zinc-400 focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition" />
                         @error('bookingPhone') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Start Date') }} <span class="text-red-500">*</span></label>
                             <input wire:model="moveInDate" type="date" min="{{ now()->toDateString() }}"
-                                class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
+                                class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition" />
                             @error('moveInDate') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                         </div>
                         <div>
                             <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('End Date') }} <span class="text-zinc-400 font-normal">({{ __('optional') }})</span></label>
                             <input wire:model="bookingEndDate" type="date" min="{{ now()->toDateString() }}"
-                                class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
+                                class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition" />
                             @error('bookingEndDate') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                         </div>
                     </div>
                     <div>
                         <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Message') }} <span class="text-zinc-400 font-normal">({{ __('optional') }})</span></label>
                         <textarea wire:model="bookingMessage" rows="3" placeholder="{{ __('Any notes or questions...') }}"
-                            class="w-full resize-none rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition"></textarea>
+                            class="w-full resize-none rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition"></textarea>
                     </div>
                 </div>
 
@@ -403,7 +403,7 @@
                         {{ __('Cancel') }}
                     </button>
                     <button wire:click="submitBooking"
-                        class="flex-1 rounded-xl bg-amber-600 py-2.5 text-sm font-bold text-white transition hover:bg-amber-700"
+                        class="flex-1 rounded-xl bg-teal-600 py-2.5 text-sm font-bold text-white transition hover:bg-teal-700"
                         wire:loading.attr="disabled" wire:loading.class="opacity-75">
                         <span wire:loading.remove wire:target="submitBooking">{{ __('Confirm Booking') }}</span>
                         <span wire:loading wire:target="submitBooking">{{ __('Submitting...') }}</span>

@@ -4,14 +4,14 @@
     <section class="relative overflow-hidden">
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
              style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80')"></div>
-        <div class="absolute inset-0 bg-amber-950/70"></div>
+        <div class="absolute inset-0 bg-teal-900/75"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
 
         <x-public.navbar :transparent="true" />
 
         <div class="relative z-10 mx-auto max-w-7xl px-6 pb-14 pt-10 lg:px-10">
             <nav class="mb-4 flex items-center gap-2 text-xs text-white/60">
-                <a href="{{ route('home') }}" wire:navigate class="transition hover:text-amber-400">{{ __('Home') }}</a>
+                <a href="{{ route('home') }}" wire:navigate class="transition hover:text-teal-300">{{ __('Home') }}</a>
                 <svg class="size-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
                 <span class="text-white/80">{{ __('Properties') }}</span>
             </nav>
@@ -50,7 +50,7 @@
             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {{-- Location / Search --}}
                 <div class="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 py-3 shadow-sm">
-                    <svg class="size-4 shrink-0 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                    <svg class="size-4 shrink-0 text-teal-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
                     <input
                         wire:model.live.debounce.400ms="search"
                         type="text"
@@ -65,7 +65,7 @@
                 </div>
                 {{-- City / Size --}}
                 <div class="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 py-3 shadow-sm">
-                    <svg class="size-4 shrink-0 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+                    <svg class="size-4 shrink-0 text-teal-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
                     <select wire:model.live="city" class="flex-1 bg-transparent text-sm text-zinc-700 outline-none cursor-pointer">
                         <option value="">{{ __('Size') }}</option>
                         @foreach($cities as $c)
@@ -101,7 +101,7 @@
                 </div>
                 {{-- Amenities / Pricing type --}}
                 <div class="flex flex-1 items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-3 shadow-sm">
-                    <svg class="size-4 shrink-0 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"/></svg>
+                    <svg class="size-4 shrink-0 text-teal-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"/></svg>
                     <select wire:model.live="pricingType" class="flex-1 bg-transparent text-sm text-zinc-700 outline-none cursor-pointer">
                         <option value="">{{ __('Amenities') }}</option>
                         @foreach($pricingTypes as $type)
@@ -112,7 +112,7 @@
                 </div>
                 {{-- Search Properties button --}}
                 <button wire:click="applyFilters"
-                    class="shrink-0 rounded-xl bg-amber-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-700 active:bg-amber-800">
+                    class="shrink-0 rounded-xl bg-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-700 active:bg-teal-800">
                     {{ __('Search Properties') }}
                 </button>
             </div>
@@ -123,20 +123,20 @@
             <p class="text-sm text-zinc-500">
                 <span class="font-semibold text-zinc-900">{{ $totalCount }}</span> {{ __('properties found') }}
                 @if($search)
-                    {{ __('for') }} <span class="font-medium text-amber-600">"{{ $search }}"</span>
+                    {{ __('for') }} <span class="font-medium text-teal-600">"{{ $search }}"</span>
                 @endif
             </p>
             <div class="flex items-center gap-3">
                 {{-- Map toggle --}}
                 <button wire:click="toggleShowMap"
                     class="flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition
-                        {{ $showMap ? 'border-amber-400 bg-amber-50 text-amber-700' : 'border-zinc-200 bg-white text-zinc-600 hover:border-amber-300 hover:text-amber-600' }}">
+                        {{ $showMap ? 'border-teal-400 bg-teal-50 text-teal-700' : 'border-zinc-200 bg-white text-zinc-600 hover:border-amber-300 hover:text-teal-600' }}">
                     <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"/></svg>
                     {{ $showMap ? __('Hide Map') : __('Show Map') }}
                 </button>
                 {{-- Sort --}}
                 <label class="text-xs text-zinc-500">{{ __('Sort:') }}</label>
-                <select wire:model.live="sort" class="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100">
+                <select wire:model.live="sort" class="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 outline-none focus:border-teal-400 focus:ring-2 focus:ring-amber-100">
                     <option value="newest">{{ __('Newest') }}</option>
                     <option value="popular">{{ __('Most Popular') }}</option>
                     <option value="rating">{{ __('Top Rated') }}</option>
@@ -150,9 +150,9 @@
         @if($search || $pricingType || $city || $featuredOnly || $minPrice || $maxPrice)
             <div class="mb-4 flex flex-wrap items-center gap-2">
                 @if($search)
-                    <span class="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
+                    <span class="inline-flex items-center gap-1 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-medium text-teal-700">
                         "{{ $search }}"
-                        <button wire:click="$set('search', '')" class="ml-1 text-amber-500 hover:text-amber-700">&times;</button>
+                        <button wire:click="$set('search', '')" class="ml-1 text-teal-500 hover:text-amber-700">&times;</button>
                     </span>
                 @endif
                 @if($pricingType)
@@ -187,14 +187,14 @@
                  x-init="init()">
                 <div class="flex items-center justify-between border-b border-zinc-100 px-4 py-3">
                     <div class="flex items-center gap-2">
-                        <svg class="size-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"/></svg>
+                        <svg class="size-4 text-teal-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"/></svg>
                         <span class="text-sm font-semibold text-zinc-700">{{ __('Property Map') }}</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <button
                             wire:click="toggleMapFilter"
                             class="rounded-lg border px-3 py-1 text-xs font-semibold transition
-                                {{ $mapFilter ? 'bg-amber-600 border-amber-600 text-white' : 'bg-zinc-50 border-zinc-200 text-zinc-600 hover:bg-amber-50 hover:text-amber-700 hover:border-amber-300' }}">
+                                {{ $mapFilter ? 'bg-teal-600 border-amber-600 text-white' : 'bg-zinc-50 border-zinc-200 text-zinc-600 hover:bg-teal-50 hover:text-teal-700 hover:border-teal-300' }}">
                             {{ $mapFilter ? __('Clear area filter') . ' ×' : __('Filter by area') }}
                         </button>
                         <button wire:click="toggleShowMap" class="text-xs font-medium text-zinc-400 transition hover:text-zinc-600">
@@ -203,7 +203,7 @@
                     </div>
                 </div>
                 <div id="property-map" class="h-[420px] w-full"></div>
-                <p class="px-4 py-2 text-center text-xs {{ $mapFilter ? 'font-medium text-amber-600' : 'text-zinc-400' }}">
+                <p class="px-4 py-2 text-center text-xs {{ $mapFilter ? 'font-medium text-teal-600' : 'text-zinc-400' }}">
                     {{ $mapFilter ? __('Showing properties in current map view — pan to update') : __('Pan or zoom, then click "Filter by area" to filter results') }}
                 </p>
             </div>
@@ -220,7 +220,7 @@
                 <svg class="mb-4 size-12 text-zinc-300" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21" /></svg>
                 <p class="text-base font-semibold text-zinc-500">{{ __('No properties found') }}</p>
                 <p class="mt-1 text-sm text-zinc-400">{{ __('Try adjusting your filters or search term.') }}</p>
-                <button wire:click="clearFilters" class="mt-5 rounded-xl bg-amber-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-amber-700">
+                <button wire:click="clearFilters" class="mt-5 rounded-xl bg-teal-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-teal-700">
                     {{ __('Clear Filters') }}
                 </button>
             </div>
@@ -266,7 +266,7 @@
                                 </svg>
                             </button>
                             @if($property->is_featured)
-                                <span class="absolute bottom-3 left-3 rounded-full bg-amber-500 px-2 py-0.5 text-xs font-bold text-white">{{ __('Featured') }}</span>
+                                <span class="absolute bottom-3 left-3 rounded-full bg-teal-500 px-2 py-0.5 text-xs font-bold text-white">{{ __('Featured') }}</span>
                             @endif
                         </div>
 
@@ -290,7 +290,7 @@
                                 <div class="mb-1.5 flex items-start justify-between gap-3">
                                     <h3 class="text-base font-bold leading-snug text-zinc-900 line-clamp-1">{{ $property->title }}</h3>
                                     @if($price)
-                                        <span class="shrink-0 text-sm font-extrabold text-amber-600">
+                                        <span class="shrink-0 text-sm font-extrabold text-teal-600">
                                             {{ $currSym }}{{ number_format($price) }}<span class="text-xs font-normal text-zinc-400">{{ $priceLabel }}</span>
                                         </span>
                                     @endif
@@ -314,7 +314,7 @@
                             {{-- View Details --}}
                             <div class="mt-3 flex items-center justify-between">
                                 <a href="{{ route('properties.show', $property->slug) }}" wire:navigate
-                                    class="inline-flex items-center gap-1.5 rounded-lg bg-amber-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-amber-700">
+                                    class="inline-flex items-center gap-1.5 rounded-lg bg-teal-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-teal-700">
                                     {{ __('View Details') }}
                                     <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
                                 </a>
@@ -334,21 +334,21 @@
                                 <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
                             </span>
                         @else
-                            <button wire:click="previousPage" class="flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:border-amber-400 hover:text-amber-600">
+                            <button wire:click="previousPage" class="flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:border-teal-400 hover:text-teal-600">
                                 <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
                             </button>
                         @endif
                         {{-- Page numbers --}}
                         @foreach($properties->getUrlRange(max(1, $properties->currentPage() - 2), min($properties->lastPage(), $properties->currentPage() + 2)) as $page => $url)
                             @if($page === $properties->currentPage())
-                                <span class="flex size-9 items-center justify-center rounded-lg bg-amber-600 text-sm font-bold text-white">{{ $page }}</span>
+                                <span class="flex size-9 items-center justify-center rounded-lg bg-teal-600 text-sm font-bold text-white">{{ $page }}</span>
                             @else
-                                <button wire:click="gotoPage({{ $page }})" class="flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-sm text-zinc-600 transition hover:border-amber-400 hover:text-amber-600">{{ $page }}</button>
+                                <button wire:click="gotoPage({{ $page }})" class="flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-sm text-zinc-600 transition hover:border-teal-400 hover:text-teal-600">{{ $page }}</button>
                             @endif
                         @endforeach
                         {{-- Next --}}
                         @if($properties->hasMorePages())
-                            <button wire:click="nextPage" class="flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:border-amber-400 hover:text-amber-600">
+                            <button wire:click="nextPage" class="flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:border-teal-400 hover:text-teal-600">
                                 <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
                             </button>
                         @else
@@ -416,7 +416,7 @@ function propertyMap() {
                     const n = c.getChildCount();
                     return L.divIcon({
                         className: '',
-                        html: `<div style="background:#d97706;color:#fff;min-width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.3);border:2px solid #fff">${n}</div>`,
+                        html: `<div style="background:#0d9488;color:#fff;min-width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.3);border:2px solid #fff">${n}</div>`,
                         iconSize: [32, 32],
                         iconAnchor: [16, 16],
                     });
@@ -439,7 +439,7 @@ function propertyMap() {
             const label = price ? '$' + parseInt(price).toLocaleString() : '●';
             return L.divIcon({
                 className: '',
-                html: `<div style="background:#d97706;color:#fff;padding:3px 8px;border-radius:5px;font-weight:700;font-size:11px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.25);position:relative;line-height:1.5">${label}<div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #d97706"></div></div>`,
+                html: `<div style="background:#0d9488;color:#fff;padding:3px 8px;border-radius:5px;font-weight:700;font-size:11px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.25);position:relative;line-height:1.5">${label}<div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #0d9488"></div></div>`,
                 iconSize: [null, null],
                 iconAnchor: [price ? 28 : 8, 28],
             });
@@ -460,8 +460,8 @@ function propertyMap() {
                 m.bindPopup(
                     `<div style="min-width:150px;font-family:sans-serif">
                         <p style="font-weight:700;font-size:13px;margin:0 0 4px 0;color:#18181b">${p.title}</p>
-                        ${priceStr ? `<p style="color:#d97706;font-weight:700;font-size:12px;margin:0 0 8px 0">${priceStr}</p>` : ''}
-                        <a href="/properties/${p.slug}" style="display:block;background:#d97706;color:#fff;text-align:center;padding:5px 10px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:600">View Details →</a>
+                        ${priceStr ? `<p style="color:#0d9488;font-weight:700;font-size:12px;margin:0 0 8px 0">${priceStr}</p>` : ''}
+                        <a href="/properties/${p.slug}" style="display:block;background:#0d9488;color:#fff;text-align:center;padding:5px 10px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:600">View Details →</a>
                     </div>`,
                     { maxWidth: 220 }
                 );
