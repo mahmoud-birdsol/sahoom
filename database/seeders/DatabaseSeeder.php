@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
 
         // 1. Super Admin
         $superAdmin = User::updateOrCreate(
-            ['email' => 'mahmoud@birdso.com'],
+            ['email' => 'mahmoud@birdsol.com'],
             [
                 'name'              => 'Mahmoud El-Mokhtar',
                 'password'          => Hash::make('password'),
@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('');
         $this->command->info('🎉 Production seeding complete!');
         $this->command->info('🔐 Admin credentials:');
-        $this->command->info('   Email:    mahmoud@birdso.com');
+        $this->command->info('   Email:    mahmoud@birdsol.com');
         $this->command->info('   Password: password');
         $this->command->info('');
     }
