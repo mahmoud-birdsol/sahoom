@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Models\States\PropertyStatus;
+use App\Models\States\PropertyType;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -117,6 +118,29 @@ class Property extends Resource
                 ])
                 ->onlyOnIndex(),
 
+            Select::make(__('Property Type'), 'property_type')
+                ->options([
+                    PropertyType::RESIDENTIAL->value => 'Residential',
+                    PropertyType::COMMERCIAL->value  => 'Commercial',
+                ])
+                ->displayUsingLabels()
+                ->sortable()
+                ->filterable()
+                ->default(PropertyType::RESIDENTIAL->value)
+                ->rules('required')
+                ->hideFromIndex(),
+
+            Badge::make(__('Type'), 'property_type')
+                ->map([
+                    PropertyType::RESIDENTIAL->value => 'success',
+                    PropertyType::COMMERCIAL->value  => 'warning',
+                ])
+                ->labels([
+                    PropertyType::RESIDENTIAL->value => 'Residential',
+                    PropertyType::COMMERCIAL->value  => 'Commercial',
+                ])
+                ->onlyOnIndex(),
+
             Textarea::make(__('Rejection Reason'), 'rejection_reason')
                 ->hideFromIndex()
                 ->hideWhenCreating()
@@ -197,6 +221,12 @@ class Property extends Resource
                 ->filterable(),
 
             Boolean::make(__('Active'), 'is_active')
+                ->sortable()
+                ->filterable()
+                ->trueValue(true)
+                ->falseValue(false),
+
+            Boolean::make(__('Short-Term Rental'), 'is_short_term')
                 ->sortable()
                 ->filterable()
                 ->trueValue(true)

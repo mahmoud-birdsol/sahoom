@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace courte durée – SAHOOME</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#B8962E;--gold-light:#D4AE52;--gold-pale:#F5EDD6;--cream:#FAFAF7;--nude:#F4EFE8;--white:#FFFFFF;--ink:#111318;--muted:#7A7D8A;--border:#E8E2D8;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;cursor:none;}
+.cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.4;transition:width .3s,height .3s;}
+.cursor.expand{width:14px;height:14px;}.cursor-ring.expand{width:52px;height:52px;opacity:.2;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:600;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;background:rgba(250,250,247,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-wordmark{font-family:'Montserrat',sans-serif;font-weight:300;font-size:.95rem;letter-spacing:.35em;text-transform:uppercase;color:var(--ink);}
+.nav-menu{display:flex;align-items:center;gap:2px;list-style:none;}
+.nav-menu a{font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--muted);padding:8px 14px;transition:color .2s;}
+.nav-menu a:hover{color:var(--gold);}
+.nav-divider{width:1px;height:16px;background:var(--border);margin:0 6px;}
+.nav-contact{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--gold);border:1px solid var(--gold);padding:9px 22px;transition:background .25s,color .25s;}
+.nav-contact:hover{background:var(--gold);color:var(--white);}
+
+/* BREADCRUMB */
+.bread-bar{padding:100px 6% 0;background:var(--cream);}
+.bread{font-size:.6rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:16px 0;display:flex;align-items:center;gap:10px;}
+.bread a{color:var(--muted);text-decoration:none;transition:color .2s;}
+.bread a:hover{color:var(--gold);}
+.bread span{color:var(--border);}
+
+/* GALLERY */
+.gallery{display:grid;grid-template-columns:1.8fr 1fr;grid-template-rows:320px 180px;gap:4px;padding:0 6%;max-width:1280px;margin:0 auto;}
+.g-main{grid-row:1/3;overflow:hidden;position:relative;background:var(--nude);}
+.g-main img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease;}
+.g-main:hover img{transform:scale(1.03);}
+.g-badge{position:absolute;top:0;left:0;padding:10px 16px;font-size:.58rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:var(--ink);color:var(--white);}
+.g-sub{overflow:hidden;position:relative;background:var(--nude);cursor:pointer;}
+.g-sub img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.g-sub:hover img{transform:scale(1.06);}
+.g-more{position:absolute;inset:0;background:rgba(17,19,24,.45);display:flex;align-items:center;justify-content:center;}
+.g-more span{font-size:.65rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--white);}
+
+/* LAYOUT */
+.detail-layout{display:grid;grid-template-columns:1fr 360px;gap:52px;max-width:1280px;margin:0 auto;padding:44px 6% 90px;align-items:start;}
+
+/* LEFT */
+.dh{padding-bottom:30px;border-bottom:1px solid var(--border);margin-bottom:30px;}
+.dh-tag{font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.dh-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:300;color:var(--ink);line-height:1.1;margin-bottom:10px;}
+.dh-loc{font-size:.8rem;font-weight:300;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.dh-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.dh-avail{display:inline-flex;align-items:center;gap:6px;font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;}
+.avail-yes{background:#D1FAE5;color:#065F46;}
+.avail-no{background:#FEF3C7;color:#D97706;}
+.dh-ref{font-size:.62rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+
+/* SPECS BAND */
+.specs-band{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:36px;}
+.spec-item{background:var(--white);padding:20px 16px;text-align:center;}
+.spec-icon{font-size:1.2rem;margin-bottom:7px;}
+.spec-label{font-size:.56rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.spec-val{font-size:.86rem;font-weight:500;color:var(--ink);}
+
+/* SECTIONS */
+.dsec{margin-bottom:34px;}
+.ds-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.ds-line{width:22px;height:1px;background:var(--gold);}
+.ds-text{font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);}
+.detail-desc{font-size:.87rem;font-weight:300;line-height:1.95;color:var(--muted);}
+
+/* TAGS */
+.tags-wrap{display:flex;flex-wrap:wrap;gap:7px;}
+.dtag{font-size:.68rem;font-weight:400;color:var(--ink);background:var(--white);padding:7px 14px;border:1px solid var(--border);}
+
+/* CALENDAR */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.cal-day{text-align:center;}
+.cal-name{font-size:.56rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.cal-num{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:400;}
+.d-free{background:var(--white);color:var(--ink);border:1px solid var(--border);}
+.d-busy{background:#FEE2E2;color:#B91C1C;text-decoration:line-through;}
+.d-today{background:var(--gold);color:var(--white);}
+.cal-legend{font-size:.66rem;font-weight:300;color:var(--muted);margin-top:10px;letter-spacing:.04em;}
+
+/* RULES */
+.rules-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.rules-list li{font-size:.83rem;font-weight:300;color:var(--muted);display:flex;align-items:flex-start;gap:12px;line-height:1.65;}
+.rules-list li::before{content:'—';color:var(--gold);flex-shrink:0;}
+
+/* ══ BOOKING CARD ══ */
+.booking-card{background:var(--white);border:1px solid var(--border);padding:30px 26px;position:sticky;top:96px;}
+
+.bc-price{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:300;color:var(--ink);line-height:1;margin-bottom:4px;}
+.bc-price sub{font-family:'Montserrat',sans-serif;font-size:.76rem;font-weight:300;color:var(--muted);}
+.bc-avail{font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding-bottom:20px;border-bottom:1px solid var(--border);margin-bottom:20px;}
+
+/* TABS */
+.bc-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--border);}
+.bc-tab{flex:1;padding:10px 6px;background:transparent;border:none;border-right:1px solid var(--border);font-family:'Montserrat',sans-serif;font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:background .2s,color .2s;}
+.bc-tab:last-child{border-right:none;}
+.bc-tab.active{background:var(--ink);color:var(--white);}
+.bc-tab:not(.active):hover{background:var(--nude);}
+
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+.fl{font-size:.56rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block;margin-top:12px;}
+.fl:first-child{margin-top:0;}
+.fi{width:100%;background:var(--nude);border:1px solid var(--border);padding:11px 13px;font-family:'Montserrat',sans-serif;font-size:.83rem;font-weight:300;color:var(--ink);outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--gold);}
+.form-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.form-2 .fl{margin-top:0;}
+
+.action-btn{width:100%;background:var(--gold);color:var(--white);border:none;padding:13px;font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .25s;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:7px;}
+.action-btn:hover{background:var(--ink);}
+.action-btn-ink{background:var(--ink);}
+.action-btn-ink:hover{background:var(--gold);}
+
+.wa-row{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:10px;padding:11px;border:1px solid #25D366;color:#25D366;font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background .2s,color .2s;}
+.wa-row:hover{background:#25D366;color:var(--white);}
+
+.success-box{display:none;padding:12px;margin-top:12px;text-align:center;}
+.sb-green{background:#D1FAE5;border:1px solid #6EE7B7;}
+.sb-green p{font-size:.76rem;font-weight:500;color:#065F46;}
+.sb-blue{background:#EEF2FF;border:1px solid #C7D2FE;}
+.sb-blue p{font-size:.76rem;font-weight:500;color:#3730A3;}
+
+.bc-note{font-size:.65rem;font-weight:300;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6;}
+.contract-note{background:var(--gold-pale);border:1px solid #E8D5A8;padding:12px 14px;margin-top:12px;display:flex;align-items:flex-start;gap:9px;}
+.contract-note span{font-size:.74rem;font-weight:300;color:var(--ink);line-height:1.6;}
+
+/* SIMILAR */
+.similar-sec{background:var(--white);padding:70px 6%;border-top:1px solid var(--border);}
+.similar-inner{max-width:1280px;margin:0 auto;}
+.sim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-top:36px;}
+.sim-card{background:var(--white);overflow:hidden;cursor:pointer;text-decoration:none;display:block;transition:opacity .3s;}
+.sim-card:hover{opacity:.85;}
+.sim-img{height:180px;overflow:hidden;}
+.sim-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.sim-card:hover .sim-img img{transform:scale(1.05);}
+.sim-body{padding:16px 18px 20px;}
+.sim-cat{font-size:.56rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.sim-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:400;color:var(--ink);margin-bottom:4px;}
+.sim-loc{font-size:.72rem;font-weight:300;color:var(--muted);margin-bottom:8px;}
+.sim-price{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ink);}
+.sim-price sub{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:300;color:var(--muted);}
+
+/* ── CALENDRIER INTERACTIF ── */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:10px 14px;background:var(--nude);border:1px solid var(--border);}
+.cal-nav-btn{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--ink);padding:4px 10px;transition:color .2s;}
+.cal-nav-btn:hover{color:var(--gold);}
+.cal-month-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:400;color:var(--ink);letter-spacing:.04em;}
+.cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px;}
+.cal-header span{text-align:center;font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:6px 0;}
+.cal-body{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:14px;}
+.cal-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:400;cursor:pointer;border-radius:3px;transition:all .15s;border:1.5px solid transparent;position:relative;}
+.cal-cell.empty{cursor:default;}
+.cal-cell.past{color:var(--border);cursor:not-allowed;}
+.cal-cell.today{background:var(--gold);color:var(--white);font-weight:600;}
+.cal-cell.free{background:var(--white);color:var(--ink);border-color:var(--border);}
+.cal-cell.free:hover{border-color:var(--gold);background:var(--gold-pale);}
+.cal-cell.busy{background:#FEE2E2;color:#B91C1C;text-decoration:line-through;cursor:not-allowed;}
+.cal-cell.selected{background:var(--ink);color:var(--white);border-color:var(--ink);}
+.cal-cell.in-range{background:var(--gold-pale);border-color:var(--gold-line);}
+.cal-cell.range-start,.cal-cell.range-end{background:var(--ink);color:var(--white);}
+
+.cal-legend-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:300;color:var(--muted);}
+.leg-dot{width:12px;height:12px;border-radius:2px;flex-shrink:0;}
+
+.cal-selection{background:var(--white);border:1px solid var(--border);padding:16px 18px;margin-top:6px;}
+.cal-sel-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px;}
+.cal-sel-item{text-align:center;}
+.cal-sel-label{font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.cal-sel-val{font-family:'Playfair Display',serif;font-size:1rem;font-weight:400;color:var(--ink);}
+.cal-sel-arrow{font-size:1.2rem;color:var(--gold);}
+.cal-reserve-btn{width:100%;background:var(--gold);color:var(--white);border:none;padding:11px;font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .25s;}
+.cal-reserve-btn:hover{background:var(--ink);}
+
+/* ── MAPS ── */
+.maps-sec{background:var(--white);padding:60px 6%;border-top:1px solid var(--border);}
+.maps-inner{max-width:1280px;margin:0 auto;}
+.maps-header{margin-bottom:22px;}
+.maps-frame{overflow:hidden;border:1px solid var(--border);}
+.maps-frame iframe{display:block;}
+
+/* WA FLOAT */
+.wa-btn{position:fixed;bottom:28px;right:28px;z-index:400;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .25s;text-decoration:none;}
+.wa-btn:hover{transform:scale(1.08);}
+.wa-btn svg{width:25px;height:25px;fill:#fff;}
+
+/* FOOTER */
+footer{background:var(--ink);padding:58px 6% 26px;}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:22px;}
+.footer-logo-text{font-family:'Montserrat',sans-serif;font-weight:300;font-size:.88rem;letter-spacing:.35em;text-transform:uppercase;color:var(--white);margin-bottom:12px;display:block;}
+.footer-brand-text{font-size:.8rem;font-weight:300;line-height:1.8;color:rgba(255,255,255,.35);max-width:220px;}
+.fcol h4{font-size:.58rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:14px;}
+.fcol ul{list-style:none;}
+.fcol li{margin-bottom:8px;}
+.fcol a{font-size:.78rem;font-weight:300;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;}
+.fcol a:hover{color:var(--gold-light);}
+.footer-bottom{display:flex;justify-content:space-between;font-size:.66rem;font-weight:300;color:rgba(255,255,255,.22);flex-wrap:wrap;gap:8px;}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}
+
+@media(max-width:1024px){.detail-layout{grid-template-columns:1fr;}.booking-card{position:static;}.gallery{grid-template-columns:1fr;grid-template-rows:auto;}.g-main{height:280px;grid-row:auto;}.g-sub{display:none;}.specs-band{grid-template-columns:repeat(2,1fr);}.sim-grid{grid-template-columns:1fr 1fr;}.footer-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){.nav-menu{display:none;}.sim-grid{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr;}.form-2{grid-template-columns:1fr;} body{cursor:auto;}.cursor,.cursor-ring{display:none;}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="logo">
+    <svg width="28" height="32" viewBox="0 0 80 90" fill="none"><path d="M40 5C25 5 13 17.5 13 33C13 53 40 85 40 85C40 85 67 53 67 33C67 17.5 55 5 40 5Z" fill="none" stroke="#B8962E" stroke-width="5" stroke-linejoin="round"/><path d="M40 16L24 29V47H33V37H47V47H56V29L40 16Z" fill="none" stroke="#B8962E" stroke-width="4.5" stroke-linejoin="round"/><rect x="36.5" y="37" width="7" height="10" rx="1" fill="#B8962E"/></svg>
+    <span class="logo-wordmark">Sahoome</span>
+  </a>
+  <ul class="nav-menu">
+    <li><a href="ephemere.html" style="color:var(--gold)">Location courte durée</a></li>
+    <li><a href="vente.html">Vente</a></li>
+    <li><a href="ephemere.html" style="color:var(--gold)">Location courte durée</a></li>
+    <li><a href="conseils.html">Conseils</a></li>
+    <li><a href="about.html">À propos</a></li>
+    <div class="nav-divider"></div>
+    <li><a href="contact.html" class="nav-contact">Nous contacter</a></li>
+  </ul>
+</nav>
+
+<div class="bread-bar">
+  <div class="bread">
+    <a href="index.html">Accueil</a><span>›</span>
+    <a href="ephemere.html" style="color:var(--gold)">Location courte durée</a><span>›</span>
+    <span>Boutique chic centre-ville</span>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery">
+  <div class="g-main">
+    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1100&q=85" alt="Appartement Cocody">
+    <div class="g-badge">Location</div>
+  </div>
+  <div class="g-sub"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80" alt="Salon"></div>
+  <div class="g-sub">
+    <img src="https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=600&q=80" alt="Chambre">
+    <div class="g-more"><span>+ 4 photos</span></div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div class="detail-layout">
+  <div>
+    <!-- HEADER -->
+    <div class="dh reveal">
+      <div class="dh-tag">Local commercial · Plateau</div>
+      <h1 class="dh-title">Boutique chic<br>centre-ville</h1>
+      <div class="dh-loc">📍 Cocody Riviera, Abidjan</div>
+      <div class="dh-row">
+        <div class="dh-avail avail-yes">● Disponible</div>
+        <div class="dh-ref">Réf. SAH-E01</div>
+      </div>
+    </div>
+
+    <!-- SPECS -->
+    <div class="specs-band reveal">
+      <div class="spec-item"><div class="spec-icon">📐</div><div class="spec-label">Superficie</div><div class="spec-val">85 m²</div></div>
+      <div class="spec-item"><div class="spec-icon">📐</div><div class="spec-label">Superficie</div><div class="spec-val">85 m²</div></div>
+      <div class="spec-item"><div class="spec-icon">🏢</div><div class="spec-label">Étage</div><div class="spec-val">3ème</div></div>
+      <div class="spec-item"><div class="spec-icon">📅</div><div class="spec-label">Disponible</div><div class="spec-val">Dès maintenant</div></div>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="dsec reveal">
+      <div class="ds-head"><div class="ds-line"></div><span class="ds-text">Description</span></div>
+      <p class="detail-desc">Local commercial idéalement situé au cœur du Plateau, le centre d'affaires d'Abidjan. Avec sa grande vitrine donnant directement sur une avenue très passante, ce local bénéficie d'une visibilité exceptionnelle et d'un flux piétonnier important.<br><br>L'espace comprend une zone de vente principale de 65 m², une réserve de 20 m², des sanitaires et un espace bureau. Climatisation, éclairage LED et câblage électrique renforcé. Idéal pour un pop-up store, une vente courte durée, un showroom ou une exposition.</p>
+    </div>
+
+    <!-- ÉQUIPEMENTS -->
+    <div class="dsec reveal">
+      <div class="ds-head"><div class="ds-line"></div><span class="ds-text">Équipements inclus</span></div>
+      <div class="tags-wrap">
+        <span class="dtag">Vitrine sur rue</span><span class="dtag">Climatisation</span><span class="dtag">WiFi inclus</span><span class="dtag">Éclairage LED</span><span class="dtag">Sécurité</span><span class="dtag">Réserve</span><span class="dtag">Sanitaires</span><span class="dtag">Avenue passante</span>
+      </div>
+    </div>
+
+    <!-- CALENDRIER INTERACTIF -->
+    <div class="dsec reveal">
+      <div class="ds-head"><div class="ds-line"></div><span class="ds-text">Choisissez vos dates</span></div>
+
+      <!-- Navigation mois -->
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="prevMonth()">‹</button>
+        <span class="cal-month-title" id="calMonthTitle"></span>
+        <button class="cal-nav-btn" onclick="nextMonth()">›</button>
+      </div>
+
+      <!-- En-têtes jours -->
+      <div class="cal-header">
+        <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+      </div>
+
+      <!-- Grille jours -->
+      <div class="cal-body" id="calBody"></div>
+
+      <!-- Légende & sélection -->
+      <div class="cal-legend-row">
+        <span class="leg-item"><span class="leg-dot" style="background:var(--gold)"></span>Aujourd'hui</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#D1FAE5;border:1px solid #6EE7B7"></span>Disponible</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#FEE2E2;border:1px solid #FCA5A5"></span>Réservé</span>
+        <span class="leg-item"><span class="leg-dot" style="background:var(--ink)"></span>Sélectionné</span>
+      </div>
+
+      <!-- Résumé sélection -->
+      <div class="cal-selection" id="calSelection" style="display:none">
+        <div class="cal-sel-row">
+          <div class="cal-sel-item">
+            <div class="cal-sel-label">Date de début</div>
+            <div class="cal-sel-val" id="selFrom">—</div>
+          </div>
+          <div class="cal-sel-arrow">→</div>
+          <div class="cal-sel-item">
+            <div class="cal-sel-label">Date de fin</div>
+            <div class="cal-sel-val" id="selTo">—</div>
+          </div>
+          <div class="cal-sel-item">
+            <div class="cal-sel-label">Durée</div>
+            <div class="cal-sel-val" id="selDays">—</div>
+          </div>
+          <div class="cal-sel-item">
+            <div class="cal-sel-label">Total estimé</div>
+            <div class="cal-sel-val" id="selPrice" style="color:var(--gold)">—</div>
+          </div>
+        </div>
+        <button class="cal-reserve-btn" onclick="applyDates()">Utiliser ces dates pour réserver →</button>
+      </div>
+    </div>
+
+    <!-- CONDITIONS -->
+    <div class="dsec reveal">
+      <div class="ds-head"><div class="ds-line"></div><span class="ds-text">Conditions d'occupation</span></div>
+      <ul class="rules-list">
+        <li>Location au jour, à la semaine ou au mois</li><li>Caution équivalente à 1 semaine de loyer</li><li>Remise des clés après confirmation du paiement</li><li>Local restitué propre et en état initial</li><li>Contrat digital signé avant l'accès</li><li>Annulation gratuite jusqu'à 48h avant le début</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOKING CARD -->
+  <div class="booking-card reveal">
+    <div class="bc-price">120 000 FCFA <sub>/semaine</sub></div>
+    <div class="bc-avail" style="color:#15803D;margin-top:6px;">● Disponible maintenant</div>
+
+    <div class="bc-tabs">
+      <button class="bc-tab active" onclick="switchTab(this,'contact')">✉ Contact</button>
+      <button class="bc-tab" onclick="switchTab(this,'visit')">👁 Visite</button>
+      <button class="bc-tab" onclick="switchTab(this,'reserve')">📋 Réserver</button>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="tab-pane active" id="pane-contact">
+      <p style="font-size:.78rem;font-weight:300;color:var(--muted);line-height:1.7;margin-bottom:14px;">Une question sur ce bien ? Contactez-nous directement.</p>
+      <label class="fl">Nom complet</label>
+      <input type="text" class="fi" id="cName" placeholder="Votre nom et prénom">
+      <label class="fl">Téléphone / WhatsApp</label>
+      <input type="tel" class="fi" id="cPhone" placeholder="+225 07 00 00 00">
+      <label class="fl">Message</label>
+      <textarea class="fi" id="cMsg" rows="3" style="resize:none;" placeholder="Je suis intéressé(e) par cet appartement…"></textarea>
+      <button class="action-btn" onclick="submitContact()">Envoyer →</button>
+      <a class="wa-row" href="https://wa.me/41783077079" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <div class="success-box sb-green" id="sc"><p>✓ Message envoyé ! Réponse sous 24h.</p></div>
+    </div>
+
+    <!-- VISITE -->
+    <div class="tab-pane" id="pane-visit">
+      <p style="font-size:.78rem;font-weight:300;color:var(--muted);line-height:1.7;margin-bottom:14px;">Visitez ce bien avant de vous décider. Visite gratuite et sans engagement.</p>
+      <label class="fl">Nom complet</label>
+      <input type="text" class="fi" id="vName" placeholder="Votre nom et prénom">
+      <label class="fl">Téléphone / WhatsApp</label>
+      <input type="tel" class="fi" id="vPhone" placeholder="+225 07 00 00 00">
+      <div class="form-2">
+        <div><label class="fl">Date souhaitée</label><input type="date" class="fi" id="vDate"></div>
+        <div><label class="fl">Créneau</label>
+          <select class="fi" id="vTime"><option value="">Choisir</option><option>Matin 8h–12h</option><option>Après-midi 12h–17h</option><option>Fin de journée 17h–19h</option></select>
+        </div>
+      </div>
+      <button class="action-btn action-btn-ink" onclick="submitVisit()">Demander une visite →</button>
+      <div class="success-box sb-blue" id="sv"><p>✓ Demande envoyée ! Confirmation sous 24h.</p></div>
+      <p class="bc-note">Visite gratuite · Sans engagement · Confirmation sous 24h</p>
+    </div>
+
+    <!-- RÉSERVER -->
+    <div class="tab-pane" id="pane-reserve">
+      <p style="font-size:.78rem;font-weight:300;color:var(--muted);line-height:1.7;margin-bottom:14px;">Choisissez votre mode de location et votre caution préférée.</p>
+      <label class="fl">Nom complet</label>
+      <input type="text" class="fi" id="rName" placeholder="Votre nom et prénom">
+      <label class="fl">Téléphone / WhatsApp</label>
+      <input type="tel" class="fi" id="rPhone" placeholder="+225 07 00 00 00">
+      <label class="fl" style="margin-top:12px">Durée souhaitée</label>
+      <select class="fi" id="rDuration">
+        <option value="">Sélectionner</option>
+        <option value="jour">À la journée</option>
+        <option value="semaine">À la semaine</option>
+        <option value="mois">Au mois</option>
+      </select>
+      <div class="form-2" style="margin-top:12px;">
+        <div><label class="fl">Date de début</label><input type="date" class="fi" id="rFrom"></div>
+        <div><label class="fl">Date de fin</label><input type="date" class="fi" id="rTo"></div>
+      </div>
+      <label class="fl">Mode de caution</label>
+      <select class="fi" id="rCaution">
+        <option value="">Choisir votre caution</option>
+        <option value="cheque">Chèque de garantie</option>
+        <option value="wave">Dépôt Wave Mobile Money</option>
+        <option value="orange">Dépôt Orange Money</option>
+        <option value="virement">Virement bancaire</option>
+        <option value="mtn">MTN Mobile Money</option>
+      </select>
+      <button class="action-btn" onclick="submitReserve()">Envoyer ma demande →</button>
+      <div class="success-box sb-green" id="sr"><p>✓ Demande reçue ! Contrat envoyé sous 24h.</p></div>
+      <div class="contract-note"><span>📄</span><span>Le contrat de location vous sera envoyé par email après confirmation.</span></div>
+      <p class="bc-note">Confirmation sous 24h · Contrat digital · Paiement à la remise des clés</p>
+    </div>
+  </div>
+</div>
+
+<!-- MAPS -->
+<section class="maps-sec">
+  <div class="maps-inner">
+    <div class="maps-header">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px;">
+        <div style="width:22px;height:1px;background:var(--gold);"></div>
+        <span style="font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);">Localisation</span>
+      </div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:300;color:var(--ink);" id="mapsTitle">Situé au Plateau, Abidjan</h2>
+      <p style="font-size:.84rem;font-weight:300;color:var(--muted);margin-top:6px;" id="mapsAddr">📍 Plateau, Abidjan, Côte d'Ivoire</p>
+    </div>
+    <div class="maps-frame">
+      <iframe
+        id="mapsIframe"
+        src="https://maps.google.com/maps?q=Plateau,Abidjan,Cote+d+Ivoire&z=15&output=embed"
+        width="100%" height="420" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- SIMILAR -->
+<section class="similar-sec">
+  <div class="similar-inner">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px;"><div style="width:22px;height:1px;background:var(--gold);"></div><span style="font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);">Vous aimerez aussi</span></div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:300;color:var(--ink);">Espaces similaires</h2>
+    <div class="sim-grid">
+      <a class="sim-card" href="detail-ephemere.html"><div class="sim-img"><img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&q=80" alt=""></div><div class="sim-body"><div class="sim-cat">Showroom · Cocody</div><div class="sim-title">Showroom lumineux & moderne</div><div class="sim-loc">📍 Cocody, Abidjan</div><div class="sim-price">180 000 FCFA <sub>/semaine</sub></div></div></a><a class="sim-card" href="detail-ephemere.html"><div class="sim-img"><img src="https://images.unsplash.com/photo-1560472355-536de3962603?w=500&q=80" alt=""></div><div class="sim-body"><div class="sim-cat">Événementiel · Marcory</div><div class="sim-title">Espace ouvert grande surface</div><div class="sim-loc">📍 Marcory, Abidjan</div><div class="sim-price">95 000 FCFA <sub>/semaine</sub></div></div></a><a class="sim-card" href="detail-ephemere.html"><div class="sim-img"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=500&q=80" alt=""></div><div class="sim-body"><div class="sim-cat">Local · Adjamé</div><div class="sim-title">Local Adjamé marché central</div><div class="sim-loc">📍 Adjamé, Abidjan</div><div class="sim-price">50 000 FCFA <sub>/semaine</sub></div></div></a>
+    </div>
+  </div>
+</section>
+
+<a class="wa-btn" href="https://wa.me/41783077079" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<footer>
+  <span class="footer-logo-text">Sahoome</span>
+  <div class="footer-grid">
+    <div><p class="footer-brand-text">Votre plateforme immobilière de référence à Abidjan.</p></div>
+    <div class="fcol"><h4>Services</h4><ul><li><a href="ephemere.html" style="color:var(--gold)">Location courte durée</a></li><li><a href="vente.html">Vente</a></li><li><a href="ephemere.html" style="color:var(--gold)">Location courte durée</a></li></ul></div>
+    <div class="fcol"><h4>Sahoome</h4><ul><li><a href="about.html">À propos</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="fcol"><h4>Contact</h4><ul><li><a href="mailto:sahouapro@gmail.com">sahouapro@gmail.com</a></li><li><a href="tel:+41783077079">+41 78 307 70 79</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 SAHOOME</span><span>Abidjan, Côte d'Ivoire</span></div>
+</footer>
+
+<script>
+// ── DONNÉES BIENS ──
+const allProps = [
+  {id:0,title:'Boutique chic centre-ville',type:'Local commercial · Plateau',loc:'Plateau, Abidjan',commune:'Plateau',ref:'SAH-E01',avail:true,price:'120 000 FCFA',priceNum:120000,unit:'/semaine',specs:[{icon:'📐',label:'Superficie',val:'85 m²'},{icon:'🪟',label:'Vitrine',val:'Sur rue'},{icon:'⏱',label:'Durée min.',val:'1 semaine'},{icon:'📅',label:'Disponible',val:'Dès maintenant'}],img:'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1100&q=85',desc:'Local commercial idéalement situé au cœur du Plateau. Grande vitrine sur avenue très passante, visibilité exceptionnelle. Zone de vente 65 m², réserve 20 m², sanitaires, bureau. Climatisation et éclairage LED inclus.',tags:['Vitrine sur rue','Climatisation','WiFi','Éclairage LED','Sécurité','Réserve'],rules:['Location au jour, à la semaine ou au mois','Caution équivalente à 1 semaine','Remise des clés après confirmation paiement','Local restitué propre','Contrat digital avant accès'],busyDays:[3,7,12,13,18,24,25],mapQ:'Plateau,Abidjan,Cote+d+Ivoire'},
+  {id:1,title:'Showroom lumineux & moderne',type:'Showroom · Cocody',loc:'Cocody, Abidjan',commune:'Cocody',ref:'SAH-E02',avail:true,price:'180 000 FCFA',priceNum:180000,unit:'/semaine',specs:[{icon:'📐',label:'Superficie',val:'120 m²'},{icon:'🚗',label:'Parking',val:'Privé'},{icon:'⏱',label:'Durée min.',val:'1 semaine'},{icon:'📅',label:'Disponible',val:'Dès maintenant'}],img:'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1100&q=85',desc:'Grand showroom moderne à Cocody, idéal pour expositions, présentations ou événements. Lumière naturelle abondante, 3 espaces modulables, parking privé.',tags:['3 espaces','Parking privé','Climatisation','Sécurité','Vitrine'],rules:['Tarifs : 180 000 FCFA/jour · 1 000 000 FCFA/semaine · 3 500 000 FCFA/mois','Caution requise selon la durée et le projet','Usage commercial uniquement','Contrat digital signé avant accès'],busyDays:[5,6,10,15,20,21],mapQ:'Cocody,Abidjan,Cote+d+Ivoire'},
+  {id:2,title:'Espace ouvert grande surface',type:'Événementiel · Marcory',loc:'Marcory, Abidjan',commune:'Marcory',ref:'SAH-E03',avail:true,price:'95 000 FCFA',priceNum:95000,unit:'/semaine',specs:[{icon:'📐',label:'Superficie',val:'200 m²'},{icon:'🚗',label:'Parking',val:'Disponible'},{icon:'⏱',label:'Durée min.',val:'1 jour'},{icon:'📅',label:'Disponible',val:'Dès maintenant'}],img:'https://images.unsplash.com/photo-1560472355-536de3962603?w=1100&q=85',desc:'Vaste espace open space à Marcory parfait pour grandes ventes, événements ou animations. Capacité importante, parking privatif.',tags:['Open space','Parking','Sécurité','Climatisation'],rules:['Tarifs : 95 000 FCFA/jour · 550 000 FCFA/semaine · 2 000 000 FCFA/mois','Caution requise','Contrat digital signé avant accès'],busyDays:[8,9,14,22,23],mapQ:'Marcory,Abidjan,Cote+d+Ivoire'},
+  {id:3,title:'Appartement meublé courte durée',type:'Location courte durée · Cocody',loc:'Cocody Riviera, Abidjan',commune:'Cocody',ref:'SAH-E04',avail:false,price:'45 000 FCFA',priceNum:45000,unit:'/nuit',specs:[{icon:'🛏',label:'Chambres',val:'2'},{icon:'📐',label:'Superficie',val:'55 m²'},{icon:'📶',label:'WiFi',val:'Inclus'},{icon:'❄️',label:'Climatisation',val:'Oui'}],img:'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=1100&q=85',desc:'Appartement meublé pour séjour courte durée à Cocody Riviera. 2 chambres, salon, cuisine. Idéal pour expatriés.',tags:['Meublé','WiFi','Climatisation','Cuisine','Linge'],rules:['Durée minimum 2 nuits','Check-in 14h','Check-out 11h'],busyDays:[1,2,3,4,5,6,7,11,12,13],mapQ:'Cocody+Riviera,Abidjan,Cote+d+Ivoire'},
+  {id:4,title:'Local Adjamé marché central',type:'Showroom · Adjamé',loc:'Adjamé, Abidjan',commune:'Adjamé',ref:'SAH-E05',avail:true,price:'50 000 FCFA',priceNum:50000,unit:'/semaine',specs:[{icon:'📐',label:'Superficie',val:'45 m²'},{icon:'👥',label:'Passage',val:'Très élevé'},{icon:'⏱',label:'Durée min.',val:'1 semaine'},{icon:'📅',label:'Disponible',val:'Dès maintenant'}],img:'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1100&q=85',desc:'Local stratégique au cœur du marché d\'Adjamé. Fort passage piétonnier garanti. Parfait pour alimentation ou vente directe.',tags:['Passage élevé','Vitrine','Électricité','Eau'],rules:['Tarifs : 220 000 FCFA/jour · 1 200 000 FCFA/semaine · 4 500 000 FCFA/mois','Caution à la demande selon durée et usage','Réservation confirmée 48h avant','Contrat digital signé avant accès'],busyDays:[16,17,19,26,27],mapQ:'Adjame,Abidjan,Cote+d+Ivoire'},
+  {id:5,title:'Espace coworking & événements',type:'Bureau courte durée · Cocody',loc:'Cocody, Abidjan',commune:'Cocody',ref:'SAH-E06',avail:true,price:'220 000 FCFA',priceNum:220000,unit:'/semaine',specs:[{icon:'🏢',label:'Salles',val:'4'},{icon:'📶',label:'WiFi fibre',val:'Inclus'},{icon:'🚗',label:'Parking',val:'Sécurisé'},{icon:'📅',label:'Disponible',val:'Dès maintenant'}],img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1100&q=85',desc:'Espace polyvalent haut de gamme à Cocody. 4 salles modulables pour ateliers, séminaires ou événements. WiFi fibre, parking sécurisé.',tags:['4 salles','WiFi fibre','Parking','Cuisine','Climatisation'],rules:['Tarifs : 220 000 FCFA/jour · 1 200 000 FCFA/semaine · 4 500 000 FCFA/mois','Caution à la demande selon durée et usage','Réservation confirmée 48h avant','Contrat digital signé avant accès'],busyDays:[2,9,16,23,28,29],mapQ:'Cocody,Abidjan,Cote+d+Ivoire'}
+];
+
+// ── CHARGEMENT DU BIEN ──
+const urlId = parseInt(new URLSearchParams(window.location.search).get('id')) || 0;
+const prop = allProps[urlId] || allProps[0];
+
+function loadProperty() {
+  document.title = prop.title + ' – Courte durée SAHOOME';
+  const bc = document.querySelector('.bread');
+  if(bc) bc.innerHTML = '<a href="index.html">Accueil</a><span class="bread-sep">›</span><a href="ephemere.html">Location courte durée</a><span class="bread-sep">›</span><span>' + prop.title + '</span>';
+  const mainImg = document.querySelector('.g-main img'); if(mainImg) mainImg.src = prop.img;
+  const badge = document.querySelector('.g-badge'); if(badge){badge.textContent='Courte durée';badge.style.background='rgba(17,19,24,.85)';badge.style.color='var(--gold)';}
+  const dType = document.querySelector('.dh-tag'); if(dType) dType.textContent = prop.type;
+  const dTitle = document.querySelector('.dh-title'); if(dTitle) dTitle.textContent = prop.title;
+  const dLoc = document.querySelector('.dh-loc'); if(dLoc) dLoc.innerHTML = '📍 ' + prop.loc;
+  const dRef = document.querySelector('.dh-ref'); if(dRef) dRef.textContent = 'Réf. ' + prop.ref;
+  const dAvail = document.querySelector('.dh-avail'); if(dAvail){dAvail.textContent=prop.avail?'● Disponible':'● Réservé';dAvail.className='dh-avail '+(prop.avail?'avail-yes':'avail-no');}
+  const bcPrice = document.querySelector('.bc-price'); if(bcPrice) bcPrice.innerHTML = prop.price + ' <sub>' + prop.unit + '</sub>';
+  const bcAvail = document.querySelector('.bc-avail'); if(bcAvail){bcAvail.textContent=prop.avail?'● Disponible maintenant':'✗ Actuellement réservé';bcAvail.style.color=prop.avail?'#15803D':'#D97706';}
+  const specsGrid = document.querySelector('.specs-band');
+  if(specsGrid) specsGrid.innerHTML = prop.specs.map(s=>`<div class="spec-item"><div class="spec-icon">${s.icon}</div><div class="spec-label">${s.label}</div><div class="spec-val">${s.val}</div></div>`).join('');
+  const desc = document.querySelector('.detail-desc'); if(desc) desc.textContent = prop.desc;
+  const tagsWrap = document.querySelector('.tags-wrap'); if(tagsWrap) tagsWrap.innerHTML = prop.tags.map(t=>`<span class="dtag">${t}</span>`).join('');
+  const rulesList = document.querySelector('.rules-list'); if(rulesList) rulesList.innerHTML = prop.rules.map(r=>`<li>${r}</li>`).join('');
+  // Maps
+  const mapsTitle = document.getElementById('mapsTitle'); if(mapsTitle) mapsTitle.textContent = 'Situé à ' + prop.commune + ', Abidjan';
+  const mapsAddr = document.getElementById('mapsAddr'); if(mapsAddr) mapsAddr.textContent = '📍 ' + prop.loc;
+  const mapsIframe = document.getElementById('mapsIframe');
+  if(mapsIframe) mapsIframe.src = 'https://maps.google.com/maps?q=' + prop.mapQ + '&z=15&output=embed';
+}
+
+// ── CALENDRIER INTERACTIF ──
+let currentDate = new Date();
+let calYear = currentDate.getFullYear();
+let calMonth = currentDate.getMonth();
+let rangeStart = null, rangeEnd = null;
+
+const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+function renderCalendar() {
+  document.getElementById('calMonthTitle').textContent = months[calMonth] + ' ' + calYear;
+  const body = document.getElementById('calBody');
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const offset = firstDay === 0 ? 6 : firstDay - 1; // Monday start
+  let html = '';
+  // Empty cells
+  for(let i = 0; i < offset; i++) html += '<div class="cal-cell empty"></div>';
+  // Day cells
+  for(let d = 1; d <= daysInMonth; d++) {
+    const thisDate = new Date(calYear, calMonth, d);
+    const today = new Date(); today.setHours(0,0,0,0);
+    const isPast = thisDate < today;
+    const isToday = thisDate.getTime() === today.getTime();
+    const isBusy = prop.busyDays.includes(d) && calMonth === new Date().getMonth();
+    const isStart = rangeStart && thisDate.getTime() === rangeStart.getTime();
+    const isEnd = rangeEnd && thisDate.getTime() === rangeEnd.getTime();
+    const inRange = rangeStart && rangeEnd && thisDate > rangeStart && thisDate < rangeEnd;
+    let cls = 'cal-cell';
+    if(isPast) cls += ' past';
+    else if(isBusy) cls += ' busy';
+    else if(isToday) cls += ' today';
+    else if(isStart || isEnd) cls += ' range-end';
+    else if(inRange) cls += ' in-range';
+    else cls += ' free';
+    const clickable = !isPast && !isBusy ? `onclick="selectDay(${calYear},${calMonth},${d})"` : '';
+    html += `<div class="${cls}" ${clickable}>${d}</div>`;
+  }
+  body.innerHTML = html;
+  updateSelection();
+}
+
+function selectDay(y, m, d) {
+  const clicked = new Date(y, m, d);
+  if(!rangeStart || (rangeStart && rangeEnd)) {
+    rangeStart = clicked; rangeEnd = null;
+  } else {
+    if(clicked <= rangeStart) { rangeStart = clicked; rangeEnd = null; }
+    else { rangeEnd = clicked; }
+  }
+  renderCalendar();
+}
+
+function updateSelection() {
+  const sel = document.getElementById('calSelection');
+  if(!rangeStart) { sel.style.display='none'; return; }
+  sel.style.display = 'block';
+  const fmt = d => d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
+  document.getElementById('selFrom').textContent = fmt(rangeStart);
+  if(rangeEnd) {
+    document.getElementById('selTo').textContent = fmt(rangeEnd);
+    const days = Math.round((rangeEnd - rangeStart) / 86400000);
+    const weeks = Math.ceil(days / 7);
+    document.getElementById('selDays').textContent = days + ' jour' + (days>1?'s':'');
+    const total = (prop.unit === '/nuit') ? days * prop.priceNum : weeks * prop.priceNum;
+    document.getElementById('selPrice').textContent = total.toLocaleString('fr-FR') + ' FCFA';
+  } else {
+    document.getElementById('selTo').textContent = '—';
+    document.getElementById('selDays').textContent = '—';
+    document.getElementById('selPrice').textContent = '—';
+  }
+}
+
+function prevMonth() {
+  calMonth--; if(calMonth < 0){calMonth=11;calYear--;} renderCalendar();
+}
+function nextMonth() {
+  calMonth++; if(calMonth > 11){calMonth=0;calYear++;} renderCalendar();
+}
+
+function applyDates() {
+  if(!rangeStart || !rangeEnd) { alert('Veuillez sélectionner une date de début et de fin.'); return; }
+  const fmt = d => d.toISOString().split('T')[0];
+  // Switch to reserve tab and fill dates
+  document.querySelectorAll('.bc-tab').forEach((b,i)=>{b.classList.toggle('active',i===2);});
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>{p.classList.toggle('active',i===2);});
+  const rFrom = document.getElementById('rFrom'); if(rFrom) rFrom.value = fmt(rangeStart);
+  const rTo = document.getElementById('rTo'); if(rTo) rTo.value = fmt(rangeEnd);
+  document.querySelector('.booking-card').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+// ── TABS ──
+function switchTab(btn,pane){
+  document.querySelectorAll('.bc-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pane-'+pane).classList.add('active');
+}
+
+// ── FORMS ──
+function submitContact(){const n=document.getElementById('cName').value,p=document.getElementById('cPhone').value;if(!n||!p){alert('Veuillez remplir votre nom et téléphone.');return;}const btn=document.querySelector('#pane-contact .action-btn');btn.textContent='✓ Envoyé !';btn.style.background='#15803D';document.getElementById('sc').style.display='block';setTimeout(()=>{btn.textContent='Envoyer →';btn.style.background='';},3000);}
+function submitVisit(){const n=document.getElementById('vName').value,p=document.getElementById('vPhone').value,d=document.getElementById('vDate').value,t=document.getElementById('vTime').value;if(!n||!p||!d||!t){alert('Veuillez remplir tous les champs.');return;}const btn=document.querySelector('#pane-visit .action-btn');btn.textContent='✓ Envoyé !';btn.style.background='#3730A3';document.getElementById('sv').style.display='block';setTimeout(()=>{btn.textContent='Demander une visite →';btn.style.background='';},3000);}
+function submitReserve(){const n=document.getElementById('rName').value,p=document.getElementById('rPhone').value;if(!n||!p){alert('Veuillez remplir votre nom et téléphone.');return;}const btn=document.querySelector('#pane-reserve .action-btn');btn.textContent='✓ Demande envoyée !';btn.style.background='#15803D';document.getElementById('sr').style.display='block';setTimeout(()=>{btn.textContent='Envoyer ma demande →';btn.style.background='';},3000);}
+
+// ── INIT ──
+loadProperty();
+renderCalendar();
+const ts=new Date().toISOString().split('T')[0];
+['vDate','rFrom','rTo'].forEach(id=>{const el=document.getElementById(id);if(el)el.min=ts;});
+
+const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.classList.add('expand');ring.classList.add('expand');});el.addEventListener('mouseleave',()=>{cur.classList.remove('expand');ring.classList.remove('expand');});});
+</script>
+</body>
+</html>

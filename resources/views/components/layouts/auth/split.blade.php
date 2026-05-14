@@ -6,70 +6,88 @@
         <title>{{ $title ?? config('app.name') }}</title>
         <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=playfair-display:300,400,400i,500,300i&family=montserrat:300,400,500,600&display=swap" rel="stylesheet" />
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="min-h-screen bg-white antialiased">
+    <body class="min-h-screen antialiased" style="background: #FAFAF7; font-family: 'Montserrat', sans-serif">
 
         <div class="flex min-h-screen">
 
-            {{-- ── Left: Form panel ──────────────────────────────────────── --}}
-            <div class="relative flex w-full flex-col lg:w-1/2">
+            {{-- ── Left: Form panel ─────────────────────────────────────────────────────── --}}
+            <div class="relative flex w-full flex-col lg:w-[55%]" style="background: #FAFAF7">
 
-                {{-- Top nav bar --}}
-                <div class="flex items-center justify-between px-8 py-5">
+                {{-- Top nav --}}
+                <div class="flex items-center justify-between px-10 py-6" style="border-bottom: 1px solid #E8E2D8">
                     <a href="{{ route('home') }}" wire:navigate>
                         <x-public.logo size="sm" />
                     </a>
-                    <nav class="hidden items-center gap-6 text-sm text-zinc-500 sm:flex">
-                        <a href="#" class="transition hover:text-zinc-800">{{ __('Support') }}</a>
-                        <a href="#" class="transition hover:text-zinc-800">{{ __('Docs') }}</a>
-                        <a href="#" class="transition hover:text-zinc-800">{{ __('Contact Us') }}</a>
+                    <nav class="hidden items-center gap-7 sm:flex">
+                        <a href="{{ route('home') }}" wire:navigate
+                           style="font-size: 0.65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(30,35,48,.45)"
+                           class="transition hover:opacity-100">{{ __('Home') }}</a>
+                        <a href="{{ route('properties.index') }}" wire:navigate
+                           style="font-size: 0.65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(30,35,48,.45)"
+                           class="transition hover:opacity-100">{{ __('Properties') }}</a>
+                        <a href="{{ route('articles.index') }}" wire:navigate
+                           style="font-size: 0.65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(30,35,48,.45)"
+                           class="transition hover:opacity-100">{{ __('Articles') }}</a>
                     </nav>
                 </div>
 
                 {{-- Form area --}}
-                <div class="flex flex-1 items-center justify-center px-8 py-10">
-                    <div class="w-full max-w-sm">
+                <div class="flex flex-1 items-center justify-center px-10 py-12">
+                    <div class="w-full" style="max-width: 380px">
                         {{ $slot }}
                     </div>
                 </div>
 
                 {{-- Footer --}}
-                <div class="flex items-center justify-between px-8 py-5 text-xs text-zinc-400">
-                    <span>&copy; {{ date('Y') }} {{ config('app.name') }}</span>
-                    <div class="flex gap-4">
-                        <a href="#" class="transition hover:text-zinc-600">{{ __('Privacy') }}</a>
-                        <a href="#" class="transition hover:text-zinc-600">{{ __('Terms') }}</a>
+                <div class="flex items-center justify-between px-10 py-5"
+                     style="border-top: 1px solid #E8E2D8; font-size: 0.65rem; color: rgba(30,35,48,.35); letter-spacing: .04em">
+                    <span>&copy; {{ date('Y') }} Sahoome</span>
+                    <div class="flex gap-5">
+                        <a href="{{ route('privacy') }}" wire:navigate class="transition hover:opacity-70">{{ __('Privacy') }}</a>
+                        <a href="{{ route('terms') }}" wire:navigate class="transition hover:opacity-70">{{ __('Terms') }}</a>
                     </div>
                 </div>
             </div>
 
-            {{-- ── Right: Amber geometric panel ──────────────────────────── --}}
-            <div class="relative hidden overflow-hidden lg:flex lg:w-1/2">
-                {{-- Amber background with diagonal left edge --}}
-                <div
-                    class="absolute inset-0 bg-amber-600"
-                    style="clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%)"
-                ></div>
+            {{-- ── Right: Dark ink decorative panel ──────────────────────────────────── --}}
+            <div class="relative hidden overflow-hidden lg:flex lg:w-[45%]" style="background: #1E2330">
 
-                {{-- Subtle decorative circles --}}
-                <div class="absolute -top-24 -right-24 size-96 rounded-full bg-amber-500/40"></div>
-                <div class="absolute bottom-0 -left-10 size-72 rounded-full bg-amber-700/30"></div>
-                <div class="absolute top-1/2 right-1/4 size-48 rounded-full bg-amber-400/20"></div>
+                {{-- Gold top accent bar --}}
+                <div class="absolute top-0 left-0 right-0" style="height: 3px; background: #B8962E"></div>
+
+                {{-- Subtle diagonal grid (decorative) --}}
+                <div class="absolute inset-0" style="opacity: .035; background-image: repeating-linear-gradient(45deg, #B8962E 0, #B8962E 1px, transparent 1px, transparent 56px), repeating-linear-gradient(-45deg, #B8962E 0, #B8962E 1px, transparent 1px, transparent 56px)"></div>
+
+                {{-- Large faint circle --}}
+                <div class="absolute -bottom-40 -right-40 rounded-full" style="width: 480px; height: 480px; background: rgba(184,150,46,.06)"></div>
+                <div class="absolute -top-20 -left-20 rounded-full" style="width: 300px; height: 300px; background: rgba(184,150,46,.04)"></div>
 
                 {{-- Branding content --}}
                 <div class="relative z-10 flex w-full flex-col items-center justify-center px-16 text-center">
-                    <x-public.logo :white="true" size="2xl" class="mb-4 justify-center" />
-                    <p class="max-w-xs text-sm leading-relaxed text-amber-100">
-                        {{ __('Your smart property management platform — find, manage, and grow your real estate portfolio.') }}
+
+                    <x-public.logo :white="true" size="2xl" class="mb-10 justify-center" />
+
+                    {{-- Gold rule --}}
+                    <div class="mb-8" style="height: 1px; width: 48px; background: #B8962E"></div>
+
+                    {{-- Serif headline --}}
+                    <p style="font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 2.2vw, 2.2rem); font-weight: 300; color: #fff; line-height: 1.35; margin-bottom: 18px">
+                        {{ __('Your property,') }}<br>
+                        <em class="italic" style="color: #B8962E">{{ __('your future.') }}</em>
                     </p>
 
-                    {{-- Decorative dots --}}
-                    <div class="mt-12 flex gap-2">
-                        <span class="size-2 rounded-full bg-white/60"></span>
-                        <span class="size-2 rounded-full bg-white/40"></span>
-                        <span class="size-2 rounded-full bg-white/20"></span>
+                    <p style="font-size: 0.78rem; font-weight: 300; color: rgba(255,255,255,.42); line-height: 1.85; max-width: 260px">
+                        {{ __('Find, manage, and grow your real estate portfolio with confidence.') }}
+                    </p>
+
+                    {{-- Gold dots --}}
+                    <div class="mt-12 flex gap-2.5">
+                        <span class="rounded-full" style="width: 6px; height: 6px; background: #B8962E; opacity: 1"></span>
+                        <span class="rounded-full" style="width: 6px; height: 6px; background: #B8962E; opacity: .45"></span>
+                        <span class="rounded-full" style="width: 6px; height: 6px; background: #B8962E; opacity: .2"></span>
                     </div>
                 </div>
             </div>

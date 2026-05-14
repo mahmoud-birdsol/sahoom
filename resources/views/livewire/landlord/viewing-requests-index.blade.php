@@ -3,12 +3,12 @@
     {{-- Header --}}
     <div class="flex items-start justify-between gap-4">
         <div class="space-y-0.5">
-            <flux:heading size="xl" class="font-bold text-zinc-900">{{ __('Viewing Requests') }}</flux:heading>
-            <flux:subheading class="text-zinc-500">{{ __('Manage showing and booking inquiries from renters') }}</flux:subheading>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 300; color: #1E2330; line-height: 1.25">{{ __('Viewing Requests') }}</h1>
+            <p style="font-size: 0.8rem; color: rgba(30,35,48,.5); font-weight: 400">{{ __('Manage showing and booking inquiries from renters') }}</p>
         </div>
         @if($pendingCount > 0)
-            <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1.5 text-sm font-semibold text-amber-700 ring-1 ring-amber-200">
-                <span class="size-2 rounded-full bg-amber-500"></span>
+            <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold ring-1" style="background: #F4EFE8; color: #B8962E; ring-color: #E8E2D8">
+                <span class="size-2 rounded-full" style="background: #B8962E"></span>
                 {{ $pendingCount }} {{ __('pending') }}
             </span>
         @endif
@@ -17,7 +17,7 @@
     {{-- Filters --}}
     <div class="flex flex-wrap items-center gap-3">
         <select wire:model.live="filterPropertyId"
-            class="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100">
+            class="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 outline-none focus:border-zinc-400 focus:ring-2 focus:ring-zinc-100">
             <option value="">{{ __('All Properties') }}</option>
             @foreach($this->landlordProperties as $prop)
                 <option value="{{ $prop->id }}">{{ $prop->title }}</option>
@@ -25,7 +25,7 @@
         </select>
 
         <select wire:model.live="filterStatus"
-            class="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100">
+            class="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 outline-none focus:border-zinc-400 focus:ring-2 focus:ring-zinc-100">
             <option value="">{{ __('All Statuses') }}</option>
             <option value="new">{{ __('New') }}</option>
             <option value="contacted">{{ __('Contacted') }}</option>
@@ -61,20 +61,20 @@
                     @foreach($requests as $request)
                         @php
                             $statusConfig = match($request->status?->value ?? 'new') {
-                                'new'       => ['label' => __('New'),       'class' => 'bg-amber-50 text-amber-700 ring-amber-200'],
+                                'new'       => ['label' => __('New'),       'class' => 'bg-[#F4EFE8] text-[#B8962E] ring-[#E8E2D8]'],
                                 'contacted' => ['label' => __('Contacted'), 'class' => 'bg-blue-50 text-blue-700 ring-blue-200'],
                                 'no_show'   => ['label' => __('No Show'),   'class' => 'bg-red-50 text-red-600 ring-red-200'],
                                 'closed'    => ['label' => __('Closed'),    'class' => 'bg-zinc-50 text-zinc-500 ring-zinc-200'],
-                                default     => ['label' => __('New'),       'class' => 'bg-amber-50 text-amber-700 ring-amber-200'],
+                                default     => ['label' => __('New'),       'class' => 'bg-[#F4EFE8] text-[#B8962E] ring-[#E8E2D8]'],
                             };
                             $isBooking = str_contains(strtolower($request->message ?? ''), 'book now');
                         @endphp
                         <tr wire:click="openDetails({{ $request->id }})"
-                            class="cursor-pointer transition-colors hover:bg-amber-50/30 {{ ($request->status?->value ?? 'new') === 'new' ? 'font-medium' : '' }}"
+                            class="cursor-pointer transition-colors hover:bg-zinc-50 {{ ($request->status?->value ?? 'new') === 'new' ? 'font-medium' : '' }}"
                             wire:key="vr-{{ $request->id }}">
                             <td class="px-5 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="flex size-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-xs font-bold text-amber-700">
+                                    <div class="flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white" style="background: #1E2330">
                                         {{ strtoupper(substr($request->renter_name, 0, 1)) }}
                                     </div>
                                     <div>
@@ -141,7 +141,7 @@
                     <div class="rounded-xl border border-zinc-100 bg-zinc-50 p-4 space-y-2">
                         <p class="text-xs font-semibold uppercase tracking-wider text-zinc-400">{{ __('Renter') }}</p>
                         <p class="text-base font-bold text-zinc-900">{{ $req->renter_name }}</p>
-                        <a href="mailto:{{ $req->renter_email }}" class="flex items-center gap-1.5 text-sm text-amber-600 hover:underline">
+                        <a href="mailto:{{ $req->renter_email }}" class="flex items-center gap-1.5 text-sm hover:underline" style="color: #B8962E">
                             <flux:icon.envelope class="size-3.5" />{{ $req->renter_email }}
                         </a>
                         @if($req->renter_phone)
@@ -198,8 +198,9 @@
                                     wire:click="updateStatus({{ $req->id }}, '{{ $s->value }}')"
                                     class="rounded-lg border px-3 py-1.5 text-xs font-semibold transition
                                         {{ ($req->status?->value ?? 'new') === $s->value
-                                            ? 'border-amber-400 bg-amber-500 text-white'
-                                            : 'border-zinc-200 bg-white text-zinc-600 hover:border-amber-300 hover:text-amber-700' }}">
+                                            ? 'border-transparent text-white'
+                                            : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-800' }}"
+                                        @if(($req->status?->value ?? 'new') === $s->value) style="background: #1E2330" @endif">
                                     {{ $s->label() }}
                                 </button>
                             @endforeach

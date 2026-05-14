@@ -82,7 +82,7 @@
                             <div class="flex items-center gap-3">
                                 @php $firstImg = $property->images?->first(); @endphp
                                 @php
-                                    $gradients = ['from-amber-300 to-orange-400','from-blue-300 to-blue-500','from-green-300 to-emerald-500','from-violet-300 to-purple-500','from-rose-300 to-pink-500'];
+                                    $gradients = ['from-zinc-700 to-zinc-900','from-blue-300 to-blue-500','from-green-300 to-emerald-500','from-violet-300 to-purple-500','from-rose-300 to-pink-500'];
                                     $g = $gradients[$property->id % count($gradients)];
                                 @endphp
                                 <div class="size-9 shrink-0 overflow-hidden rounded-lg bg-gradient-to-br {{ $g }}">
@@ -113,7 +113,7 @@
                         <flux:table.cell>
                             <div class="flex items-center gap-2">
                                 <div class="h-1.5 w-20 overflow-hidden rounded-full bg-zinc-100">
-                                    <div class="h-full rounded-full bg-amber-400" style="width: {{ $barWidth }}%"></div>
+                                    <div class="h-full rounded-full" style="background: #B8962E; width: {{ $barWidth }}%"></div>
                                 </div>
                                 <span class="text-sm font-semibold text-zinc-700">{{ number_format($property->total_views) }}</span>
                             </div>

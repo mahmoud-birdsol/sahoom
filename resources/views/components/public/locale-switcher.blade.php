@@ -1,20 +1,23 @@
 @props(['transparent' => false])
 
 @php
-    $currentLocale = app()->getLocale();
     $locales = [
         'en' => ['name' => 'English', 'flag' => '🇺🇸'],
         'fr' => ['name' => 'Français', 'flag' => '🇫🇷'],
     ];
+    $currentLocale = array_key_exists(app()->getLocale(), $locales) ? app()->getLocale() : 'en';
 @endphp
 
 <div x-data="{ open: false }" class="relative">
     {{-- Toggle button --}}
     <button @click="open = !open"
-        class="flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-medium transition
-            {{ $transparent
-                ? 'border-white/30 text-white/80 hover:border-white hover:text-white'
-                : 'border-zinc-200 text-zinc-600 hover:border-amber-300 hover:text-amber-600' }}">
+        @if($transparent)
+            :class="solid
+                ? 'border-[#E8E2D8] text-muted hover:border-gold hover:text-gold'
+                : 'border-white/30 text-white/80 hover:border-white hover:text-white'"
+        @endif
+        class="flex items-center gap-1.5 rounded-sm border px-3 py-1.5 text-[0.68rem] font-medium tracking-[.06em] transition-all duration-300
+            {{ !$transparent ? 'border-[#E8E2D8] text-muted hover:border-gold hover:text-gold' : '' }}">
         <span>{{ $locales[$currentLocale]['flag'] }}</span>
         <span>{{ $locales[$currentLocale]['name'] }}</span>
         <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -24,14 +27,14 @@
 
     {{-- Dropdown --}}
     <div x-show="open" @click.outside="open = false" x-transition
-        class="absolute right-0 top-full z-50 mt-1 w-40 overflow-hidden rounded-xl border border-zinc-100 bg-white shadow-lg">
+        class="absolute right-0 top-full z-50 mt-1 w-36 overflow-hidden border border-[#E8E2D8] bg-white shadow-xl">
         @foreach($locales as $code => $data)
             <form method="POST" action="{{ route('locale.switch') }}" class="block">
                 @csrf
                 <input type="hidden" name="locale" value="{{ $code }}" />
                 <button type="submit"
-                    class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-zinc-700 transition hover:bg-amber-50 hover:text-amber-700
-                        {{ $code === $currentLocale ? 'bg-amber-50 text-amber-700' : '' }}">
+                    class="flex w-full items-center gap-2 px-4 py-2 text-left text-xs text-ink transition hover:bg-[#F4EFE8] hover:text-gold
+                        {{ $code === $currentLocale ? 'bg-[#F4EFE8] text-gold' : '' }}">
                     <span>{{ $data['flag'] }}</span>
                     <span>{{ $data['name'] }}</span>
                     @if($code === $currentLocale)

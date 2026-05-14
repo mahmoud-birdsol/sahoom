@@ -1,370 +1,382 @@
 <div>
 
-    {{-- ══ PAGE HERO ══════════════════════════════════════════════════════════ --}}
-    <section class="relative overflow-hidden">
-        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-             style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80')"></div>
-        <div class="absolute inset-0 bg-amber-950/70"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+    <x-public.navbar :transparent="true" />
 
-        <x-public.navbar :transparent="true" />
-
-        <div class="relative z-10 mx-auto max-w-7xl px-6 pb-14 pt-10 lg:px-10">
-            <nav class="mb-4 flex items-center gap-2 text-xs text-white/60">
-                <a href="{{ route('home') }}" wire:navigate class="transition hover:text-amber-400">{{ __('Home') }}</a>
-                <svg class="size-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
-                <span class="text-white/80">{{ __('Properties') }}</span>
+    {{-- ══ HERO ════════════════════════════════════════════════════════════════ --}}
+    <section style="background: #1E2330; padding: 100px 6% 70px">
+        <div style="max-width: 1200px; margin: 0 auto">
+            {{-- Breadcrumb --}}
+            <nav class="mb-6 flex items-center gap-2" style="font-size: 0.7rem; color: rgba(255,255,255,.4); letter-spacing: .1em; text-transform: uppercase">
+                <a href="{{ route('home') }}" wire:navigate class="transition hover:text-white" style="color: rgba(255,255,255,.4)">{{ __('Home') }}</a>
+                <span style="color: #B8962E">/</span>
+                <span style="color: rgba(255,255,255,.7)">{{ __('Properties') }}</span>
             </nav>
-            <h1 class="text-4xl font-extrabold text-white">{{ __('Browse Properties') }}</h1>
-            <p class="mt-2 text-sm text-white/70">{{ __('Discover available spaces perfect for your business') }}</p>
 
-            {{-- Inline search bar --}}
-            <div class="mt-6 flex max-w-xl items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 backdrop-blur-sm border border-white/20">
-                <svg class="size-5 shrink-0 text-white/60" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-                <input
-                    wire:model.live.debounce.400ms="search"
-                    type="text"
-                    placeholder="{{ __('Search by title, address or city...') }}"
-                    class="flex-1 bg-transparent text-sm text-white placeholder-white/50 outline-none"
-                />
-                @if($search)
-                    <button wire:click="$set('search', '')" class="text-white/60 transition hover:text-white">
-                        <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
-                    </button>
-                @endif
-            </div>
-        </div>
-    </section>
+            <div class="flex flex-wrap items-end justify-between gap-8">
+                <div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="h-px w-8 shrink-0" style="background: #B8962E"></div>
+                        <span style="font-size: 0.62rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #B8962E">{{ __('Our listings') }}</span>
+                    </div>
+                    <h1 class="font-serif" style="font-size: clamp(2.2rem,4vw,3.5rem); font-weight: 300; color: #fff; line-height: 1.1">
+                        {{ __('Browse') }} <em class="italic">{{ __('properties') }}</em>
+                    </h1>
+                    <p style="margin-top: 12px; font-size: 0.85rem; color: rgba(255,255,255,.45)">
+                        {{ __('Residential & commercial spaces across Côte d\'Ivoire') }}
+                    </p>
+                </div>
 
-    {{-- ══ MAIN CONTENT ══════════════════════════════════════════════════════ --}}
-    <div class="mx-auto max-w-5xl px-6 py-10 lg:px-10">
-
-        {{-- Section heading --}}
-        <div class="mb-6">
-            <h2 class="text-2xl font-extrabold text-zinc-900">{{ __('Available Properties') }}</h2>
-        </div>
-
-        {{-- ── TOP FILTER BAR ─────────────────────────────────────────────── --}}
-        <div class="mb-6 space-y-3">
-            {{-- Row 1: Location + City --}}
-            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {{-- Location / Search --}}
-                <div class="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 py-3 shadow-sm">
-                    <svg class="size-4 shrink-0 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
-                    <input
-                        wire:model.live.debounce.400ms="search"
-                        type="text"
-                        placeholder="{{ __('Location') }}"
-                        class="flex-1 bg-transparent text-sm text-zinc-700 placeholder-zinc-400 outline-none"
-                    />
+                {{-- Hero search --}}
+                <div class="flex items-center gap-3 w-full max-w-md"
+                     style="background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); padding: 14px 18px">
+                    <svg class="size-4 shrink-0" style="color: #B8962E" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                    </svg>
+                    <input wire:model.live.debounce.400ms="search" type="text"
+                           placeholder="{{ __('Search by title, address or city…') }}"
+                           style="flex: 1; background: transparent; font-size: 0.85rem; color: #fff; outline: none"
+                           class="placeholder-white/30" />
                     @if($search)
-                        <button wire:click="$set('search', '')" class="shrink-0 text-zinc-300 transition hover:text-zinc-500">
+                        <button wire:click="$set('search', '')" style="color: rgba(255,255,255,.4)" class="transition hover:text-white">
                             <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
                         </button>
                     @endif
                 </div>
-                {{-- City / Size --}}
-                <div class="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 py-3 shadow-sm">
-                    <svg class="size-4 shrink-0 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
-                    <select wire:model.live="city" class="flex-1 bg-transparent text-sm text-zinc-700 outline-none cursor-pointer">
-                        <option value="">{{ __('Size') }}</option>
-                        @foreach($cities as $c)
-                            <option value="{{ $c }}">{{ $c }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-
-            {{-- Row 2: From / To / Amenities / Search button --}}
-            <div class="flex flex-wrap items-stretch gap-3">
-                {{-- From $ --}}
-                <div class="flex w-36 items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-3 shadow-sm">
-                    <input
-                        wire:model.live.debounce.600ms="minPrice"
-                        type="number"
-                        min="0"
-                        placeholder="{{ __('From') }}"
-                        class="min-w-0 flex-1 bg-transparent text-sm text-zinc-700 placeholder-zinc-400 outline-none"
-                    />
-                    <span class="shrink-0 text-sm font-medium text-zinc-400">$</span>
-                </div>
-                {{-- To $ --}}
-                <div class="flex w-36 items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-3 shadow-sm">
-                    <input
-                        wire:model.live.debounce.600ms="maxPrice"
-                        type="number"
-                        min="0"
-                        placeholder="{{ __('to') }}"
-                        class="min-w-0 flex-1 bg-transparent text-sm text-zinc-700 placeholder-zinc-400 outline-none"
-                    />
-                    <span class="shrink-0 text-sm font-medium text-zinc-400">$</span>
-                </div>
-                {{-- Amenities / Pricing type --}}
-                <div class="flex flex-1 items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-3 shadow-sm">
-                    <svg class="size-4 shrink-0 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"/></svg>
-                    <select wire:model.live="pricingType" class="flex-1 bg-transparent text-sm text-zinc-700 outline-none cursor-pointer">
-                        <option value="">{{ __('Amenities') }}</option>
-                        @foreach($pricingTypes as $type)
-                            <option value="{{ $type->value }}">{{ $type->label() }}</option>
-                        @endforeach
-                    </select>
-                    <svg class="size-4 shrink-0 text-zinc-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
-                </div>
-                {{-- Search Properties button --}}
-                <button wire:click="applyFilters"
-                    class="shrink-0 rounded-xl bg-amber-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-700 active:bg-amber-800">
-                    {{ __('Search Properties') }}
-                </button>
             </div>
         </div>
+    </section>
 
-        {{-- Results bar --}}
-        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <p class="text-sm text-zinc-500">
-                <span class="font-semibold text-zinc-900">{{ $totalCount }}</span> {{ __('properties found') }}
-                @if($search)
-                    {{ __('for') }} <span class="font-medium text-amber-600">"{{ $search }}"</span>
-                @endif
-            </p>
-            <div class="flex items-center gap-3">
-                {{-- Map toggle --}}
-                <button wire:click="toggleShowMap"
-                    class="flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition
-                        {{ $showMap ? 'border-amber-400 bg-amber-50 text-amber-700' : 'border-zinc-200 bg-white text-zinc-600 hover:border-amber-300 hover:text-amber-600' }}">
-                    <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"/></svg>
-                    {{ $showMap ? __('Hide Map') : __('Show Map') }}
+    {{-- ══ FILTER STRIP ════════════════════════════════════════════════════════ --}}
+    <div style="background: #FAFAF7; border-bottom: 1px solid #E8E2D8; padding: 18px 6%">
+        <div style="max-width: 1200px; margin: 0 auto" class="flex flex-wrap items-center gap-3">
+
+            {{-- Property type tabs --}}
+            <div class="flex items-center" style="border: 1px solid #E8E2D8; background: white">
+                <button wire:click="$set('propertyType', '')"
+                    style="padding: 8px 16px; font-size: 0.7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; transition: all .2s;
+                        {{ $propertyType === '' ? 'background: #1E2330; color: #fff' : 'color: #1E2330' }}">
+                    {{ __('All') }}
                 </button>
-                {{-- Sort --}}
-                <label class="text-xs text-zinc-500">{{ __('Sort:') }}</label>
-                <select wire:model.live="sort" class="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100">
+                <button wire:click="$set('propertyType', 'residential')"
+                    style="padding: 8px 16px; font-size: 0.7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; border-left: 1px solid #E8E2D8; transition: all .2s;
+                        {{ $propertyType === 'residential' ? 'background: #1E2330; color: #fff' : 'color: #1E2330' }}">
+                    {{ __('Residential') }}
+                </button>
+                <button wire:click="$set('propertyType', 'commercial')"
+                    style="padding: 8px 16px; font-size: 0.7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; border-left: 1px solid #E8E2D8; transition: all .2s;
+                        {{ $propertyType === 'commercial' ? 'background: #1E2330; color: #fff' : 'color: #1E2330' }}">
+                    {{ __('Commercial') }}
+                </button>
+            </div>
+
+            {{-- City --}}
+            <div class="flex items-center gap-2" style="background: white; border: 1px solid #E8E2D8; padding: 8px 14px">
+                <svg class="size-3.5 shrink-0" style="color: #B8962E" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
+                </svg>
+                <select wire:model.live="city" style="background: transparent; font-size: 0.78rem; color: #1E2330; outline: none; cursor: pointer; min-width: 100px">
+                    <option value="">{{ __('All cities') }}</option>
+                    @foreach($cities as $c)
+                        <option value="{{ $c }}">{{ $c }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Pricing type --}}
+            <div class="flex items-center gap-2" style="background: white; border: 1px solid #E8E2D8; padding: 8px 14px">
+                <svg class="size-3.5 shrink-0" style="color: #B8962E" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/>
+                </svg>
+                <select wire:model.live="pricingType" style="background: transparent; font-size: 0.78rem; color: #1E2330; outline: none; cursor: pointer">
+                    <option value="">{{ __('Any duration') }}</option>
+                    @foreach($pricingTypes as $type)
+                        <option value="{{ $type->value }}">{{ $type->label() }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Price range --}}
+            <div class="flex items-center gap-2" style="background: white; border: 1px solid #E8E2D8; padding: 8px 14px">
+                <span style="font-size: 0.7rem; color: #B8962E; font-weight: 600; letter-spacing: .08em; text-transform: uppercase">XOF</span>
+                <input wire:model.live.debounce.600ms="minPrice" type="number" min="0" placeholder="{{ __('Min') }}"
+                       style="width: 72px; background: transparent; font-size: 0.78rem; color: #1E2330; outline: none" />
+                <span style="color: #E8E2D8">—</span>
+                <input wire:model.live.debounce.600ms="maxPrice" type="number" min="0" placeholder="{{ __('Max') }}"
+                       style="width: 72px; background: transparent; font-size: 0.78rem; color: #1E2330; outline: none" />
+            </div>
+
+            {{-- Short-term toggle --}}
+            <button wire:click="$toggle('isShortTerm')"
+                style="padding: 8px 16px; font-size: 0.7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; transition: all .2s;
+                    border: 1px solid {{ $isShortTerm ? '#B8962E' : '#E8E2D8' }};
+                    background: {{ $isShortTerm ? '#B8962E' : 'white' }};
+                    color: {{ $isShortTerm ? '#fff' : '#1E2330' }}">
+                <span class="flex items-center gap-1.5">
+                    <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                    {{ __('Short-term') }}
+                </span>
+            </button>
+
+            {{-- Map toggle --}}
+            <button wire:click="toggleShowMap"
+                style="padding: 8px 16px; font-size: 0.7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; transition: all .2s;
+                    border: 1px solid {{ $showMap ? '#1E2330' : '#E8E2D8' }};
+                    background: {{ $showMap ? '#1E2330' : 'white' }};
+                    color: {{ $showMap ? '#fff' : '#1E2330' }}">
+                <span class="flex items-center gap-1.5">
+                    <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"/></svg>
+                    {{ $showMap ? __('Hide Map') : __('Map') }}
+                </span>
+            </button>
+
+            {{-- Sort --}}
+            <div class="ml-auto flex items-center gap-2">
+                <span style="font-size: 0.7rem; color: #B8962E; font-weight: 600; letter-spacing: .1em; text-transform: uppercase">{{ __('Sort') }}</span>
+                <select wire:model.live="sort" style="background: white; border: 1px solid #E8E2D8; padding: 8px 12px; font-size: 0.78rem; color: #1E2330; outline: none; cursor: pointer">
                     <option value="newest">{{ __('Newest') }}</option>
                     <option value="popular">{{ __('Most Popular') }}</option>
                     <option value="rating">{{ __('Top Rated') }}</option>
-                    <option value="price_asc">{{ __('Price: Low → High') }}</option>
-                    <option value="price_desc">{{ __('Price: High → Low') }}</option>
+                    <option value="price_asc">{{ __('Price ↑') }}</option>
+                    <option value="price_desc">{{ __('Price ↓') }}</option>
                 </select>
             </div>
         </div>
+    </div>
 
-        {{-- Active filter chips --}}
-        @if($search || $pricingType || $city || $featuredOnly || $minPrice || $maxPrice)
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-                @if($search)
-                    <span class="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
-                        "{{ $search }}"
-                        <button wire:click="$set('search', '')" class="ml-1 text-amber-500 hover:text-amber-700">&times;</button>
-                    </span>
-                @endif
-                @if($pricingType)
-                    <span class="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-                        {{ ucfirst($pricingType) }}
-                        <button wire:click="$set('pricingType', '')" class="ml-1 text-blue-500 hover:text-blue-700">&times;</button>
-                    </span>
-                @endif
-                @if($city)
-                    <span class="inline-flex items-center gap-1 rounded-full border border-green-200 bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
-                        {{ $city }}
-                        <button wire:click="$set('city', '')" class="ml-1 text-green-500 hover:text-green-700">&times;</button>
-                    </span>
-                @endif
-                @if($minPrice || $maxPrice)
-                    <span class="inline-flex items-center gap-1 rounded-full border border-zinc-200 bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700">
-                        @if($minPrice && $maxPrice) {{ number_format($minPrice) }} – {{ number_format($maxPrice) }}
-                        @elseif($minPrice) {{ __('From') }} {{ number_format($minPrice) }}
-                        @else {{ __('Up to') }} {{ number_format($maxPrice) }}
-                        @endif
-                        <button wire:click="$set('minPrice', 0); $set('maxPrice', 0)" class="ml-1 text-zinc-400 hover:text-zinc-700">&times;</button>
-                    </span>
-                @endif
-                <button wire:click="clearFilters" class="text-xs text-zinc-400 underline transition hover:text-zinc-600">{{ __('Clear all') }}</button>
-            </div>
-        @endif
+    {{-- ══ MAIN CONTENT ════════════════════════════════════════════════════════ --}}
+    <section style="background: #FAFAF7; padding: 50px 6% 90px">
+        <div style="max-width: 1200px; margin: 0 auto">
 
-        {{-- Map panel --}}
-        @if($showMap)
-            <div class="mb-6 overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-sm"
-                 x-data="propertyMap()"
-                 x-init="init()">
-                <div class="flex items-center justify-between border-b border-zinc-100 px-4 py-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="size-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"/></svg>
-                        <span class="text-sm font-semibold text-zinc-700">{{ __('Property Map') }}</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button
-                            wire:click="toggleMapFilter"
-                            class="rounded-lg border px-3 py-1 text-xs font-semibold transition
-                                {{ $mapFilter ? 'bg-amber-600 border-amber-600 text-white' : 'bg-zinc-50 border-zinc-200 text-zinc-600 hover:bg-amber-50 hover:text-amber-700 hover:border-amber-300' }}">
-                            {{ $mapFilter ? __('Clear area filter') . ' ×' : __('Filter by area') }}
-                        </button>
-                        <button wire:click="toggleShowMap" class="text-xs font-medium text-zinc-400 transition hover:text-zinc-600">
-                            {{ __('Hide') }} &times;
-                        </button>
-                    </div>
-                </div>
-                <div id="property-map" class="h-[420px] w-full"></div>
-                <p class="px-4 py-2 text-center text-xs {{ $mapFilter ? 'font-medium text-amber-600' : 'text-zinc-400' }}">
-                    {{ $mapFilter ? __('Showing properties in current map view — pan to update') : __('Pan or zoom, then click "Filter by area" to filter results') }}
+            {{-- Results + active chips --}}
+            <div class="mb-8 flex flex-wrap items-center justify-between gap-3">
+                <p style="font-size: 0.8rem; color: #1E2330">
+                    <strong>{{ $totalCount }}</strong>
+                    <span style="color: rgba(30,35,48,.5)"> {{ __('properties found') }}
+                        @if($search) {{ __('for') }} "{{ $search }}"@endif
+                    </span>
                 </p>
+                @if($search || $pricingType || $city || $propertyType || $minPrice || $maxPrice)
+                    <div class="flex flex-wrap items-center gap-2">
+                        @if($propertyType)
+                            <span class="inline-flex items-center gap-1.5" style="border: 1px solid #E8E2D8; background: white; padding: 4px 12px; font-size: 0.68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #1E2330">
+                                {{ ucfirst($propertyType) }}
+                                <button wire:click="$set('propertyType', '')" style="color: #B8962E">&times;</button>
+                            </span>
+                        @endif
+                        @if($city)
+                            <span class="inline-flex items-center gap-1.5" style="border: 1px solid #E8E2D8; background: white; padding: 4px 12px; font-size: 0.68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #1E2330">
+                                {{ $city }}
+                                <button wire:click="$set('city', '')" style="color: #B8962E">&times;</button>
+                            </span>
+                        @endif
+                        @if($pricingType)
+                            <span class="inline-flex items-center gap-1.5" style="border: 1px solid #E8E2D8; background: white; padding: 4px 12px; font-size: 0.68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #1E2330">
+                                {{ ucfirst($pricingType) }}
+                                <button wire:click="$set('pricingType', '')" style="color: #B8962E">&times;</button>
+                            </span>
+                        @endif
+                        @if($minPrice || $maxPrice)
+                            <span class="inline-flex items-center gap-1.5" style="border: 1px solid #E8E2D8; background: white; padding: 4px 12px; font-size: 0.68rem; font-weight: 600; color: #1E2330">
+                                @if($minPrice && $maxPrice) {{ number_format($minPrice) }} – {{ number_format($maxPrice) }}
+                                @elseif($minPrice) {{ __('From') }} {{ number_format($minPrice) }}
+                                @else {{ __('Up to') }} {{ number_format($maxPrice) }}
+                                @endif
+                                <button wire:click="$set('minPrice', 0); $set('maxPrice', 0)" style="color: #B8962E">&times;</button>
+                            </span>
+                        @endif
+                        <button wire:click="clearFilters" style="font-size: 0.7rem; color: rgba(30,35,48,.4); text-decoration: underline" class="transition hover:opacity-70">{{ __('Clear all') }}</button>
+                    </div>
+                @endif
             </div>
-        @endif
 
-        {{-- Loading indicator --}}
-        <div wire:loading.class.remove="hidden" class="hidden">
-            <div class="mb-4 text-center text-sm text-zinc-400">{{ __('Updating results...') }}</div>
-        </div>
-
-        {{-- Empty state --}}
-        @if($properties->isEmpty())
-            <div class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-200 bg-zinc-50 py-20 text-center">
-                <svg class="mb-4 size-12 text-zinc-300" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21" /></svg>
-                <p class="text-base font-semibold text-zinc-500">{{ __('No properties found') }}</p>
-                <p class="mt-1 text-sm text-zinc-400">{{ __('Try adjusting your filters or search term.') }}</p>
-                <button wire:click="clearFilters" class="mt-5 rounded-xl bg-amber-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-amber-700">
-                    {{ __('Clear Filters') }}
-                </button>
-            </div>
-
-        {{-- ── Property list (horizontal cards) ──────────────────────────── --}}
-        @else
-            <div class="flex flex-col gap-4" wire:loading.class="opacity-60 transition-opacity">
-                @foreach($properties as $property)
-                    @php
-                        $img        = $property->images->first();
-                        $rating     = $property->reviews_avg_rating ? round((float)$property->reviews_avg_rating, 1) : null;
-                        $reviewCnt  = $property->reviews_count ?? 0;
-                        $price      = $property->monthly_rent ?? $property->weekly_rent ?? $property->daily_rent ?? $property->yearly_rent;
-                        $priceLabel = $property->monthly_rent ? __('/month') : ($property->weekly_rent ? __('/week') : ($property->daily_rent ? __('/day') : __('/year')));
-                        $currSym    = match(strtoupper($property->currency ?? 'USD')) {
-                            'SAR' => 'SAR ',
-                            'EUR' => '€',
-                            'GBP' => '£',
-                            default => '$',
-                        };
-                        $isOccupied = $property->contracts->isNotEmpty();
-                    @endphp
-                    <div class="group flex overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-sm transition hover:shadow-md">
-
-                        {{-- Image --}}
-                        <div class="relative w-44 shrink-0 overflow-hidden bg-zinc-100 sm:w-48">
-                            @if($img)
-                                <img src="{{ $img->url() }}" alt="{{ $property->title }}"
-                                     class="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
-                            @else
-                                <div class="flex h-full w-full items-center justify-center bg-zinc-100">
-                                    <svg class="size-10 text-zinc-300" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75"/></svg>
-                                </div>
-                            @endif
-                            {{-- Heart --}}
-                            @php $isFav = in_array($property->id, $favoritedIds); @endphp
-                            <button
-                                wire:click="toggleFavorite({{ $property->id }})"
-                                class="absolute left-3 top-3 flex size-8 items-center justify-center rounded-full bg-white shadow-sm transition hover:scale-110
-                                    {{ $isFav ? 'text-rose-500' : 'text-rose-300 hover:text-rose-500' }}">
-                                <svg class="size-3.5" fill="{{ $isFav ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
-                                </svg>
+            {{-- Map panel --}}
+            @if($showMap)
+                <div class="mb-8 overflow-hidden" style="border: 1px solid #E8E2D8; background: white"
+                     x-data="propertyMap()" x-init="init()">
+                    <div class="flex items-center justify-between" style="border-bottom: 1px solid #E8E2D8; padding: 14px 20px">
+                        <span style="font-size: 0.7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #1E2330">{{ __('Property Map') }}</span>
+                        <div class="flex items-center gap-3">
+                            <button wire:click="toggleMapFilter"
+                                style="padding: 6px 14px; font-size: 0.68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; transition: all .2s;
+                                    border: 1px solid {{ $mapFilter ? '#1E2330' : '#E8E2D8' }};
+                                    background: {{ $mapFilter ? '#1E2330' : 'transparent' }};
+                                    color: {{ $mapFilter ? '#fff' : '#1E2330' }}">
+                                {{ $mapFilter ? __('Clear area filter') . ' ×' : __('Filter by area') }}
                             </button>
-                            @if($property->is_featured)
-                                <span class="absolute bottom-3 left-3 rounded-full bg-amber-500 px-2 py-0.5 text-xs font-bold text-white">{{ __('Featured') }}</span>
-                            @endif
+                            <button wire:click="toggleShowMap" style="font-size: 0.7rem; color: rgba(30,35,48,.4)" class="transition hover:opacity-70">&times; {{ __('Close') }}</button>
                         </div>
+                    </div>
+                    <div id="property-map" class="h-[420px] w-full"></div>
+                    <p style="padding: 10px; text-align: center; font-size: 0.7rem; color: {{ $mapFilter ? '#B8962E' : 'rgba(30,35,48,.35)' }}">
+                        {{ $mapFilter ? __('Showing properties in current map view — pan to update') : __('Pan or zoom, then click "Filter by area" to filter results') }}
+                    </p>
+                </div>
+            @endif
 
-                        {{-- Card content --}}
-                        <div class="flex flex-1 flex-col justify-between p-4 sm:p-5">
-                            <div>
-                                {{-- Status + Rating row --}}
-                                <div class="mb-2 flex items-center justify-between gap-2">
-                                    <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold
-                                        {{ $isOccupied ? 'bg-zinc-100 text-zinc-500' : 'bg-green-100 text-green-700' }}">
-                                        {{ $isOccupied ? __('Occupied') : __('Available') }}
-                                    </span>
-                                    <div class="flex items-center gap-1">
-                                        <svg class="size-3.5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-                                        <span class="text-xs font-semibold text-zinc-700">{{ $rating ?? '—' }}</span>
-                                        <span class="text-xs text-zinc-400">({{ $reviewCnt }} {{ __('Review') }})</span>
+            {{-- Loading state --}}
+            <div wire:loading.class.remove="hidden" class="hidden mb-6">
+                <div class="flex items-center gap-3" style="padding: 14px 20px; background: white; border: 1px solid #E8E2D8">
+                    <div class="size-4 rounded-full border-2 animate-spin" style="border-color: #E8E2D8; border-top-color: #B8962E"></div>
+                    <span style="font-size: 0.78rem; color: rgba(30,35,48,.5)">{{ __('Updating results…') }}</span>
+                </div>
+            </div>
+
+            {{-- Empty state --}}
+            @if($properties->isEmpty())
+                <div class="flex flex-col items-center justify-center py-24 text-center" style="border: 1px solid #E8E2D8; background: white">
+                    <svg class="mb-5" style="width: 48px; height: 48px; color: #E8E2D8" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21"/>
+                    </svg>
+                    <h3 class="font-serif" style="font-size: 1.3rem; font-weight: 300; color: #1E2330; margin-bottom: 8px">{{ __('No properties found') }}</h3>
+                    <p style="font-size: 0.82rem; color: rgba(30,35,48,.5); margin-bottom: 28px">{{ __('Try adjusting your filters or search term.') }}</p>
+                    <button wire:click="clearFilters"
+                        style="padding: 12px 32px; font-size: 0.7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; background: #1E2330; color: white; transition: opacity .2s"
+                        class="hover:opacity-80">
+                        {{ __('Clear Filters') }}
+                    </button>
+                </div>
+
+            {{-- ── Card grid ───────────────────────────────────────────────── --}}
+            @else
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 transition-opacity duration-300"
+                     style="gap: 2px; background: #E8E2D8"
+                     wire:loading.class="opacity-50">
+                    @foreach($properties as $property)
+                        @php
+                            $img        = $property->images->first();
+                            $price      = $property->monthly_rent ?? $property->weekly_rent ?? $property->daily_rent ?? $property->yearly_rent;
+                            $priceLabel = $property->monthly_rent ? __('/mois') : ($property->weekly_rent ? __('/sem.') : ($property->daily_rent ? __('/jour') : __('/an')));
+                            $currSym    = match(strtoupper($property->currency ?? 'XOF')) {
+                                'EUR' => '€ ', 'GBP' => '£ ', 'USD' => '$ ',
+                                'SAR' => 'SAR ', 'AED' => 'AED ',
+                                default => 'XOF ',
+                            };
+                            $isOccupied = $property->contracts->isNotEmpty();
+                            $isFav      = in_array($property->id, $favoritedIds);
+                            $rating     = $property->reviews_avg_rating ? round((float)$property->reviews_avg_rating, 1) : null;
+                            $propType    = $property->property_type?->value ?? 'residential';
+                            $isShortTerm = (bool) $property->is_short_term;
+                        @endphp
+
+                        <a href="{{ route('properties.show', $property->slug) }}" wire:navigate
+                           class="group block bg-white overflow-hidden no-underline relative transition-transform duration-[400ms] hover:scale-[.985] hover:shadow-[0_20px_60px_rgba(0,0,0,.1)] hover:z-10">
+
+                            {{-- Image --}}
+                            <div class="relative overflow-hidden" style="height: 240px">
+                                @if($img)
+                                    <img src="{{ $img->url() }}" alt="{{ $property->title }}"
+                                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]" />
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center" style="background: #F4EFE8">
+                                        <svg class="size-12" style="color: #E8E2D8" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+                                        </svg>
                                     </div>
+                                @endif
+
+                                {{-- Status badge --}}
+                                <div class="absolute top-0 left-0 px-3.5 py-2 text-[0.58rem] font-semibold tracking-[.14em] uppercase"
+                                     style="{{ $isOccupied ? 'background: #B8962E; color: white' : 'background: #1E2330; color: white' }}">
+                                    {{ $isOccupied ? __('Occupied') : __('Available') }}
                                 </div>
 
-                                {{-- Title + Price row --}}
-                                <div class="mb-1.5 flex items-start justify-between gap-3">
-                                    <h3 class="text-base font-bold leading-snug text-zinc-900 line-clamp-1">{{ $property->title }}</h3>
-                                    @if($price)
-                                        <span class="shrink-0 text-sm font-extrabold text-amber-600">
-                                            {{ $currSym }}{{ number_format($price) }}<span class="text-xs font-normal text-zinc-400">{{ $priceLabel }}</span>
-                                        </span>
+                                {{-- Property type badge --}}
+                                <div class="absolute top-0 right-0 px-3 py-2 text-[0.55rem] font-semibold tracking-[.12em] uppercase"
+                                     style="{{ $propType === 'commercial' ? 'background: rgba(30,35,48,.85); color: rgba(255,255,255,.7)' : 'background: rgba(184,150,46,.15); color: #B8962E' }}">
+                                    {{ $propType === 'commercial' ? __('Commercial') : __('Résidentiel') }}
+                                </div>
+
+                                {{-- Short-term badge --}}
+                                @if($isShortTerm)
+                                    <div class="absolute bottom-0 left-0 px-3 py-1.5 text-[0.55rem] font-semibold tracking-[.12em] uppercase"
+                                         style="background: rgba(184,150,46,.9); color: white">
+                                        {{ __('Short-term') }}
+                                    </div>
+                                @endif
+
+                                {{-- Fav --}}
+                                <button onclick="event.preventDefault()"
+                                        wire:click.stop="toggleFavorite({{ $property->id }})"
+                                        class="absolute bottom-3.5 right-3.5 flex items-center justify-center size-[34px] bg-white/90 shadow-md transition-transform duration-200 hover:scale-110"
+                                        style="{{ $isFav ? 'color: #B8962E' : 'color: rgba(30,35,48,.4)' }}">
+                                    <svg class="size-4" fill="{{ $isFav ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            {{-- Card body --}}
+                            <div style="padding: 22px 24px 24px">
+                                {{-- City rule --}}
+                                <div class="flex items-center gap-4 mb-3">
+                                    <div class="h-px flex-1" style="background: #E8E2D8"></div>
+                                    <span style="font-size: 0.58rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #B8962E">
+                                        {{ $property->city ?? __('Côte d\'Ivoire') }}
+                                        @if($rating) · ★ {{ $rating }} @endif
+                                    </span>
+                                </div>
+
+                                <h3 class="font-serif" style="font-size: 1rem; font-weight: 300; color: #1E2330; line-height: 1.3; margin-bottom: 16px">
+                                    {{ $property->title }}
+                                </h3>
+
+                                <div class="flex items-end justify-between">
+                                    <div>
+                                        <span style="font-size: 0.6rem; color: rgba(30,35,48,.4); text-transform: uppercase; letter-spacing: .08em">{{ $priceLabel }}</span>
+                                        @if($price)
+                                            <p style="font-size: 1.05rem; font-weight: 600; color: #1E2330; margin-top: 2px">
+                                                {{ $currSym }}{{ number_format($price) }}
+                                            </p>
+                                        @else
+                                            <p style="font-size: 0.82rem; color: rgba(30,35,48,.4)">{{ __('Sur demande') }}</p>
+                                        @endif
+                                    </div>
+                                    @if($property->size_sqm)
+                                        <span style="font-size: 0.72rem; color: rgba(30,35,48,.45)">{{ number_format($property->size_sqm) }} m²</span>
                                     @endif
                                 </div>
-
-                                {{-- Address --}}
-                                <p class="mb-1 flex items-center gap-1 truncate text-xs text-zinc-500">
-                                    <svg class="size-3 shrink-0 text-zinc-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
-                                    {{ implode(', ', array_filter([$property->address_line_1, $property->city])) ?: __('Location TBA') }}
-                                </p>
-
-                                {{-- Size --}}
-                                @if($property->size_sqm)
-                                    <p class="flex items-center gap-1 text-xs text-zinc-500">
-                                        <svg class="size-3 shrink-0 text-zinc-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
-                                        {{ number_format($property->size_sqm) }} m²
-                                    </p>
-                                @endif
                             </div>
+                        </a>
+                    @endforeach
+                </div>
 
-                            {{-- View Details --}}
-                            <div class="mt-3 flex items-center justify-between">
-                                <a href="{{ route('properties.show', $property->slug) }}" wire:navigate
-                                    class="inline-flex items-center gap-1.5 rounded-lg bg-amber-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-amber-700">
-                                    {{ __('View Details') }}
-                                    <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            {{-- Pagination --}}
-            @if($properties->hasPages())
-                <div class="mt-10 flex items-center justify-center">
-                    <div class="flex items-center gap-1">
-                        {{-- Prev --}}
+                {{-- Pagination --}}
+                @if($properties->hasPages())
+                    <div class="mt-12 flex items-center justify-center gap-1">
                         @if($properties->onFirstPage())
-                            <span class="flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-zinc-300">
-                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+                            <span class="flex size-9 items-center justify-center" style="border: 1px solid #E8E2D8; color: #E8E2D8">
+                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
                             </span>
                         @else
-                            <button wire:click="previousPage" class="flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:border-amber-400 hover:text-amber-600">
-                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+                            <button wire:click="previousPage" class="flex size-9 items-center justify-center transition hover:opacity-70" style="border: 1px solid #E8E2D8; color: #1E2330">
+                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
                             </button>
                         @endif
-                        {{-- Page numbers --}}
                         @foreach($properties->getUrlRange(max(1, $properties->currentPage() - 2), min($properties->lastPage(), $properties->currentPage() + 2)) as $page => $url)
                             @if($page === $properties->currentPage())
-                                <span class="flex size-9 items-center justify-center rounded-lg bg-amber-600 text-sm font-bold text-white">{{ $page }}</span>
+                                <span class="flex size-9 items-center justify-center text-sm font-semibold" style="background: #1E2330; color: white">{{ $page }}</span>
                             @else
-                                <button wire:click="gotoPage({{ $page }})" class="flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-sm text-zinc-600 transition hover:border-amber-400 hover:text-amber-600">{{ $page }}</button>
+                                <button wire:click="gotoPage({{ $page }})" class="flex size-9 items-center justify-center text-sm transition hover:opacity-70" style="border: 1px solid #E8E2D8; color: #1E2330">{{ $page }}</button>
                             @endif
                         @endforeach
-                        {{-- Next --}}
                         @if($properties->hasMorePages())
-                            <button wire:click="nextPage" class="flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:border-amber-400 hover:text-amber-600">
-                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+                            <button wire:click="nextPage" class="flex size-9 items-center justify-center transition hover:opacity-70" style="border: 1px solid #E8E2D8; color: #1E2330">
+                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
                             </button>
                         @else
-                            <span class="flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-zinc-300">
-                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+                            <span class="flex size-9 items-center justify-center" style="border: 1px solid #E8E2D8; color: #E8E2D8">
+                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
                             </span>
                         @endif
                     </div>
-                </div>
-                <p class="mt-3 text-center text-xs text-zinc-400">
-                    {{ __('Showing') }} {{ $properties->firstItem() }}–{{ $properties->lastItem() }} {{ __('of') }} {{ $properties->total() }} {{ __('results') }}
-                </p>
+                    <p class="mt-4 text-center" style="font-size: 0.72rem; color: rgba(30,35,48,.4)">
+                        {{ __('Showing') }} {{ $properties->firstItem() }}–{{ $properties->lastItem() }} {{ __('of') }} {{ $properties->total() }} {{ __('results') }}
+                    </p>
+                @endif
             @endif
-        @endif
 
-    </div>
+        </div>
+    </section>
 
     @include('partials.public-footer')
 

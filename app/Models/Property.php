@@ -49,6 +49,8 @@ class Property extends Model
         'min_lease_months',
         'max_lease_months',
         'nearby_places',
+        'property_type',
+        'is_short_term',
     ];
 
     /**
@@ -152,11 +154,13 @@ class Property extends Model
     protected $casts = [
         'is_featured'      => 'boolean',
         'is_active'        => 'boolean',
+        'is_short_term'    => 'boolean',
         'security_deposit' => 'float',
         'application_fee'  => 'float',
         'min_lease_months' => 'integer',
         'max_lease_months' => 'integer',
         'nearby_places'    => 'array',
+        'property_type'    => \App\Models\States\PropertyType::class,
     ];
 
     public function getSlugOptions() : \Spatie\Sluggable\SlugOptions

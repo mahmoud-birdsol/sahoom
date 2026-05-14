@@ -1,7 +1,7 @@
 <div class="flex flex-col rounded-xl border border-zinc-100 bg-white shadow-sm">
     <div class="flex items-center justify-between px-5 pt-5 pb-4">
         <h3 class="text-base font-semibold text-zinc-900">{{ __('Upcoming Bookings') }}</h3>
-        <a href="#" class="text-sm font-medium text-amber-600 hover:text-amber-700">
+        <a href="#" class="text-sm font-medium transition hover:opacity-70" style="color: #B8962E">
             {{ __('View All') }}
         </a>
     </div>

@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAHOOME — Immobilier de Prestige à Abidjan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #B8962E;
+  --gold-light: #D4AE52;
+  --gold-pale: #F5EDD6;
+  --cream: #FAFAF7;
+  --nude: #F4EFE8;
+  --white: #FFFFFF;
+  --ink: #111318;
+  --ink2: #1E2330;
+  --muted: #6B6F7A;
+  --border: #E8E2D8;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CURSOR */
+.cursor { position: fixed; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+.cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); opacity: .4; transition: width .3s, height .3s, opacity .3s; }
+.cursor.expand { width: 14px; height: 14px; }
+.cursor-ring.expand { width: 52px; height: 52px; opacity: .2; }
+
+/* ══ NAV ══ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 600;
+  height: 80px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 6%;
+  transition: background .5s, border-bottom .5s;
+}
+nav.solid {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-wordmark {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: .95rem;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: var(--white);
+  transition: color .5s;
+}
+nav.solid .logo-wordmark { color: var(--ink); }
+
+.nav-menu { display: flex; align-items: center; gap: 2px; list-style: none; }
+.nav-menu a {
+  font-size: .68rem; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; text-decoration: none;
+  color: rgba(255,255,255,.75);
+  padding: 8px 14px; border-radius: 2px;
+  transition: color .2s, background .2s;
+}
+nav.solid .nav-menu a { color: var(--muted); }
+.nav-menu a:hover { color: var(--gold); }
+.nav-divider { width: 1px; height: 16px; background: rgba(255,255,255,.2); margin: 0 6px; }
+nav.solid .nav-divider { background: var(--border); }
+.nav-contact {
+  font-size: .68rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; text-decoration: none;
+  color: var(--gold); border: 1px solid var(--gold);
+  padding: 9px 22px; border-radius: 2px;
+  transition: background .25s, color .25s;
+}
+.nav-contact:hover { background: var(--gold); color: var(--white); }
+.nav-proprio { font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; color: var(--white) !important; background: var(--gold); padding: 9px 18px; margin-left: 8px; transition: background .25s; }
+.nav-proprio:hover { background: var(--gold-light) !important; color: var(--white) !important; }
+nav.solid .nav-proprio { color: var(--white) !important; }
+
+/* ══ HERO ══ */
+.hero {
+  position: relative;
+  height: 100vh; min-height: 700px;
+  overflow: hidden;
+}
+
+.hero-slides { position: absolute; inset: 0; }
+.hero-slide {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0; transition: opacity 1.5s ease;
+}
+.hero-slide.active { opacity: 1; }
+.slide-1 { background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1800&q=90'); }
+.slide-2 { background-image: url('https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1800&q=90'); }
+.slide-3 { background-image: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1800&q=90'); }
+
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(17,19,24,.75) 0%,
+    rgba(17,19,24,.45) 55%,
+    rgba(17,19,24,.2) 100%
+  );
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  height: 100%;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 6%;
+  max-width: 760px;
+}
+
+.hero-pretitle {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 30px;
+  opacity: 0; animation: fadeRight .9s ease forwards .4s;
+}
+.hero-pretitle-line { width: 44px; height: 1px; background: var(--gold); }
+.hero-pretitle span {
+  font-size: .68rem; font-weight: 500; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gold);
+}
+
+.hero-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 6vw, 5.8rem);
+  font-weight: 300;
+  color: var(--white);
+  line-height: 1.06;
+  margin-bottom: 24px;
+  opacity: 0; animation: fadeRight 1s ease forwards .6s;
+}
+.hero-h1 em { font-style: italic; color: var(--gold-light); }
+
+.hero-p {
+  font-size: .9rem; font-weight: 300; line-height: 1.9;
+  color: rgba(255,255,255,.65);
+  max-width: 460px; margin-bottom: 48px;
+  opacity: 0; animation: fadeRight 1s ease forwards .8s;
+}
+
+.hero-actions {
+  display: flex; gap: 14px; align-items: center;
+  opacity: 0; animation: fadeRight 1s ease forwards 1s;
+}
+
+.btn-hero-primary {
+  background: var(--gold); color: var(--white);
+  padding: 16px 36px; border-radius: 2px;
+  font-size: .72rem; font-weight: 600; letter-spacing: .16em;
+  text-decoration: none; text-transform: uppercase;
+  transition: background .25s, transform .2s;
+  display: inline-block;
+}
+.btn-hero-primary:hover { background: var(--white); color: var(--ink); transform: translateY(-2px); }
+
+.btn-hero-ghost {
+  color: rgba(255,255,255,.8);
+  font-size: .72rem; font-weight: 400; letter-spacing: .12em;
+  text-decoration: none; text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px;
+  transition: color .2s, gap .2s;
+}
+.btn-hero-ghost:hover { color: var(--white); gap: 16px; }
+.btn-hero-proprio { font-size: .68rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,.55); transition: color .2s; }
+
+/* SLIDE INDICATORS */
+.hero-indicators {
+  position: absolute; bottom: 40px; left: 6%; z-index: 3;
+  display: flex; gap: 10px; align-items: center;
+}
+.hi { width: 28px; height: 1.5px; background: rgba(255,255,255,.3); cursor: pointer; transition: background .3s, width .3s; }
+.hi.active { background: var(--gold); width: 48px; }
+
+/* SCROLL INDICATOR */
+.scroll-hint {
+  position: absolute; bottom: 40px; right: 6%; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: .6;
+}
+.scroll-hint span { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--white); writing-mode: vertical-rl; }
+.scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, var(--white), transparent); animation: scrollDown 2s ease-in-out infinite; }
+@keyframes scrollDown { 0%,100%{transform:scaleY(1);transform-origin:top;} 50%{transform:scaleY(.5);transform-origin:bottom;} }
+
+/* ══ CATEGORY BAND ══ */
+.cat-band{background:var(--ink2);padding:0 6%;}
+.cat-inner{max-width:1100px;margin:0 auto;padding:44px 0;}
+.cat-title-row{margin-bottom:28px;}
+.cat-eyebrow{font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(255,255,255,.06);}
+.cat-card{background:var(--ink2);padding:32px 26px;text-decoration:none;transition:background .25s;display:flex;flex-direction:column;gap:8px;border-bottom:2px solid transparent;transition:all .25s;}
+.cat-card:hover{background:rgba(184,150,46,.12);border-bottom-color:var(--gold);}
+.cat-icon{font-size:1.6rem;margin-bottom:4px;}
+.cat-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:400;color:var(--white);}
+.cat-desc{font-size:.74rem;font-weight:300;color:rgba(255,255,255,.4);line-height:1.6;flex:1;}
+.cat-arrow{font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:8px;}
+
+/* ══ NEWS ══ */
+.news-sec{background:var(--cream);padding:90px 6%;border-top:1px solid var(--border);}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-top:52px;}
+.news-card{background:var(--white);overflow:hidden;text-decoration:none;display:block;transition:opacity .3s;}
+.news-card:hover{opacity:.88;}
+.news-img{height:190px;overflow:hidden;}
+.news-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.news-card:hover .news-img img{transform:scale(1.04);}
+.news-body{padding:20px 22px 24px;}
+.news-cat{font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.news-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:400;color:var(--ink);line-height:1.35;margin-bottom:8px;}
+.news-excerpt{font-size:.78rem;font-weight:300;color:var(--muted);line-height:1.7;margin-bottom:12px;}
+.news-date{font-size:.62rem;font-weight:500;color:var(--muted);letter-spacing:.06em;}
+.news-read{font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);display:flex;align-items:center;gap:6px;margin-top:10px;transition:gap .2s,color .2s;}
+.news-card:hover .news-read{gap:10px;color:var(--gold);}
+
+@media(max-width:900px){.cat-grid{grid-template-columns:repeat(2,1fr);}.news-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.cat-grid{grid-template-columns:1fr 1fr;}.news-grid{grid-template-columns:1fr;}}
+
+/* ══ SEARCH BAND old styles kept for compat ══ */
+.search-band {
+  background: var(--ink2);
+  padding: 0 6%;
+}
+
+.search-inner {
+  display: flex; align-items: stretch;
+  max-width: 1100px; margin: 0 auto;
+}
+
+.st-tabs {
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 0; padding: 0 32px 0 0; border-right: 1px solid rgba(255,255,255,.1);
+  min-width: 180px;
+}
+.st-tab {
+  font-size: .65rem; font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: rgba(255,255,255,.4);
+  background: none; border: none; cursor: pointer;
+  padding: 20px 0; text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  transition: color .2s;
+  position: relative;
+}
+.st-tab:last-child { border-bottom: none; }
+.st-tab::before {
+  content: ''; position: absolute; left: -32px; top: 0; bottom: 0;
+  width: 3px; background: var(--gold);
+  transform: scaleY(0); transition: transform .25s;
+}
+.st-tab.active { color: var(--white); }
+.st-tab.active::before { transform: scaleY(1); }
+.st-tab:hover { color: rgba(255,255,255,.8); }
+
+.st-fields {
+  display: flex; flex: 1; align-items: stretch;
+}
+.st-field {
+  flex: 1; padding: 22px 24px;
+  border-right: 1px solid rgba(255,255,255,.07);
+  display: flex; flex-direction: column; gap: 6px;
+  transition: background .2s;
+}
+.st-field:hover { background: rgba(255,255,255,.04); }
+.st-field:last-of-type { border-right: none; }
+.st-label {
+  font-size: .58rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--gold);
+}
+.st-field select, .st-field input {
+  background: transparent; border: none; outline: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: .84rem; font-weight: 300;
+  color: var(--white); width: 100%;
+}
+.st-field select option { color: var(--ink); background: var(--white); }
+.st-field input::placeholder { color: rgba(255,255,255,.35); }
+.st-search {
+  background: var(--gold); color: var(--white); border: none;
+  padding: 0 36px; cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: .65rem; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; transition: background .25s;
+  writing-mode: horizontal-tb;
+}
+.st-search:hover { background: var(--white); color: var(--ink); }
+
+/* ══ STATS RIBBON ══ */
+.stats-ribbon {
+  background: var(--nude);
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: center;
+}
+.stats-ribbon-inner {
+  display: flex; max-width: 900px; width: 100%;
+}
+.ribbon-stat {
+  flex: 1; padding: 36px 20px; text-align: center;
+  border-right: 1px solid var(--border);
+}
+.ribbon-stat:last-child { border-right: none; }
+.rs-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem; font-weight: 300; color: var(--ink);
+  line-height: 1;
+}
+.rs-lbl {
+  font-size: .62rem; font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted); margin-top: 6px;
+}
+
+/* ══ SECTIONS ══ */
+.sec { padding: 100px 6%; }
+
+.sec-eyebrow {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 16px;
+}
+.sey-line { width: 32px; height: 1px; background: var(--gold); }
+.sey-text {
+  font-size: .62rem; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--gold);
+}
+.sec-h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 300; color: var(--ink);
+  line-height: 1.15; margin-bottom: 16px;
+}
+.sec-h2 em { font-style: italic; }
+.sec-lead {
+  font-size: .88rem; font-weight: 300; color: var(--muted);
+  line-height: 1.9; max-width: 460px;
+}
+
+/* ══ SERVICES ══ */
+.services-sec { background: var(--white); }
+.services-layout {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border);
+  margin-top: 60px; border: 1px solid var(--border);
+}
+.svc {
+  background: var(--white); padding: 50px 44px;
+  display: flex; flex-direction: column;
+  transition: background .3s; cursor: pointer;
+  text-decoration: none;
+}
+.svc:hover { background: var(--nude); }
+.svc-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem; font-weight: 300;
+  color: var(--gold-pale); line-height: 1;
+  margin-bottom: 24px;
+  transition: color .3s;
+}
+.svc:hover .svc-num { color: var(--gold-light); }
+.svc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; font-weight: 300;
+  color: var(--ink); line-height: 1.25;
+  margin-bottom: 14px;
+}
+.svc-title em { font-style: italic; }
+.svc-desc {
+  font-size: .82rem; font-weight: 300;
+  color: var(--muted); line-height: 1.8;
+  margin-bottom: 28px; flex: 1;
+}
+.svc-arrow {
+  font-size: .65rem; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--gold);
+  display: flex; align-items: center; gap: 8px;
+  transition: gap .2s;
+}
+.svc:hover .svc-arrow { gap: 14px; }
+
+/* ══ FEATURED ══ */
+.featured-sec { background: var(--cream); }
+.feat-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 52px; flex-wrap: wrap; gap: 20px;
+}
+.feat-link {
+  font-size: .65rem; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--gold); text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  transition: gap .2s, color .2s;
+}
+.feat-link:hover { gap: 14px; color: var(--ink); }
+
+/* FILTER PILLS */
+.filter-pills { display: flex; gap: 8px; margin-bottom: 44px; flex-wrap: wrap; }
+.pill {
+  padding: 8px 22px; border: 1px solid var(--border);
+  background: var(--white); border-radius: 1px;
+  font-size: .62rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted);
+  cursor: pointer; transition: all .2s;
+}
+.pill:hover { border-color: var(--gold); color: var(--ink); }
+.pill.active { background: var(--ink); border-color: var(--ink); color: var(--white); }
+
+/* PROPERTY CARDS */
+.props-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: var(--border); }
+.pcard {
+  background: var(--white); overflow: hidden;
+  transition: transform .4s cubic-bezier(.25,.46,.45,.94);
+  cursor: pointer; text-decoration: none; display: block;
+  position: relative;
+}
+.pcard:hover { transform: scale(.985); z-index: 2; box-shadow: 0 20px 60px rgba(0,0,0,.12); }
+.pcard-img { position: relative; height: 260px; overflow: hidden; }
+.pcard-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s ease; }
+.pcard:hover .pcard-img img { transform: scale(1.06); }
+.pcard-label {
+  position: absolute; top: 0; left: 0;
+  padding: 10px 14px;
+  font-size: .58rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.label-location { background: var(--ink2); color: var(--white); }
+.label-vente { background: var(--gold); color: var(--white); }
+.label-ephemere { background: rgba(17,19,24,.8); color: var(--gold); border-bottom: 2px solid var(--gold); }
+.pcard-fav {
+  position: absolute; bottom: 14px; right: 14px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,.9); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .9rem; color: #aaa;
+  box-shadow: 0 2px 12px rgba(0,0,0,.15);
+  transition: transform .2s, color .2s;
+}
+.pcard-fav:hover { transform: scale(1.12); }
+.pcard-fav.on { color: #e53e3e; }
+.pcard-body { padding: 22px 24px 26px; }
+.pcard-cat {
+  font-size: .58rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+}
+.pcard-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 400; color: var(--ink);
+  line-height: 1.3; margin-bottom: 6px;
+}
+.pcard-loc {
+  font-size: .74rem; font-weight: 300; color: var(--muted);
+  margin-bottom: 14px; letter-spacing: .02em;
+}
+.pcard-specs { display: flex; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+.spec {
+  font-size: .65rem; font-weight: 500; letter-spacing: .06em;
+  color: var(--muted); display: flex; align-items: center; gap: 5px;
+}
+.pcard-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 14px; border-top: 1px solid var(--border);
+}
+.pcard-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 400; color: var(--ink);
+}
+.pcard-price sub {
+  font-family: 'Montserrat', sans-serif;
+  font-size: .62rem; font-weight: 300; color: var(--muted);
+}
+.pcard-ref { font-size: .6rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+
+/* ══ DARK BAND ══ */
+.dark-band {
+  background: var(--ink);
+  padding: 90px 6%;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.db-left .sec-eyebrow .sey-line { background: var(--gold-light); }
+.db-left .sey-text { color: var(--gold-light); }
+.db-left .sec-h2 { color: var(--white); }
+.db-left .sec-lead { color: rgba(255,255,255,.5); max-width: 380px; }
+.db-right { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(255,255,255,.08); }
+.db-stat {
+  background: var(--ink); padding: 36px 28px;
+  transition: background .3s;
+}
+.db-stat:hover { background: rgba(184,150,46,.12); }
+.db-stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem; font-weight: 300; color: var(--gold-light);
+  line-height: 1; margin-bottom: 8px;
+}
+.db-stat-lbl {
+  font-size: .62rem; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(255,255,255,.4);
+}
+
+/* ══ CONSEILS ══ */
+.conseils-sec { background: var(--white); }
+.conseils-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; margin-top: 60px; }
+.ccard { cursor: pointer; }
+.ccard-img { height: 220px; overflow: hidden; margin-bottom: 22px; position: relative; }
+.ccard-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+.ccard:hover .ccard-img img { transform: scale(1.05); }
+.ccard-cat {
+  font-size: .58rem; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+}
+.ccard-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 400; color: var(--ink);
+  line-height: 1.35; margin-bottom: 10px;
+}
+.ccard-excerpt { font-size: .8rem; font-weight: 300; color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+.ccard-read {
+  font-size: .62rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink);
+  display: flex; align-items: center; gap: 8px;
+  transition: gap .2s, color .2s;
+}
+.ccard:hover .ccard-read { gap: 14px; color: var(--gold); }
+
+/* ══ MISSIONS ══ */
+.missions-sec { background: var(--nude); }
+.missions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); margin-top: 60px; }
+.mcard {
+  background: var(--nude); padding: 52px 44px;
+  display: flex; flex-direction: column;
+  transition: background .3s;
+}
+.mcard:hover { background: var(--white); }
+.mcard-num {
+  font-family: 'Playfair Display', serif;
+  font-size: .75rem; font-weight: 300; color: var(--gold);
+  letter-spacing: .2em; margin-bottom: 28px;
+}
+.mcard-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem; font-weight: 300; color: var(--ink);
+  line-height: 1.2; margin-bottom: 18px;
+}
+.mcard-title em { font-style: italic; }
+.mcard-desc { font-size: .84rem; font-weight: 300; color: var(--muted); line-height: 1.9; margin-bottom: 28px; }
+.mcard-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px; flex: 1; }
+.mcard-list li {
+  font-size: .8rem; font-weight: 300; color: var(--ink);
+  display: flex; align-items: flex-start; gap: 12px; line-height: 1.6;
+}
+.mcard-list li::before { content: '—'; color: var(--gold); flex-shrink: 0; }
+.mcard-btn {
+  display: inline-block; padding: 13px 28px; border-radius: 1px;
+  font-size: .65rem; font-weight: 600; letter-spacing: .16em;
+  text-decoration: none; text-transform: uppercase;
+  transition: background .25s, color .25s; align-self: flex-start;
+}
+.mcard-btn-gold { background: var(--gold); color: var(--white); }
+.mcard-btn-gold:hover { background: var(--ink); }
+.mcard-btn-ink { background: var(--ink); color: var(--white); }
+.mcard-btn-ink:hover { background: var(--gold); }
+
+/* ══ TESTIMONIALS ══ */
+.testi-sec { background: var(--white); overflow: hidden; padding: 100px 0; }
+.testi-header { padding: 0 6%; margin-bottom: 52px; }
+.testi-track { display: flex; gap: 2px; background: var(--border); animation: slideTesti 40s linear infinite; width: max-content; }
+.testi-track:hover { animation-play-state: paused; }
+@keyframes slideTesti { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.tcard { background: var(--white); padding: 40px 36px; width: 360px; flex-shrink: 0; }
+.tcard-quote { font-size: 2rem; color: var(--gold); line-height: 1; margin-bottom: 14px; font-family: 'Playfair Display', serif; }
+.tcard-text { font-family: 'Playfair Display', serif; font-size: .98rem; font-weight: 300; font-style: italic; color: var(--ink); line-height: 1.7; margin-bottom: 20px; }
+.tcard-author { font-size: .62rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+/* ══ CTA ══ */
+.cta-sec {
+  position: relative; height: 480px; overflow: hidden;
+  display: flex; align-items: center;
+}
+.cta-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=85');
+  background-size: cover; background-position: center;
+}
+.cta-overlay { position: absolute; inset: 0; background: rgba(17,19,24,.7); }
+.cta-content {
+  position: relative; z-index: 2;
+  padding: 0 6%; max-width: 640px;
+}
+.cta-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300;
+  color: var(--white); line-height: 1.15; margin-bottom: 20px;
+}
+.cta-content h2 em { font-style: italic; color: var(--gold-light); }
+.cta-content p { font-size: .86rem; font-weight: 300; color: rgba(255,255,255,.6); line-height: 1.8; margin-bottom: 36px; }
+.cta-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-cta-primary { background: var(--gold); color: var(--white); padding: 15px 34px; border-radius: 1px; font-size: .65rem; font-weight: 600; letter-spacing: .18em; text-decoration: none; text-transform: uppercase; transition: background .25s; }
+.btn-cta-primary:hover { background: var(--white); color: var(--ink); }
+.btn-cta-ghost { color: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.35); padding: 15px 34px; border-radius: 1px; font-size: .65rem; font-weight: 600; letter-spacing: .18em; text-decoration: none; text-transform: uppercase; transition: all .25s; }
+.btn-cta-ghost:hover { background: rgba(255,255,255,.1); color: var(--white); border-color: var(--white); }
+
+/* WA */
+.wa-btn { position: fixed; bottom: 28px; right: 28px; z-index: 400; width: 54px; height: 54px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,.4); transition: transform .25s; text-decoration: none; }
+.wa-btn:hover { transform: scale(1.08); }
+.wa-btn svg { width: 26px; height: 26px; fill: #fff; }
+.wa-tip { position: absolute; right: 64px; background: var(--ink); color: #fff; font-size: .7rem; font-weight: 500; letter-spacing: .08em; padding: 7px 13px; border-radius: 2px; white-space: nowrap; opacity: 0; transform: translateX(6px); transition: opacity .2s, transform .2s; pointer-events: none; }
+.wa-btn:hover .wa-tip { opacity: 1; transform: translateX(0); }
+
+/* FOOTER */
+footer { background: var(--ink); padding: 72px 6% 32px; }
+.footer-logo-text { font-family: 'Montserrat', sans-serif; font-weight: 300; font-size: .88rem; letter-spacing: .35em; text-transform: uppercase; color: var(--white); }
+.footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 52px; border-bottom: 1px solid rgba(255,255,255,.08); margin-top: 36px; margin-bottom: 28px; }
+.footer-brand-text { font-size: .8rem; font-weight: 300; line-height: 1.85; color: rgba(255,255,255,.35); margin-top: 18px; max-width: 220px; }
+.footer-socials { display: flex; gap: 10px; margin-top: 22px; }
+.fsoc { width: 34px; height: 34px; border: 1px solid rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: .72rem; color: rgba(255,255,255,.4); transition: border-color .2s, color .2s; }
+.fsoc:hover { border-color: var(--gold); color: var(--gold); }
+.fcol h4 { font-size: .6rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.7); margin-bottom: 18px; }
+.fcol ul { list-style: none; }
+.fcol li { margin-bottom: 10px; }
+.fcol a { font-size: .78rem; font-weight: 300; color: rgba(255,255,255,.35); text-decoration: none; transition: color .2s; }
+.fcol a:hover { color: var(--gold-light); }
+.footer-bottom { display: flex; justify-content: space-between; font-size: .68rem; font-weight: 300; color: rgba(255,255,255,.25); flex-wrap: wrap; gap: 8px; letter-spacing: .04em; }
+
+/* ANIMATIONS */
+@keyframes fadeRight { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: translateX(0); } }
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.rd1 { transition-delay: .1s; } .rd2 { transition-delay: .2s; } .rd3 { transition-delay: .3s; }
+
+/* RESPONSIVE */
+
+.nav-proprio{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--white)!important;background:var(--gold);padding:9px 16px;margin-left:6px;transition:background .25s;}
+.nav-proprio:hover{background:var(--gold-light)!important;}
+.btn-hero-proprio{font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,.55);transition:color .2s;}
+.btn-hero-proprio:hover{color:rgba(255,255,255,.85);}
+.proprio-banner{background:var(--nude);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:52px 6%;}
+.proprio-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;}
+.proprio-title{font-family:"Playfair Display",serif;font-size:1.6rem;font-weight:300;color:var(--ink);margin-bottom:7px;}
+.proprio-title em{font-style:italic;}
+.proprio-desc{font-size:.83rem;font-weight:300;color:var(--muted);line-height:1.8;max-width:460px;}
+.proprio-btn{background:var(--ink);color:var(--white);padding:13px 26px;font-size:.65rem;font-weight:600;letter-spacing:.18em;text-decoration:none;text-transform:uppercase;transition:background .25s;white-space:nowrap;flex-shrink:0;}
+.proprio-btn:hover{background:var(--gold);}
+
+@media(max-width:1100px) { .services-layout { grid-template-columns: 1fr; } .props-grid { grid-template-columns: 1fr 1fr; } .footer-grid { grid-template-columns: 1fr 1fr 1fr; } .cat-grid { grid-template-columns: 1fr 1fr; } .sf-inner { flex-wrap: wrap; } .sf-stat { flex: 50%; } }
+
+/* ══ ACTUALITÉS ══ */
+.news-sec { background: var(--cream); padding: 90px 6%; border-top: 1px solid var(--border); }
+.news-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: var(--border); margin-top: 52px; }
+.news-card { background: var(--white); overflow: hidden; text-decoration: none; display: block; transition: opacity .3s; cursor: pointer; }
+.news-card:hover { opacity: .88; }
+.news-img { height: 200px; overflow: hidden; }
+.news-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+.news-card:hover .news-img img { transform: scale(1.05); }
+.news-body { padding: 22px 24px 26px; }
+.news-cat { font-size: .58rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.news-date { font-size: .62rem; font-weight: 300; color: var(--muted); margin-bottom: 8px; letter-spacing: .04em; }
+.news-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 400; color: var(--ink); line-height: 1.35; margin-bottom: 10px; }
+.news-excerpt { font-size: .8rem; font-weight: 300; color: var(--muted); line-height: 1.75; margin-bottom: 14px; }
+.news-read { font-size: .62rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 7px; transition: gap .2s; }
+.news-card:hover .news-read { gap: 13px; }
+
+
+/* ══ CAT SELECTOR ══ */
+.cat-band { background: var(--ink2); padding: 60px 6%; }
+.cat-inner { max-width: 1200px; margin: 0 auto; }
+.cat-eyebrow { font-size: .62rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 32px; }
+.cat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; background: rgba(255,255,255,.08); }
+.cat-card { background: var(--ink2); padding: 36px 28px; text-decoration: none; display: flex; flex-direction: column; gap: 0; transition: background .3s; border-bottom: 3px solid transparent; }
+.cat-card:hover { background: rgba(184,150,46,.12); border-bottom-color: var(--gold); }
+.cat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 300; color: rgba(184,150,46,.25); line-height: 1; margin-bottom: 16px; transition: color .3s; }
+.cat-card:hover .cat-num { color: var(--gold-light); }
+.cat-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 300; color: var(--white); margin-bottom: 10px; line-height: 1.2; }
+.cat-desc { font-size: .78rem; font-weight: 300; color: rgba(255,255,255,.38); line-height: 1.7; margin-bottom: 22px; flex: 1; }
+.cat-arrow { font-size: .62rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); transition: letter-spacing .2s; }
+.cat-card:hover .cat-arrow { letter-spacing: .2em; }
+
+/* ══ STATS FINALES ══ */
+.stats-final { background: var(--ink); border-top: 1px solid rgba(255,255,255,.08); }
+.sf-inner { display: flex; max-width: 1200px; margin: 0 auto; }
+.sf-stat { flex: 1; padding: 52px 20px; text-align: center; border-right: 1px solid rgba(255,255,255,.06); }
+.sf-stat:last-child { border-right: none; }
+.sf-val { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 300; color: var(--gold-light); line-height: 1; }
+.sf-lbl { font-size: .58rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-top: 9px; }
+
+
+/* ══ RÉSIDENCE HIGHLIGHT ══ */
+.residence-highlight{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:560px;border-top:1px solid var(--border);}
+.rh-left{position:relative;overflow:hidden;}
+.rh-img{width:100%;height:100%;min-height:480px;position:relative;}
+.rh-img img{width:100%;height:100%;object-fit:cover;}
+.rh-img-badge{position:absolute;bottom:28px;left:28px;background:var(--ink);padding:16px 20px;}
+.rib-tag{display:block;font-size:.56rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.rib-text{display:block;font-size:.84rem;font-weight:300;color:var(--white);}
+.rh-right{background:var(--nude);padding:72px 60px;display:flex;flex-direction:column;justify-content:center;}
+.rh-services{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px;}
+.rh-svc{display:flex;align-items:flex-start;gap:12px;background:var(--white);padding:16px;border:1px solid var(--border);transition:border-color .2s;}
+.rh-svc:hover{border-color:var(--gold);}
+.rh-svc-icon{font-size:1.2rem;flex-shrink:0;}
+.rh-svc-title{font-size:.76rem;font-weight:600;color:var(--ink);margin-bottom:3px;}
+.rh-svc-desc{font-size:.7rem;font-weight:300;color:var(--muted);line-height:1.5;}
+.rh-btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--white);padding:14px 28px;font-size:.65rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:background .25s;align-self:flex-start;}
+.rh-btn:hover{background:var(--ink);}
+
+
+/* ══ CONCEPT ══ */
+.concept-sec{background:var(--white);padding:90px 6%;}
+.concept-inner{max-width:1200px;margin:0 auto;}
+.concept-block{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;margin-bottom:80px;}
+.concept-block-reverse{direction:rtl;}
+.concept-block-reverse .cb-content{direction:ltr;}
+.concept-block-reverse .cb-image{direction:ltr;}
+.cb-content{display:flex;flex-direction:column;gap:0;}
+.concept-lead{font-size:.88rem;font-weight:300;color:var(--muted);line-height:1.9;margin-bottom:28px;}
+.concept-points{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}
+.cp{display:flex;align-items:flex-start;gap:16px;}
+.cp-line{width:2px;height:100%;min-height:52px;background:var(--gold);flex-shrink:0;margin-top:2px;}
+.cp-title{font-size:.82rem;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:.02em;}
+.cp-desc{font-size:.8rem;font-weight:300;color:var(--muted);line-height:1.7;}
+.concept-btn{display:inline-flex;align-items:center;background:var(--ink);color:var(--white);padding:13px 26px;font-size:.65rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:background .25s;align-self:flex-start;}
+.concept-btn:hover{background:var(--gold);}
+.cb-image{position:relative;height:460px;overflow:hidden;}
+.cb-image img{width:100%;height:100%;object-fit:cover;}
+.cb-tag{position:absolute;bottom:0;left:0;right:0;background:rgba(17,19,24,.75);padding:14px 18px;font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7);}
+.cb-tag-gold{color:var(--gold-light);}
+.concept-divider{height:1px;background:var(--border);margin:0 0 80px;}
+
+/* ══ VENTE & LOCATION ══ */
+.vl-sec{background:var(--nude);padding:90px 6%;border-top:1px solid var(--border);}
+.vl-inner{max-width:1200px;margin:0 auto;}
+.vl-header{margin-bottom:52px;}
+.vl-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);}
+.vl-card{background:var(--white);overflow:hidden;text-decoration:none;display:block;transition:opacity .3s;}
+.vl-card:hover{opacity:.9;}
+.vl-img{height:220px;overflow:hidden;}
+.vl-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.vl-card:hover .vl-img img{transform:scale(1.04);}
+.vl-body{padding:28px 28px 32px;}
+.vl-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:300;color:var(--gold-pale);line-height:1;margin-bottom:10px;}
+.vl-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:300;color:var(--ink);margin-bottom:10px;}
+.vl-title em{font-style:italic;}
+.vl-desc{font-size:.82rem;font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:16px;}
+.vl-points{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+.vl-points span{font-size:.62rem;font-weight:500;letter-spacing:.08em;color:var(--muted);background:var(--nude);padding:5px 10px;border:1px solid var(--border);}
+.vl-arrow{font-size:.65rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
+
+
+/* concept no-image */
+.concept-block-noimg{display:block;max-width:700px;margin:0 auto 80px;}
+.concept-block-noimg .cb-content{display:block;}
+
+/* vl-card no image */
+.vl-card{border-top:3px solid var(--border);transition:border-color .3s;}
+.vl-card:hover{border-color:var(--gold);opacity:1;}
+
+/* ENGAGEMENTS */
+.engage-sec{background:var(--ink);padding:90px 6%;}
+.engage-inner{max-width:1100px;margin:0 auto;}
+.engage-header{margin-bottom:52px;}
+.engage-header .sec-h2{color:var(--white);}
+.engage-header .sey-line{background:var(--gold-light);}
+.engage-header .sey-text{color:var(--gold-light);}
+.engage-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:rgba(255,255,255,.08);}
+.eg-item{background:var(--ink);padding:36px 32px;border-top:2px solid transparent;transition:border-color .3s,background .3s;}
+.eg-item:hover{border-color:var(--gold);background:rgba(184,150,46,.07);}
+.eg-num{font-family:'Playfair Display',serif;font-size:.7rem;font-weight:300;color:var(--gold);letter-spacing:.2em;margin-bottom:14px;}
+.eg-title{font-size:.84rem;font-weight:600;letter-spacing:.04em;color:var(--white);margin-bottom:9px;}
+.eg-desc{font-size:.82rem;font-weight:300;color:rgba(255,255,255,.42);line-height:1.75;}
+
+/* GUIDES */
+.guides-sec{background:var(--cream);padding:90px 6%;border-top:1px solid var(--border);}
+.guides-inner{max-width:1200px;margin:0 auto;}
+.guides-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:16px;}
+.guides-link{font-size:.65rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:8px;transition:gap .2s;}
+.guides-link:hover{gap:14px;}
+.guides-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);}
+.gcard{background:var(--white);overflow:hidden;text-decoration:none;display:block;transition:opacity .3s;}
+.gcard:hover{opacity:.88;}
+.gcard-img{height:190px;overflow:hidden;}
+.gcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.gcard:hover .gcard-img img{transform:scale(1.05);}
+.gcard-body{padding:20px 22px 24px;}
+.gcard-cat{font-size:.58rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.gcard-date{font-size:.62rem;font-weight:300;color:var(--muted);margin-bottom:8px;}
+.gcard-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:400;color:var(--ink);line-height:1.35;margin-bottom:8px;}
+.gcard-excerpt{font-size:.79rem;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:12px;}
+.gcard-read{font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
+
+@media(max-width:768px) { .nav-menu { display: none; } .hero-h1 { font-size: 2.6rem; } .cat-grid { grid-template-columns: 1fr 1fr; } .props-grid { grid-template-columns: 1fr; background: none; gap: 20px; } .pcard { border: 1px solid var(--border); } .conseils-grid { grid-template-columns: 1fr; } .missions-grid { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr 1fr; } .residence-highlight{grid-template-columns:1fr;} .rh-right{padding:44px 24px;} .rh-services{grid-template-columns:1fr;} .vl-grid{grid-template-columns:1fr;}.engage-grid{grid-template-columns:1fr;}.guides-grid{grid-template-columns:1fr;} body { cursor: auto; } .cursor,.cursor-ring { display: none; } }
+@media(max-width:480px) { .footer-grid { grid-template-columns: 1fr; } .stats-ribbon-inner { flex-wrap: wrap; } .ribbon-stat { flex: 50%; } }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ══ NAV ══ -->
+<nav id="navbar">
+  <a href="index.html" class="logo">
+    <svg width="28" height="32" viewBox="0 0 80 90" fill="none">
+      <path d="M40 5C25 5 13 17.5 13 33C13 53 40 85 40 85C40 85 67 53 67 33C67 17.5 55 5 40 5Z" fill="none" stroke="#B8962E" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M40 16L24 29V47H33V37H47V47H56V29L40 16Z" fill="none" stroke="#B8962E" stroke-width="4.5" stroke-linejoin="round"/>
+      <rect x="36.5" y="37" width="7" height="10" rx="1" fill="#B8962E"/>
+    </svg>
+    <span class="logo-wordmark">Sahoome</span>
+  </a>
+
+  <ul class="nav-menu">
+    <li><a href="location.html">Location</a></li>
+    <li><a href="vente.html">Vente</a></li>
+    <li><a href="ephemere.html">Location courte durée</a></li>
+    <li><a href="conseils.html">Conseils</a></li>
+    <li><a href="about.html">À propos</a></li>
+    <div class="nav-divider"></div>
+    <li><a href="contact.html" class="nav-contact">Nous contacter</a></li>
+    <li><a href="proprietaires.html" class="nav-proprio">Publier mon bien</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-slides">
+    <div class="hero-slide slide-1 active"></div>
+    <div class="hero-slide slide-2"></div>
+    <div class="hero-slide slide-3"></div>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-pretitle">
+      <div class="hero-pretitle-line"></div>
+      <span>Abidjan · Côte d'Ivoire</span>
+    </div>
+    <h1 class="hero-h1">
+      L'excellence<br>
+      immobilière<br>
+      à votre <em>service</em>
+    </h1>
+    <p class="hero-p">
+      Location, vente et espaces flexibles — Sahoome vous accompagne dans chaque étape de votre projet immobilier à Abidjan.
+    </p>
+    <div class="hero-actions">
+      <a href="location.html" class="btn-hero-primary">Découvrir nos biens</a>
+      <a href="contact.html" class="btn-hero-ghost">Nous contacter <span>→</span></a>
+      <a href="proprietaires.html" class="btn-hero-proprio">Publier mon bien →</a>
+    </div>
+  </div>
+
+  <div class="hero-indicators">
+    <div class="hi active" onclick="goSlide(0)"></div>
+    <div class="hi" onclick="goSlide(1)"></div>
+    <div class="hi" onclick="goSlide(2)"></div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Défiler</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══ CATEGORY SELECTOR ══ -->
+<div class="cat-band">
+  <div class="cat-inner">
+    <p class="cat-eyebrow">Que recherchez-vous ?</p>
+    <div class="cat-grid">
+      <a href="location.html" class="cat-card">
+        <div class="cat-num">01</div>
+        <div class="cat-name">Location</div>
+        <div class="cat-desc">Appartements, villas, studios et locaux à louer à Abidjan</div>
+        <div class="cat-arrow">Explorer →</div>
+      </a>
+      <a href="vente.html" class="cat-card">
+        <div class="cat-num">02</div>
+        <div class="cat-name">Vente</div>
+        <div class="cat-desc">Appartements, villas, terrains et locaux commerciaux à acquérir</div>
+        <div class="cat-arrow">Explorer →</div>
+      </a>
+      <a href="ephemere.html" class="cat-card">
+        <div class="cat-num">03</div>
+        <div class="cat-name">Espaces courte durée</div>
+        <div class="cat-desc">Pop-up stores, showrooms et espaces événementiels flexibles</div>
+        <div class="cat-arrow">Explorer →</div>
+      </a>
+      <a href="ephemere-residence.html" class="cat-card">
+        <div class="cat-num">04</div>
+        <div class="cat-name">Location courte durée</div>
+        <div class="cat-desc">Logements meublés pour séjours de courte à moyenne durée</div>
+        <div class="cat-arrow">Explorer →</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SERVICES ══ -->
+
+
+
+<!-- ══ CONCEPT ÉPHÉMÈRE ══ -->
+<section class="concept-sec">
+  <div class="concept-inner">
+
+    <!-- BAUX COMMERCIAUX ÉPHÉMÈRES -->
+    <div class="concept-block-noimg reveal">
+      <div class="cb-content">
+        <div class="sec-eyebrow"><div class="sey-line"></div><span class="sey-text">01 — Baux commerciaux courte durées</span></div>
+        <h2 class="sec-h2">Un espace commercial<br>pour votre projet,<br>sans engagement <em>long terme</em></h2>
+        <p class="concept-lead">Vous souhaitez lancer un pop-up store, organiser une vente courte durée, un showroom ou un événement professionnel à Abidjan ? Sahoome vous propose des locaux commerciaux disponibles à la journée, à la semaine ou au mois — sans bail long terme, sans contrainte.</p>
+        <div class="concept-points">
+          <div class="cp"><div class="cp-line"></div><div><div class="cp-title">Locaux vérifiés dans les meilleures zones</div><p class="cp-desc">Plateau, Cocody, Marcory, Adjamé — des emplacements stratégiques à fort passage.</p></div></div>
+          <div class="cp"><div class="cp-line"></div><div><div class="cp-title">Flexibilité totale</div><p class="cp-desc">Du 1 jour au plusieurs mois. Contrat digital signé avant accès, caution à la demande.</p></div></div>
+          <div class="cp"><div class="cp-line"></div><div><div class="cp-title">Idéal pour</div><p class="cp-desc">Pop-up stores, showrooms, ventes privées, événements d'entreprise, lancements de marque.</p></div></div>
+        </div>
+        <a href="ephemere.html" class="concept-btn">Voir les locaux disponibles →</a>
+      </div>
+      </div>
+    </div>
+
+    <div class="concept-divider"></div>
+
+    <!-- RÉSIDENCE ÉPHÉMÈRE -->
+    <div class="concept-block-noimg reveal">
+      </div>
+      <div class="cb-content">
+        <div class="sec-eyebrow"><div class="sey-line"></div><span class="sey-text">02 — Location courte durée</span></div>
+        <h2 class="sec-h2">Un séjour entièrement<br>pris en charge,<br>de A à <em>Z</em></h2>
+        <p class="concept-lead">Pour les expatriés, cadres en déplacement et familles en transit — Sahoome propose un service de location courte durée clé en main unique à Abidjan. De votre arrivée à l'aéroport à votre départ, tout est organisé.</p>
+        <div class="concept-points">
+          <div class="cp"><div class="cp-line"></div><div><div class="cp-title">Transfert aéroport inclus</div><p class="cp-desc">Chauffeur à l'arrivée, panneau nominatif, trajet direct vers votre résidence.</p></div></div>
+          <div class="cp"><div class="cp-line"></div><div><div class="cp-title">Chauffeur privé disponible</div><p class="cp-desc">Pour tous vos déplacements à Abidjan pendant la durée de votre séjour.</p></div></div>
+          <div class="cp"><div class="cp-line"></div><div><div class="cp-title">Conciergerie dédiée 7j/7</div><p class="cp-desc">Un interlocuteur Sahoome disponible sur WhatsApp pour toute demande.</p></div></div>
+        </div>
+        <a href="ephemere-residence.html" class="concept-btn">Découvrir le service →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ VENTE & LOCATION ══ -->
+<section class="vl-sec">
+  <div class="vl-inner">
+    <div class="vl-header reveal">
+      <div class="sec-eyebrow"><div class="sey-line"></div><span class="sey-text">Nos autres services</span></div>
+      <h2 class="sec-h2">Location & Vente<br>immobilière à <em>Abidjan</em></h2>
+      <p style="font-size:.88rem;font-weight:300;color:var(--muted);line-height:1.9;max-width:480px;">Appartements, villas, terrains et locaux — Sahoome vous accompagne sur l'ensemble du marché immobilier abidjanais.</p>
+    </div>
+    <div class="vl-grid">
+      <a href="location.html" class="vl-card reveal rd1">
+        <div class="vl-body">
+          <div class="vl-num">01</div>
+          <div class="vl-title">Location <em>résidentielle</em></div>
+          <p class="vl-desc">Appartements meublés, villas, studios et locaux commerciaux en location longue durée. Biens vérifiés dans toutes les communes d'Abidjan.</p>
+          <div class="vl-points">
+            <span>Appartements</span><span>Villas</span><span>Studios</span><span>Locaux commerciaux</span>
+          </div>
+          <div class="vl-arrow">Explorer →</div>
+        </div>
+      </a>
+      <a href="vente.html" class="vl-card reveal rd2">
+        <div class="vl-body">
+          <div class="vl-num">02</div>
+          <div class="vl-title"><em>Vente</em> immobilière</div>
+          <p class="vl-desc">Appartements, villas, terrains et locaux commerciaux à l'achat. Accompagnement complet avec notaire partenaire et conseil en investissement.</p>
+          <div class="vl-points">
+            <span>Appartements</span><span>Villas</span><span>Terrains</span><span>Locaux</span>
+          </div>
+          <div class="vl-arrow">Explorer →</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- ══ ENGAGEMENTS ══ -->
+<section class="engage-sec">
+  <div class="engage-inner">
+    <div class="engage-header reveal">
+      <div class="sec-eyebrow"><div class="sey-line"></div><span class="sey-text">Nos engagements</span></div>
+      <h2 class="sec-h2">Des standards<br><em>exigeants</em></h2>
+    </div>
+    <div class="engage-grid">
+      <div class="eg-item reveal rd1">
+        <div class="eg-num">01</div>
+        <div class="eg-title">Biens vérifiés sur le terrain</div>
+        <p class="eg-desc">Chaque bien est visité physiquement par notre équipe avant publication. Zéro annonce fictive sur Sahoome.</p>
+      </div>
+      <div class="eg-item reveal rd2">
+        <div class="eg-num">02</div>
+        <div class="eg-title">Réponse garantie sous 24h</div>
+        <p class="eg-desc">Toute demande de visite ou de contact reçoit une réponse de notre équipe en moins de 24 heures.</p>
+      </div>
+      <div class="eg-item reveal rd3">
+        <div class="eg-num">03</div>
+        <div class="eg-title">Transactions sécurisées</div>
+        <p class="eg-desc">Paiements protégés, contrats vérifiés. Chaque transaction est encadrée pour protéger toutes les parties.</p>
+      </div>
+      <div class="eg-item reveal rd1">
+        <div class="eg-num">04</div>
+        <div class="eg-title">Intermédiaire de confiance</div>
+        <p class="eg-desc">Sahoome agit exclusivement comme plateforme de mise en relation — transparence totale à chaque étape.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GUIDES & ACTUALITÉS ══ -->
+<section class="guides-sec">
+  <div class="guides-inner">
+    <div class="guides-header reveal">
+      <div>
+        <div class="sec-eyebrow"><div class="sey-line"></div><span class="sey-text">Guides & Actualités</span></div>
+        <h2 class="sec-h2">L'immobilier abidjanais<br>en <em>temps réel</em></h2>
+      </div>
+      <a href="conseils.html" class="guides-link">Tous les articles →</a>
+    </div>
+    <div class="guides-grid">
+      <a href="conseils.html" class="gcard reveal rd1">
+        <div class="gcard-img"><img src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=600&q=80" alt=""></div>
+        <div class="gcard-body">
+          <div class="gcard-cat">Marché</div>
+          <div class="gcard-date">Avril 2025</div>
+          <div class="gcard-title">Le marché immobilier d'Abidjan en forte croissance en 2025</div>
+          <div class="gcard-excerpt">La demande de logements atteint un niveau historique, portée par une classe moyenne en expansion.</div>
+          <div class="gcard-read">Lire →</div>
+        </div>
+      </a>
+      <a href="conseils.html" class="gcard reveal rd2">
+        <div class="gcard-img"><img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80" alt=""></div>
+        <div class="gcard-body">
+          <div class="gcard-cat">Réglementation</div>
+          <div class="gcard-date">Décembre 2024</div>
+          <div class="gcard-title">Nouveau décret sur les frais d'agence : ce qui change</div>
+          <div class="gcard-excerpt">Le décret n°2024-1115 réforme les frais d'agence, désormais partagés entre bailleur et locataire.</div>
+          <div class="gcard-read">Lire →</div>
+        </div>
+      </a>
+      <a href="conseils.html" class="gcard reveal rd3">
+        <div class="gcard-img"><img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=600&q=80" alt=""></div>
+        <div class="gcard-body">
+          <div class="gcard-cat">Investissement</div>
+          <div class="gcard-date">Mars 2025</div>
+          <div class="gcard-title">Bingerville et Songon : les nouvelles zones à fort potentiel</div>
+          <div class="gcard-excerpt">Ces communes périphériques offrent des rendements parmi les plus attractifs de la métropole.</div>
+          <div class="gcard-read">Lire →</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS FINALES ══ -->
+<div class="stats-final">
+  <div class="sf-inner">
+    <div class="sf-stat reveal">
+      <div class="sf-val" data-count="350">—</div>
+      <div class="sf-lbl">Biens disponibles</div>
+    </div>
+    <div class="sf-stat reveal rd1">
+      <div class="sf-val" data-count="8">—</div>
+      <div class="sf-lbl">Communes couvertes</div>
+    </div>
+    <div class="sf-stat reveal rd2">
+      <div class="sf-val" data-count="1200">—</div>
+      <div class="sf-lbl">Transactions réalisées</div>
+    </div>
+    <div class="sf-stat reveal rd3">
+      <div class="sf-val" data-count="98">—</div>
+      <div class="sf-lbl">% de satisfaction</div>
+    </div>
+  </div>
+</div>
+
+<!-- WA -->
+<a class="wa-btn" href="https://wa.me/41783077079" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="#fff"/></svg>
+</a>
+
+<!-- ══ PROPRIÉTAIRES BANNER ══ -->
+<section class="proprio-banner">
+  <div class="proprio-inner">
+    <div>
+      <div class="sec-eyebrow" style="margin-bottom:10px;"><div class="sey-line" style="background:var(--gold-light)"></div><span class="sey-text" style="color:var(--gold-light)">Vous êtes propriétaire ?</span></div>
+      <h3 class="proprio-title">Publiez votre bien sur <em>Sahoome</em></h3>
+      <p class="proprio-desc">Rejoignez notre réseau de propriétaires vérifiés. Location, vente, espace courte durée ou résidence — nous vous connectons aux bons clients.</p>
+    </div>
+    <a href="proprietaires.html" class="proprio-btn">Déposer mon annonce →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo-text">Sahoome</span>
+  <div class="footer-grid">
+    <div>
+      <p class="footer-brand-text">Votre plateforme immobilière de référence à Abidjan — location, vente et espaces courte durées résidentiels et commerciaux.</p>
+      <div class="footer-socials">
+        <a class="fsoc" href="#">f</a>
+        <a class="fsoc" href="#">ig</a>
+        <a class="fsoc" href="#">in</a>
+        <a class="fsoc" href="#">tw</a>
+      </div>
+    </div>
+    <div class="fcol"><h4>Location</h4><ul><li><a href="location.html?type=appartement">Appartements</a></li><li><a href="location.html?type=villa">Villas</a></li><li><a href="location.html?type=studio">Studios</a></li><li><a href="location.html?type=bureau">Bureaux</a></li></ul></div>
+    <div class="fcol"><h4>Vente</h4><ul><li><a href="vente.html?type=appartement">Appartements</a></li><li><a href="vente.html?type=villa">Villas</a></li><li><a href="vente.html?type=terrain">Terrains</a></li><li><a href="vente.html?type=commercial">Locaux commerciaux</a></li></ul></div>
+    <div class="fcol"><h4>Location courte durée</h4><ul><li><a href="ephemere.html?type=commercial">Commercial</a></li><li><a href="ephemere.html?type=residential">Résidentiel</a></li><li><a href="ephemere.html?type=event">Événementiel</a></li></ul></div>
+    <div class="fcol"><h4>Contact</h4><ul><li><a href="about.html">À propos</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="contact.html">Contact</a></li><li><a href="mailto:sahouapro@gmail.com">sahouapro@gmail.com</a></li><li><a href="tel:+41783077079">+41 78 307 70 79</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 SAHOOME — Tous droits réservés</span>
+    <span>Abidjan, Côte d'Ivoire</span>
+  </div>
+</footer>
+
+<script>
+// NAV
+window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('solid', window.scrollY > 60); });
+
+// HERO SLIDESHOW
+let currentSlide = 0;
+const slides = document.querySelectorAll('.hero-slide');
+const indicators = document.querySelectorAll('.hi');
+function goSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  indicators[currentSlide].classList.remove('active');
+  currentSlide = n;
+  slides[currentSlide].classList.add('active');
+  indicators[currentSlide].classList.add('active');
+}
+setInterval(() => { goSlide((currentSlide + 1) % slides.length); }, 6000);
+
+// SEARCH
+let currentSearchTab = 'location';
+function switchSearchTab(btn, tab) {
+  document.querySelectorAll('.st-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentSearchTab = tab;
+  const s = document.getElementById('stBien');
+  s.innerHTML = '<option value="">Tous</option>';
+  const opts = tab === 'location' ? ['Appartement','Villa / Maison','Studio','Bureau','Local commercial'] :
+               tab === 'vente'    ? ['Appartement','Villa / Maison','Terrain','Local commercial'] :
+                                    ['Local commercial','Appartement meublé','Espace événementiel'];
+  opts.forEach(o => s.innerHTML += `<option>${o}</option>`);
+}
+function doSearch() {
+  const bien = document.getElementById('stBien').value;
+  const commune = document.getElementById('stCommune').value;
+  const budget = document.getElementById('stBudget').value;
+  const pages = { location: 'location.html', vente: 'vente.html', ephemere: 'ephemere.html' };
+  const p = new URLSearchParams();
+  if(bien) p.set('type', bien);
+  if(commune) p.set('commune', commune);
+  if(budget) p.set('budget', budget);
+  window.location.href = pages[currentSearchTab] + (p.toString() ? '?' + p.toString() : '');
+}
+
+
+// STATS FINAL COUNTER
+const sfObs = new IntersectionObserver(entries => {
+  if(entries[0].isIntersecting) {
+    document.querySelectorAll('.sf-val[data-count]').forEach(el => {
+      const t = parseInt(el.dataset.count);
+      let c = 0; const step = Math.ceil(t/50);
+      const iv = setInterval(() => {
+        c = Math.min(c + step, t);
+        el.textContent = c.toLocaleString('fr-FR') + (el.dataset.count === '98' ? '%' : '+');
+        if(c >= t) clearInterval(iv);
+      }, 28);
+    });
+    sfObs.disconnect();
+  }
+}, {threshold:.5});
+const sfSection = document.querySelector('.stats-final');
+if(sfSection) sfObs.observe(sfSection);
+
+// FILTER PILLS
+function filterPill(btn, cat) {
+  document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pcard').forEach(c => {
+    const show = cat === 'all' || c.dataset.cat === cat;
+    c.style.display = show ? 'block' : 'none';
+  });
+}
+
+// COUNTERS
+const cObs = new IntersectionObserver(entries => {
+  if(entries[0].isIntersecting) {
+    document.querySelectorAll('[data-count], .sf-val[data-count]').forEach(el => {
+      const t = parseInt(el.dataset.count), isPercent = el.dataset.count === '98';
+      let c = 0; const step = Math.ceil(t/50);
+      const iv = setInterval(() => {
+        c = Math.min(c + step, t);
+        el.textContent = c.toLocaleString('fr-FR') + (isPercent ? '%' : '+');
+        if(c >= t) clearInterval(iv);
+      }, 28);
+    });
+    cObs.disconnect();
+  }
+}, {threshold:.5});
+const ribbon = document.querySelector('.stats-ribbon');
+if(ribbon) cObs.observe(ribbon);
+
+// SCROLL REVEAL
+const obs = new IntersectionObserver(e => e.forEach(el => { if(el.isIntersecting) el.target.classList.add('visible'); }), {threshold:.1});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// CURSOR
+const cur = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+(function a(){ rx+=(mx-rx)*.1; ry+=(my-ry)*.1; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(a); })();
+document.querySelectorAll('a,button,.svc,.pcard,.ccard,.mcard').forEach(el => {
+  el.addEventListener('mouseenter', () => { cur.classList.add('expand'); ring.classList.add('expand'); });
+  el.addEventListener('mouseleave', () => { cur.classList.remove('expand'); ring.classList.remove('expand'); });
+});
+</script>
+</body>
+</html>

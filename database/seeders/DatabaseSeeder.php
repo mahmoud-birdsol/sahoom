@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class,
             SiteSettingSeeder::class,
+            ArticleSeeder::class,
         ]);
 
         $this->command->info('');

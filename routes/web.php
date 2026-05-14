@@ -10,6 +10,9 @@ Route::get('/', App\Livewire\Home::class)->name('home');
 Route::get('/properties', App\Livewire\PropertyList::class)->name('properties.index');
 Route::get('/properties/{slug}', App\Livewire\PropertyShow::class)->name('properties.show');
 
+Route::get('/articles', App\Livewire\ArticleList::class)->name('articles.index');
+Route::get('/articles/{slug}', App\Livewire\ArticleShow::class)->name('articles.show');
+
 Route::view('/terms', 'pages.terms')->name('terms');
 Route::view('/privacy', 'pages.privacy')->name('privacy');
 Route::view('/faq', 'pages.faq')->name('faq');

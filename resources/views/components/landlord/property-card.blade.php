@@ -8,7 +8,7 @@
 
 @php
     $gradients = [
-        'from-amber-300 to-orange-400',
+        'from-zinc-700 to-zinc-900',
         'from-blue-300 to-blue-500',
         'from-green-300 to-emerald-500',
         'from-violet-300 to-purple-500',
@@ -61,7 +61,7 @@
                 <button
                     wire:click="publishProperty({{ $property->id }})"
                     wire:confirm="{{ __('Publish this property and make it publicly available?') }}"
-                    class="flex h-8 items-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50 px-2.5 text-xs font-semibold text-amber-700 transition hover:bg-amber-100"
+                    class="flex h-8 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-semibold transition hover:opacity-80" style="border-color: #E8E2D8; background: #F4EFE8; color: #B8962E"
                 >
                     <flux:icon.globe-alt class="size-3.5" variant="outline" />
                     {{ __('Publish') }}
@@ -148,7 +148,7 @@
                 };
             @endphp
             @if($listingPrice)
-                <span class="shrink-0 text-sm font-bold text-amber-600">
+                <span class="shrink-0 text-sm font-bold" style="color: #B8962E">
                     ${{ number_format((float) $listingPrice, 0) }}/{{ $listingLabel }}
                 </span>
             @endif

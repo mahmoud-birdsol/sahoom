@@ -7,6 +7,7 @@ use App\Models\PropertyFavorite;
 use App\Models\States\ContractStatus;
 use App\Models\States\PricingType;
 use App\Models\States\PropertyStatus;
+use App\Models\States\PropertyType;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -37,6 +38,12 @@ class PropertyList extends Component
     #[Url]
     public bool $featuredOnly = false;
 
+    #[Url]
+    public string $propertyType = '';
+
+    #[Url]
+    public bool $isShortTerm = false;
+
     public bool $showMap = false;
     public bool $mapFilter = false;
     public float $mapNorth = 0;
@@ -52,6 +59,8 @@ class PropertyList extends Component
     public function updatingMinPrice(): void { $this->resetPage(); }
     public function updatingMaxPrice(): void { $this->resetPage(); }
     public function updatingFeaturedOnly(): void { $this->resetPage(); }
+    public function updatingPropertyType(): void { $this->resetPage(); }
+    public function updatingIsShortTerm(): void { $this->resetPage(); }
 
     public function updateMapBounds(float $north, float $south, float $east, float $west): void
     {
@@ -109,7 +118,7 @@ class PropertyList extends Component
 
     public function clearFilters(): void
     {
-        $this->reset(['search', 'pricingType', 'city', 'sort', 'minPrice', 'maxPrice', 'featuredOnly', 'mapFilter', 'mapNorth', 'mapSouth', 'mapEast', 'mapWest']);
+        $this->reset(['search', 'pricingType', 'city', 'sort', 'minPrice', 'maxPrice', 'featuredOnly', 'propertyType', 'isShortTerm', 'mapFilter', 'mapNorth', 'mapSouth', 'mapEast', 'mapWest']);
         $this->sort = 'newest';
         $this->resetPage();
     }
@@ -144,6 +153,14 @@ class PropertyList extends Component
 
         if ($this->featuredOnly) {
             $query->where('is_featured', true);
+        }
+
+        if ($this->propertyType !== '') {
+            $query->where('property_type', $this->propertyType);
+        }
+
+        if ($this->isShortTerm) {
+            $query->where('is_short_term', true);
         }
 
         if ($this->minPrice > 0) {
@@ -227,11 +244,12 @@ class PropertyList extends Component
             : [];
 
         return view('livewire.property-list', [
-            'properties'   => $properties,
-            'cities'       => $cities,
-            'pricingTypes' => PricingType::cases(),
-            'totalCount'   => $properties->total(),
-            'favoritedIds' => $favoritedIds,
+            'properties'    => $properties,
+            'cities'        => $cities,
+            'pricingTypes'  => PricingType::cases(),
+            'propertyTypes' => PropertyType::cases(),
+            'totalCount'    => $properties->total(),
+            'favoritedIds'  => $favoritedIds,
         ])->layout('components.layouts.public', [
             'title' => __('Browse Properties'),
         ]);

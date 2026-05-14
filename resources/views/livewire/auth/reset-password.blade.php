@@ -2,15 +2,15 @@
     <div class="flex flex-col gap-7">
 
         {{-- Icon --}}
-        <div class="flex size-14 items-center justify-center rounded-2xl bg-amber-50">
-            <svg class="size-7 text-amber-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <div class="flex size-14 items-center justify-center" style="background: #F4EFE8">
+            <svg class="size-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color: #B8962E">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 0 1 21.75 8.25Z" />
             </svg>
         </div>
 
         <div>
-            <h1 class="text-2xl font-bold text-zinc-900">{{ __('Reset Your Password') }}</h1>
-            <p class="mt-1.5 text-sm text-zinc-500">{{ __('Please enter your new password below') }}</p>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 300; color: #1E2330; line-height: 1.25; margin-bottom: 8px">{{ __('Reset Your Password') }}</h1>
+            <p style="font-size: 0.8rem; font-weight: 400; color: rgba(30,35,48,.5); line-height: 1.6">{{ __('Please enter your new password below') }}</p>
         </div>
 
         <x-auth-session-status :status="session('status')" />
@@ -51,7 +51,7 @@
             <button
                 type="submit"
                 data-test="reset-password-button"
-                class="mt-1 w-full rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                class="mt-1 w-full px-4 py-3 text-xs font-semibold uppercase tracking-[.14em] text-white transition hover:opacity-80 focus:outline-none" style="background: #1E2330"
             >
                 {{ __('Reset Password') }}
             </button>

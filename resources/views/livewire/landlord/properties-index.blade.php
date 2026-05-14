@@ -3,12 +3,13 @@
     {{-- Header --}}
     <div class="flex items-start justify-between gap-4">
         <div class="space-y-0.5">
-            <flux:heading size="xl" class="font-bold text-zinc-900">{{ __('Properties') }}</flux:heading>
-            <flux:subheading class="text-zinc-500">{{ __('Welcome back, manage your properties and bookings') }}</flux:subheading>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 300; color: #1E2330; line-height: 1.25">{{ __('Properties') }}</h1>
+            <p style="font-size: 0.8rem; color: rgba(30,35,48,.5); font-weight: 400">{{ __('Welcome back, manage your properties and bookings') }}</p>
         </div>
-        <flux:button wire:click="openCreateForm" variant="primary" icon="plus" class="shrink-0 bg-amber-500 hover:bg-amber-600 border-amber-500 hover:border-amber-600">
+        <button wire:click="openCreateForm" class="flex shrink-0 items-center gap-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-[.12em] text-white transition hover:opacity-80" style="background: #1E2330">
+            <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
             {{ __('New Property') }}
-        </flux:button>
+        </button>
     </div>
 
     {{-- Properties Grid --}}
@@ -19,9 +20,10 @@
             </div>
             <p class="mt-4 text-base font-semibold text-zinc-700">{{ __('No properties yet') }}</p>
             <p class="mt-1 text-sm text-zinc-400">{{ __('Add your first property to get started.') }}</p>
-            <flux:button wire:click="openCreateForm" variant="primary" icon="plus" class="mt-6 bg-amber-500 hover:bg-amber-600 border-amber-500 hover:border-amber-600">
+            <button wire:click="openCreateForm" class="mt-6 flex items-center gap-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-[.12em] text-white transition hover:opacity-80" style="background: #1E2330">
+                <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
                 {{ __('Add Property') }}
-            </flux:button>
+            </button>
         </div>
     @else
         <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -130,6 +132,23 @@
                             </flux:select>
                         </div>
                         <flux:error name="formPrice" />
+                    </flux:field>
+
+                    {{-- Property Type --}}
+                    <flux:field>
+                        <flux:label>{{ __('Property Type') }}</flux:label>
+                        <flux:select wire:model="formPropertyType">
+                            <flux:select.option value="residential">{{ __('Residential') }}</flux:select.option>
+                            <flux:select.option value="commercial">{{ __('Commercial') }}</flux:select.option>
+                        </flux:select>
+                        <flux:error name="formPropertyType" />
+                    </flux:field>
+
+                    {{-- Short-term rental --}}
+                    <flux:field variant="inline">
+                        <flux:checkbox wire:model="formIsShortTerm" id="formIsShortTerm" />
+                        <flux:label for="formIsShortTerm">{{ __('Short-term rental') }}</flux:label>
+                        <flux:description>{{ __('Enable for daily / weekly rentals (vacation, business stays)') }}</flux:description>
                     </flux:field>
 
                     {{-- Description --}}
@@ -243,7 +262,7 @@
                             <div class="mb-3 flex flex-wrap gap-2">
                                 @foreach($formImages as $i => $img)
                                     <div class="group relative">
-                                        <img src="{{ $img->temporaryUrl() }}" class="size-16 rounded-lg object-cover ring-1 ring-amber-300" />
+                                        <img src="{{ $img->temporaryUrl() }}" class="size-16 rounded-lg object-cover ring-1 ring-zinc-200" />
                                         <button
                                             wire:click="removeFormImage({{ $i }})"
                                             class="absolute -right-1.5 -top-1.5 hidden size-5 items-center justify-center rounded-full bg-red-500 text-white group-hover:flex"
@@ -256,13 +275,13 @@
                         @endif
 
                         {{-- Upload zone (always visible) --}}
-                        <label class="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-amber-300 bg-amber-50/30 px-4 py-6 text-center transition hover:bg-amber-50">
-                            <flux:icon.arrow-up-tray class="size-6 text-amber-500 mb-2" variant="outline" />
-                            <span class="text-sm font-medium text-amber-600">{{ __('Drop Files Here or Click to Browse') }}</span>
+                        <label class="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-6 text-center transition" style="border-color: #E8E2D8; background: rgba(244,239,232,.3)" onmouseenter="this.style.background='rgba(244,239,232,.6)'" onmouseleave="this.style.background='rgba(244,239,232,.3)'">
+                            <flux:icon.arrow-up-tray class="size-6 mb-2" variant="outline" style="color: #B8962E" />
+                            <span class="text-sm font-medium" style="color: #B8962E">{{ __('Drop Files Here or Click to Browse') }}</span>
                             <span class="mt-1 text-xs text-zinc-400">{{ __('Multiple images, up to 10 MB each') }}</span>
                             <input type="file" wire:model="formImages" accept="image/*" multiple class="hidden" />
                         </label>
-                        <div wire:loading wire:target="formImages" class="mt-1 flex items-center gap-1.5 text-xs text-amber-600">
+                        <div wire:loading wire:target="formImages" class="mt-1 flex items-center gap-1.5 text-xs" style="color: #B8962E">
                             <flux:icon.arrow-path class="size-3 animate-spin" />
                             {{ __('Uploading…') }}
                         </div>
@@ -272,12 +291,12 @@
 
                 {{-- Footer --}}
                 <div class="border-t border-zinc-100 px-6 py-4">
-                    <flux:button wire:click="saveProperty" wire:loading.attr="disabled" variant="primary" class="w-full bg-amber-700 hover:bg-amber-800 border-amber-700">
+                    <button wire:click="saveProperty" wire:loading.attr="disabled" class="w-full px-4 py-3 text-xs font-semibold uppercase tracking-[.14em] text-white transition hover:opacity-80 disabled:opacity-50" style="background: #1E2330">
                         <span wire:loading.remove wire:target="saveProperty">
                             {{ $isEditing ? __('Save Changes') : __('Add Property') }}
                         </span>
                         <span wire:loading wire:target="saveProperty">{{ __('Saving…') }}</span>
-                    </flux:button>
+                    </button>
                 </div>
             </div>
         </div>
@@ -309,7 +328,7 @@
 
                     {{-- Image Gallery --}}
                     @php
-                        $gradients = ['from-amber-300 to-orange-400','from-blue-300 to-blue-500','from-green-300 to-emerald-500','from-violet-300 to-purple-500','from-rose-300 to-pink-500'];
+                        $gradients = ['from-zinc-700 to-zinc-900','from-blue-300 to-blue-500','from-green-300 to-emerald-500','from-violet-300 to-purple-500','from-rose-300 to-pink-500'];
                         $g = $gradients[$prop->id % count($gradients)];
                         $imgs = $prop->images ?? collect();
                     @endphp
@@ -379,12 +398,22 @@
                             {{ $prop->is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-zinc-100 text-zinc-400' }}">
                             {{ $prop->is_active ? __('Active') : __('Inactive') }}
                         </span>
+                        @php $propType = $prop->property_type?->value ?? 'residential'; @endphp
+                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
+                            {{ $propType === 'commercial' ? 'bg-violet-50 text-violet-700' : 'bg-sky-50 text-sky-700' }}">
+                            {{ $propType === 'commercial' ? __('Commercial') : __('Residential') }}
+                        </span>
+                        @if($prop->is_short_term)
+                            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold" style="background: #F4EFE8; color: #B8962E">
+                                {{ __('Short-term') }}
+                            </span>
+                        @endif
 
                         @if($propStatusValue !== 'approved')
                             <button
                                 wire:click="publishProperty({{ $prop->id }})"
                                 wire:confirm="{{ __('Publish this property and make it publicly available?') }}"
-                                class="ml-auto flex h-8 items-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50 px-3 text-xs font-semibold text-amber-700 transition hover:bg-amber-100"
+                                class="ml-auto flex h-8 items-center gap-1.5 rounded-lg border px-3 text-xs font-semibold transition hover:opacity-80" style="border-color: #E8E2D8; background: #F4EFE8; color: #B8962E"
                             >
                                 <flux:icon.globe-alt class="size-3.5" variant="outline" />
                                 {{ __('Publish') }}
@@ -416,15 +445,15 @@
                     {{-- Specs --}}
                     <div class="grid grid-cols-3 gap-3">
                         <div class="flex flex-col items-center justify-center rounded-lg border border-zinc-100 bg-zinc-50 py-4 gap-1.5">
-                            <flux:icon.building-office class="size-5 text-amber-600" variant="outline" />
+                            <flux:icon.building-office class="size-5" variant="outline" style="color: #B8962E" />
                             <span class="text-xs font-semibold text-zinc-700">{{ $prop->floor ? $prop->floor . ' ' . __('Floor') : __('N/A') }}</span>
                         </div>
                         <div class="flex flex-col items-center justify-center rounded-lg border border-zinc-100 bg-zinc-50 py-4 gap-1.5">
-                            <flux:icon.arrows-pointing-out class="size-5 text-amber-600" variant="outline" />
+                            <flux:icon.arrows-pointing-out class="size-5" variant="outline" style="color: #B8962E" />
                             <span class="text-xs font-semibold text-zinc-700">{{ $prop->size_sqm ? number_format($prop->size_sqm) . ' sq ft' : __('N/A') }}</span>
                         </div>
                         <div class="flex flex-col items-center justify-center rounded-lg border border-zinc-100 bg-zinc-50 py-4 gap-1.5">
-                            <flux:icon.map-pin class="size-5 text-amber-600" variant="outline" />
+                            <flux:icon.map-pin class="size-5" variant="outline" style="color: #B8962E" />
                             <span class="text-xs font-semibold text-zinc-700">{{ $prop->space_number ?: __('N/A') }}</span>
                         </div>
                     </div>
@@ -456,7 +485,7 @@
                         @endif
                         @if($prop->address_line_1)
                             <p class="mt-2 flex items-center gap-1.5 text-xs text-zinc-500">
-                                <flux:icon.map-pin class="size-3.5 shrink-0 text-amber-500" variant="solid" />
+                                <flux:icon.map-pin class="size-3.5 shrink-0" variant="solid" style="color: #B8962E" />
                                 {{ implode(', ', array_filter([$prop->address_line_1, $prop->city, $prop->state, $prop->postal_code])) }}
                             </p>
                         @endif

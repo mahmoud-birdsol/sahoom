@@ -6,6 +6,7 @@ use App\Models\Property;
 use App\Models\PropertyImage;
 use App\Models\States\ContractStatus;
 use App\Models\States\PropertyStatus;
+use App\Models\States\PropertyType;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -77,6 +78,12 @@ class PropertiesIndex extends Component
     #[Validate(['formImages.*' => 'nullable|image|max:10240'])]
     public array $formImages = [];
 
+    #[Validate('required|in:residential,commercial')]
+    public string $formPropertyType = 'residential';
+
+    #[Validate('boolean')]
+    public bool $formIsShortTerm = false;
+
     // ── Details state ─────────────────────────────────────────────────────────
     public ?int $detailsPropertyId = null;
 
@@ -123,6 +130,8 @@ class PropertiesIndex extends Component
         $this->formApplicationFee   = $property->application_fee ? (float) $property->application_fee : null;
         $this->formMinLeaseMonths   = $property->min_lease_months;
         $this->formMaxLeaseMonths   = $property->max_lease_months;
+        $this->formPropertyType     = $property->property_type?->value ?? 'residential';
+        $this->formIsShortTerm      = (bool) $property->is_short_term;
         $this->formImages           = [];
         $this->showPropertyForm     = true;
     }
@@ -175,6 +184,8 @@ class PropertiesIndex extends Component
             'application_fee'  => $this->formApplicationFee,
             'min_lease_months' => $this->formMinLeaseMonths,
             'max_lease_months' => $this->formMaxLeaseMonths,
+            'property_type'    => $this->formPropertyType,
+            'is_short_term'    => $this->formIsShortTerm,
         ];
 
         if ($this->isEditing && $this->editingPropertyId) {
@@ -287,6 +298,8 @@ class PropertiesIndex extends Component
         $this->formApplicationFee   = null;
         $this->formMinLeaseMonths   = null;
         $this->formMaxLeaseMonths   = null;
+        $this->formPropertyType     = 'residential';
+        $this->formIsShortTerm      = false;
         $this->formImages           = [];
         $this->resetValidation();
     }

@@ -8,8 +8,32 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@keyframes fade-right {
+    from { opacity: 0; transform: translateX(-28px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scroll-down {
+    0%, 100% { transform: scaleY(1); transform-origin: top; }
+    50%       { transform: scaleY(.5); transform-origin: bottom; }
+}
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Playfair Display', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+
+    --animate-fade-right: fade-right 1s ease forwards;
+    --animate-scroll-down: scroll-down 2s ease-in-out infinite;
+
+    --color-gold: #B8962E;
+    --color-gold-light: #D4AE52;
+    --color-gold-pale: #F5EDD6;
+    --color-cream: #FAFAF7;
+    --color-nude: #F4EFE8;
+    --color-ink: #111318;
+    --color-ink2: #1E2330;
+    --color-muted: #6B6F7A;
+    --color-border-luxury: #E8E2D8;
 
     --color-zinc-50: #fafafa;
     --color-zinc-100: #f5f5f5;
@@ -64,3 +88,25 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+/* ══ ALICIA HOME — Custom cursor (only when .has-custom-cursor is on body) ══ */
+@media (min-width: 1024px) and (pointer: fine) {
+    body.has-custom-cursor { cursor: none; }
+    body.has-custom-cursor a,
+    body.has-custom-cursor button,
+    body.has-custom-cursor [role="button"] { cursor: none; }
+}
+
+/* ══ ALICIA HOME — Scroll reveal ═══════════════════════════════════════════ */
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .8s ease, transform .8s ease;
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.rd1 { transition-delay: .1s; }
+.rd2 { transition-delay: .2s; }
+.rd3 { transition-delay: .3s; }

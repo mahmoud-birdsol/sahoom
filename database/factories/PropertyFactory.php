@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Landlord;
 use App\Models\Property;
 use App\Models\States\PropertyStatus;
+use App\Models\States\PropertyType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -55,6 +56,7 @@ class PropertyFactory extends Factory
             'min_lease_months' => null,
             'max_lease_months' => null,
             'nearby_places'    => null,
+            'property_type'    => PropertyType::RESIDENTIAL,
         ];
     }
 
@@ -66,5 +68,15 @@ class PropertyFactory extends Factory
     public function inactive(): static
     {
         return $this->state(['is_active' => false]);
+    }
+
+    public function residential(): static
+    {
+        return $this->state(['property_type' => PropertyType::RESIDENTIAL]);
+    }
+
+    public function commercial(): static
+    {
+        return $this->state(['property_type' => PropertyType::COMMERCIAL]);
     }
 }

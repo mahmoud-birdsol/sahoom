@@ -5,25 +5,29 @@
 
 @php
     $textSize = match($size) {
-        'sm'  => 'text-sm',
-        'lg'  => 'text-lg',
-        'xl'  => 'text-2xl',
-        '2xl' => 'text-4xl',
-        default => 'text-base',
+        'sm'  => 'text-[0.8rem]',
+        'lg'  => 'text-[1.05rem]',
+        'xl'  => 'text-xl',
+        '2xl' => 'text-3xl',
+        default => 'text-[0.95rem]',
     };
-    $iconSize = match($size) {
-        'sm'  => 'size-4',
-        'lg'  => 'size-6',
-        'xl'  => 'size-7',
-        '2xl' => 'size-9',
-        default => 'size-5',
+    $svgSize = match($size) {
+        'sm'  => [22, 25],
+        'lg'  => [30, 34],
+        'xl'  => [34, 39],
+        '2xl' => [44, 50],
+        default => [26, 30],
     };
-    $colorClass = $white ? 'text-white' : 'text-amber-600';
+    $textColorClass = $white ? 'text-white' : 'text-ink';
 @endphp
 
-<span {{ $attributes->merge(['class' => "flex items-center gap-2 font-extrabold tracking-widest uppercase {$textSize} {$colorClass}"]) }}>
-    <svg class="{{ $iconSize }} shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75"/>
+<span {{ $attributes->merge(['class' => "flex items-center gap-3 font-sans font-light tracking-[.35em] uppercase {$textSize} {$textColorClass}"]) }}>
+    <svg width="{{ $svgSize[0] }}" height="{{ $svgSize[1] }}" viewBox="0 0 80 90" fill="none" class="shrink-0">
+        <path d="M40 5C25 5 13 17.5 13 33C13 53 40 85 40 85C40 85 67 53 67 33C67 17.5 55 5 40 5Z"
+              fill="none" stroke="#B8962E" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M40 16L24 29V47H33V37H47V47H56V29L40 16Z"
+              fill="none" stroke="#B8962E" stroke-width="4.5" stroke-linejoin="round"/>
+        <rect x="36.5" y="37" width="7" height="10" rx="1" fill="#B8962E"/>
     </svg>
-    SAHOOME
+    Sahoome
 </span>

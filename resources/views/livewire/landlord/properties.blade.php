@@ -1,7 +1,7 @@
 <div class="flex flex-col rounded-xl border border-zinc-100 bg-white shadow-sm">
     <div class="flex items-center justify-between px-5 pt-5 pb-4">
         <h3 class="text-base font-semibold text-zinc-900">{{ __('Your Properties') }}</h3>
-        <a href="{{ route('landlord.properties') }}" wire:navigate class="text-sm font-medium text-amber-600 hover:text-amber-700">
+        <a href="{{ route('landlord.properties') }}" wire:navigate class="text-sm font-medium transition hover:opacity-70" style="color: #B8962E">
             {{ __('View All') }}
         </a>
     </div>
@@ -20,7 +20,7 @@
                 @php
                     $activeContract = $property->contracts->first();
                     $isOccupied = $activeContract !== null;
-                    $colors = ['bg-amber-200', 'bg-blue-200', 'bg-green-200', 'bg-violet-200', 'bg-rose-200'];
+                    $colors = ['bg-zinc-200', 'bg-blue-200', 'bg-green-200', 'bg-violet-200', 'bg-rose-200'];
                     $bgColor = $colors[$property->id % count($colors)];
                 @endphp
                 <div class="flex items-center gap-4 py-4">
@@ -38,7 +38,7 @@
                             </p>
                         @endif
                         @if($activeContract && $activeContract->monthly_rent)
-                            <p class="mt-0.5 text-xs font-semibold text-amber-600">
+                            <p class="mt-0.5 text-xs font-semibold" style="color: #B8962E">
                                 ${{ number_format((float) $activeContract->monthly_rent, 0) }}/mo
                             </p>
                         @endif

@@ -2,7 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Models\Article;
+use App\Models\Contract;
+use App\Models\Landlord;
 use App\Models\Property;
+use App\Models\PropertyReview;
 use App\Models\States\ContractStatus;
 use App\Models\States\PropertyStatus;
 use Livewire\Component;
@@ -40,7 +44,10 @@ class Home extends Component
             ->where('is_featured', true)
             ->withCount(['reviews', 'favorites'])
             ->withAvg('reviews', 'rating')
-            ->with(['images' => fn ($q) => $q->orderBy('order')->limit(1)])
+            ->with([
+                'images'    => fn ($q) => $q->orderBy('order')->limit(1),
+                'contracts' => fn ($q) => $q->where('contract_status', ContractStatus::ACTIVE->value),
+            ])
             ->orderByDesc('favorites_count')
             ->take(4)
             ->get();
@@ -58,9 +65,30 @@ class Home extends Component
             ->take(4)
             ->get();
 
+        $totalActiveProperties = Property::query()
+            ->where('status', PropertyStatus::APPROVED->value)
+            ->where('is_active', true)
+            ->count();
+
+        $totalLandlords = Landlord::query()
+            ->whereHas('properties', fn ($q) => $q->where('status', PropertyStatus::APPROVED->value))
+            ->count();
+
+        $totalContracts = Contract::query()->count();
+
+        $latestArticles = Article::query()
+            ->published()
+            ->orderByDesc('published_at')
+            ->take(3)
+            ->get();
+
         return view('livewire.home', [
-            'popularProperties' => $popularProperties,
-            'properties'        => $properties,
+            'popularProperties'    => $popularProperties,
+            'properties'           => $properties,
+            'totalActiveProperties' => $totalActiveProperties,
+            'totalLandlords'       => $totalLandlords,
+            'totalContracts'       => $totalContracts,
+            'latestArticles'       => $latestArticles,
         ])->layout('components.layouts.public');
     }
 }

@@ -3,8 +3,8 @@
     {{-- Header --}}
     <div class="flex items-start justify-between gap-4">
         <div class="space-y-0.5">
-            <flux:heading size="xl" class="font-bold text-zinc-900">{{ __('Booking & calendar') }}</flux:heading>
-            <flux:subheading class="text-zinc-500">{{ __('Manage your properties and bookings') }}</flux:subheading>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 300; color: #1E2330; line-height: 1.25">{{ __('Booking & calendar') }}</h1>
+            <p style="font-size: 0.8rem; color: rgba(30,35,48,.5); font-weight: 400">{{ __('Manage your properties and bookings') }}</p>
         </div>
 
         {{-- View toggle --}}
@@ -12,7 +12,8 @@
             <button
                 wire:click="switchView('list')"
                 class="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors
-                    {{ $view === 'list' ? 'bg-amber-500 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-900' }}"
+                    {{ $view === 'list' ? 'text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-900' }}"
+                    @if($view === 'list') style="background: #1E2330" @endif"
             >
                 <flux:icon.list-bullet class="size-4" />
                 {{ __('Booking') }}
@@ -20,7 +21,8 @@
             <button
                 wire:click="switchView('calendar')"
                 class="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors
-                    {{ $view === 'calendar' ? 'bg-amber-500 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-900' }}"
+                    {{ $view === 'calendar' ? 'text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-900' }}"
+                    @if($view === 'calendar') style="background: #1E2330" @endif"
             >
                 <flux:icon.calendar-days class="size-4" />
                 {{ __('Calendar') }}
@@ -76,7 +78,7 @@
                             @endphp
                             <tr
                                 wire:click="openDetails({{ $contract->id }})"
-                                class="cursor-pointer transition-colors hover:bg-amber-50/30"
+                                class="cursor-pointer transition-colors hover:bg-zinc-50"
                             >
                                 <td class="px-5 py-3.5">
                                     <div class="font-medium text-zinc-800">{{ $contract->property?->title ?? '—' }}</div>
@@ -99,7 +101,7 @@
                                 </td>
                                 <td class="px-5 py-3.5">
                                     @if($isUpcoming)
-                                        <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-amber-200">
+                                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1" style="background: #F4EFE8; color: #B8962E; ring-color: #E8E2D8">
                                             {{ __('Up Coming') }}
                                         </span>
                                     @else
@@ -150,13 +152,13 @@
                     <div class="space-y-2">
                         @forelse($this->upcomingContracts as $upcoming)
                             @php
-                                $gradients = ['from-amber-300 to-orange-400','from-blue-300 to-blue-500','from-green-300 to-emerald-500','from-violet-300 to-purple-500','from-rose-300 to-pink-500'];
+                                $gradients = ['from-zinc-700 to-zinc-900','from-blue-300 to-blue-500','from-green-300 to-emerald-500','from-violet-300 to-purple-500','from-rose-300 to-pink-500'];
                                 $g = $gradients[$upcoming->property_id % count($gradients)];
                                 $firstImg = $upcoming->property?->images?->first();
                             @endphp
                             <button
                                 wire:click="openDetails({{ $upcoming->id }})"
-                                class="w-full rounded-lg border border-zinc-100 bg-white p-2.5 text-left shadow-sm transition hover:border-amber-200 hover:bg-amber-50/30"
+                                class="w-full rounded-lg border border-zinc-100 bg-white p-2.5 text-left shadow-sm transition hover:bg-zinc-50"
                             >
                                 <div class="flex items-center gap-2.5">
                                     <div class="size-8 shrink-0 overflow-hidden rounded-lg bg-gradient-to-br {{ $g }}">
@@ -194,7 +196,7 @@
                             <flux:icon.chevron-right class="size-4" />
                         </button>
                     </div>
-                    <span class="rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700">
+                    <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold" style="background: #F4EFE8; color: #B8962E">
                         {{ $this->calendarContracts->count() }} {{ __('Booking') }}
                     </span>
                 </div>
@@ -210,7 +212,7 @@
                 @php
                     $today          = now()->toDateString();
                     $currentMonthNr = $this->calendarDate->month;
-                    $colorPalette   = ['bg-amber-500','bg-blue-500','bg-green-500','bg-violet-500','bg-rose-500'];
+                    $colorPalette   = ['bg-zinc-800','bg-blue-500','bg-green-500','bg-violet-500','bg-rose-500'];
                 @endphp
                 <div class="grid grid-cols-7 divide-x divide-y divide-zinc-100">
                     @foreach($this->calendarDays as $day)
@@ -225,8 +227,9 @@
                         <div class="min-h-[80px] p-1.5 {{ $isCurrentMon ? 'bg-white' : 'bg-zinc-50/50' }}">
                             <span class="flex size-6 items-center justify-center rounded-full text-xs font-medium
                                 {{ $isToday
-                                    ? 'bg-amber-500 text-white'
-                                    : ($isCurrentMon ? 'text-zinc-700' : 'text-zinc-300') }}">
+                                    ? 'text-white'
+                                    : ($isCurrentMon ? 'text-zinc-700' : 'text-zinc-300') }}"
+                                @if($isToday) style="background: #1E2330" @endif">
                                 {{ $day->day }}
                             </span>
 
@@ -283,7 +286,7 @@
 
                     {{-- Property image --}}
                     @php
-                        $gradients  = ['from-amber-300 to-orange-400','from-blue-300 to-blue-500','from-green-300 to-emerald-500','from-violet-300 to-purple-500','from-rose-300 to-pink-500'];
+                        $gradients  = ['from-zinc-700 to-zinc-900','from-blue-300 to-blue-500','from-green-300 to-emerald-500','from-violet-300 to-purple-500','from-rose-300 to-pink-500'];
                         $g          = $gradients[$c->property_id % count($gradients)];
                         $firstImage = $c->property?->images?->first();
                     @endphp
@@ -302,7 +305,7 @@
                         <h3 class="text-base font-bold text-zinc-900">{{ $c->property?->title ?? '—' }}</h3>
                         @if($c->property?->address_line_1)
                             <p class="mt-0.5 flex items-center gap-1.5 text-sm text-zinc-500">
-                                <flux:icon.map-pin class="size-3.5 shrink-0 text-amber-500" variant="solid" />
+                                <flux:icon.map-pin class="size-3.5 shrink-0" variant="solid" style="color: #B8962E" />
                                 {{ implode(', ', array_filter([$c->property->address_line_1, $c->property->city, $c->property->state])) }}
                             </p>
                         @endif
@@ -324,15 +327,15 @@
                         </div>
                         <div class="rounded-lg bg-zinc-50 p-3">
                             <p class="text-xs text-zinc-400">{{ __('Rent') }}</p>
-                            <p class="mt-0.5 text-sm font-semibold text-amber-600">
+                            <p class="mt-0.5 text-sm font-semibold" style="color: #B8962E">
                                 ${{ $c->active_rent ? number_format((float) $c->active_rent, 0) : '—' }}
                                 <span class="text-xs font-normal text-zinc-400">/{{ $c->pricing_type?->value ?? 'month' }}</span>
                             </p>
                         </div>
                         @if($c->total_value)
-                            <div class="col-span-2 rounded-lg bg-amber-50 p-3">
-                                <p class="text-xs text-amber-600">{{ __('Total Value') }}</p>
-                                <p class="mt-0.5 text-base font-bold text-amber-700">${{ number_format((float) $c->total_value, 0) }}</p>
+                            <div class="col-span-2 rounded-lg p-3" style="background: #F4EFE8">
+                                <p class="text-xs" style="color: #B8962E">{{ __('Total Value') }}</p>
+                                <p class="mt-0.5 text-base font-bold" style="color: #1E2330">${{ number_format((float) $c->total_value, 0) }}</p>
                             </div>
                         @endif
                     </div>

@@ -11,7 +11,7 @@
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=playfair-display:300,400,400i&family=montserrat:300,400,500,600&display=swap" rel="stylesheet" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -19,14 +19,15 @@
             <script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google.maps_key') }}&libraries=places&loading=async" defer></script>
         @endif
     </head>
-    <body class="min-h-screen bg-zinc-100">
+    <body class="min-h-screen bg-zinc-100" style="font-family: 'Montserrat', sans-serif">
         <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-white">
             <flux:sidebar.toggle class="lg:hidden text-zinc-500 hover:text-zinc-900" icon="x-mark" />
 
             {{-- Logo --}}
-            <a href="{{ route('landlord.dashboard') }}" class="px-1 py-2" wire:navigate>
-                <x-public.logo />
+            <a href="{{ route('landlord.dashboard') }}" class="px-1 py-3" wire:navigate>
+                <x-public.logo size="sm" />
             </a>
+            <div style="height: 1px; background: #E8E2D8; margin: 4px 0"></div>
 
             {{-- Primary Navigation --}}
             <nav class="mt-4 flex flex-col gap-0.5 px-2">
@@ -35,8 +36,9 @@
                     wire:navigate
                     class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
                         {{ request()->routeIs('landlord.dashboard')
-                            ? 'bg-amber-50 text-amber-700'
-                            : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900' }}"
+                            ? 'text-[#1E2330] font-semibold'
+                            : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800' }}"
+                    {{ request()->routeIs('landlord.dashboard') ? 'style=background:#F4EFE8;border-left:3px solid #B8962E;border-radius:0' : '' }}
                 >
                     <flux:icon.home class="size-4.5 shrink-0" />
                     {{ __('Overview') }}
@@ -47,8 +49,9 @@
                     wire:navigate
                     class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
                         {{ request()->routeIs('landlord.properties*')
-                            ? 'bg-amber-50 text-amber-700'
-                            : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900' }}"
+                            ? 'text-[#1E2330] font-semibold'
+                            : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800' }}"
+                    {{ request()->routeIs('landlord.properties*') ? 'style=background:#F4EFE8;border-left:3px solid #B8962E;border-radius:0' : '' }}
                 >
                     <flux:icon.building-office-2 class="size-4.5 shrink-0" />
                     {{ __('Properties') }}
@@ -59,14 +62,15 @@
                     wire:navigate
                     class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
                         {{ request()->routeIs('landlord.bookings*')
-                            ? 'bg-amber-50 text-amber-700'
-                            : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900' }}"
+                            ? 'text-[#1E2330] font-semibold'
+                            : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800' }}"
+                    {{ request()->routeIs('landlord.bookings*') ? 'style=background:#F4EFE8;border-left:3px solid #B8962E;border-radius:0' : '' }}
                 >
                     <flux:icon.calendar-days class="size-4.5 shrink-0" />
                     <span class="flex-1">{{ __('Booking & calendar') }}</span>
                     @php($bookingCount = auth()->user()->landlord?->contracts()->where('contract_status', 'active')->where('start_date', '>', now())->count() ?? 0)
                     @if($bookingCount > 0)
-                        <span class="flex size-5 items-center justify-center rounded-full bg-amber-500 text-[10px] font-semibold text-white">
+                        <span class="flex size-5 items-center justify-center rounded-full text-[10px] font-semibold text-white" style="background: #B8962E">
                             {{ $bookingCount > 99 ? '99+' : $bookingCount }}
                         </span>
                     @endif
@@ -77,14 +81,15 @@
                     wire:navigate
                     class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
                         {{ request()->routeIs('landlord.viewing-requests*')
-                            ? 'bg-amber-50 text-amber-700'
-                            : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900' }}"
+                            ? 'text-[#1E2330] font-semibold'
+                            : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800' }}"
+                    {{ request()->routeIs('landlord.viewing-requests*') ? 'style=background:#F4EFE8;border-left:3px solid #B8962E;border-radius:0' : '' }}
                 >
                     <flux:icon.eye class="size-4.5 shrink-0" />
                     <span class="flex-1">{{ __('Viewing Requests') }}</span>
                     @php($vrCount = auth()->user()->landlord?->properties()->withCount(['viewingRequests' => fn($q) => $q->where('status', 'new')])->get()->sum('viewing_requests_count') ?? 0)
                     @if($vrCount > 0)
-                        <span class="flex size-5 items-center justify-center rounded-full bg-amber-500 text-[10px] font-semibold text-white">
+                        <span class="flex size-5 items-center justify-center rounded-full text-[10px] font-semibold text-white" style="background: #B8962E">
                             {{ $vrCount > 99 ? '99+' : $vrCount }}
                         </span>
                     @endif
@@ -95,8 +100,9 @@
                     wire:navigate
                     class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
                         {{ request()->routeIs('landlord.traffic*')
-                            ? 'bg-amber-50 text-amber-700'
-                            : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900' }}"
+                            ? 'text-[#1E2330] font-semibold'
+                            : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800' }}"
+                    {{ request()->routeIs('landlord.traffic*') ? 'style=background:#F4EFE8;border-left:3px solid #B8962E;border-radius:0' : '' }}
                 >
                     <flux:icon.chart-bar class="size-4.5 shrink-0" />
                     {{ __('Traffic') }}
@@ -107,8 +113,9 @@
                     wire:navigate
                     class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
                         {{ request()->routeIs('landlord.notifications*')
-                            ? 'bg-amber-50 text-amber-700'
-                            : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900' }}"
+                            ? 'text-[#1E2330] font-semibold'
+                            : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800' }}"
+                    {{ request()->routeIs('landlord.notifications*') ? 'style=background:#F4EFE8;border-left:3px solid #B8962E;border-radius:0' : '' }}
                 >
                     <flux:icon.bell class="size-4.5 shrink-0" />
                     <span class="flex-1">{{ __('Notification') }}</span>
@@ -139,7 +146,7 @@
             {{-- User Profile --}}
             <flux:dropdown class="w-full" position="top" align="start">
                 <button class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900">
-                    <span class="flex size-8 shrink-0 items-center justify-center rounded-full bg-amber-500 text-sm font-semibold text-white">
+                    <span class="flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white" style="background: #1E2330">
                         {{ auth()->user()->initials() }}
                     </span>
                     <span class="flex-1 truncate text-start text-zinc-700">{{ auth()->user()->name }}</span>
@@ -177,9 +184,9 @@
         <flux:header class="lg:hidden border-b border-zinc-200 bg-white">
             <flux:sidebar.toggle class="text-zinc-500" icon="bars-2" inset="left" />
             <flux:spacer />
-            <span class="text-sm font-bold tracking-widest text-amber-600 uppercase">Sahoome</span>
+            <x-public.logo size="sm" />
             <flux:spacer />
-            <span class="flex size-8 items-center justify-center rounded-full bg-amber-500 text-sm font-semibold text-white">
+            <span class="flex size-8 items-center justify-center rounded-full text-sm font-semibold text-white" style="background: #1E2330">
                 {{ auth()->user()->initials() }}
             </span>
         </flux:header>

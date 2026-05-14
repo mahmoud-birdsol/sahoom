@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Nova\Dashboards\Main;
 use Badinansoft\LanguageSwitch\LanguageSwitch;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Fortify\Features;
@@ -56,9 +57,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function gate(): void
     {
         Gate::define('viewNova', function (User $user) {
-            return in_array($user->email, [
-                //
-            ]);
+            return $user->isAdmin();
         });
     }
 
@@ -70,7 +69,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function dashboards(): array
     {
         return [
-            new \App\Nova\Dashboards\Main,
+            Main::make(),
         ];
     }
 

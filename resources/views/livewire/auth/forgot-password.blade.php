@@ -2,15 +2,15 @@
     <div class="flex flex-col gap-7">
 
         {{-- Icon --}}
-        <div class="flex size-14 items-center justify-center rounded-2xl bg-amber-50">
-            <svg class="size-7 text-amber-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <div class="flex size-14 items-center justify-center" style="background: #F4EFE8">
+            <svg class="size-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color: #B8962E">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
             </svg>
         </div>
 
         <div>
-            <h1 class="text-2xl font-bold text-zinc-900">{{ __('Forgot Your Password?') }}</h1>
-            <p class="mt-1.5 text-sm text-zinc-500">{{ __('No worries — enter your email and we\'ll send you a reset link.') }}</p>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 300; color: #1E2330; line-height: 1.25; margin-bottom: 8px">{{ __('Forgot Your Password?') }}</h1>
+            <p style="font-size: 0.8rem; font-weight: 400; color: rgba(30,35,48,.5); line-height: 1.6">{{ __('No worries — enter your email and we\'ll send you a reset link.') }}</p>
         </div>
 
         @if (session('status'))
@@ -34,14 +34,14 @@
             <button
                 type="submit"
                 data-test="email-password-reset-link-button"
-                class="w-full rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                class="w-full px-4 py-3 text-xs font-semibold uppercase tracking-[.14em] text-white transition hover:opacity-80 focus:outline-none" style="background: #1E2330"
             >
                 {{ __('Send Reset Link') }}
             </button>
         </form>
 
         <p class="text-center text-sm text-zinc-500">
-            <a href="{{ route('login') }}" wire:navigate class="font-semibold text-amber-600 hover:text-amber-700 transition">
+            <a href="{{ route('login') }}" wire:navigate class="font-semibold transition hover:opacity-70" style="color: #B8962E">
                 &larr; {{ __('Back to login') }}
             </a>
         </p>

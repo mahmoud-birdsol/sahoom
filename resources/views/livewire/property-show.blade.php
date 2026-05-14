@@ -1,9 +1,14 @@
 @php
-    $gradients = ['from-amber-300 to-orange-500','from-blue-300 to-blue-500','from-green-300 to-emerald-500','from-violet-300 to-purple-500'];
-    $g         = $gradients[$property->id % count($gradients)];
-    $images    = $property->images;
+    $images     = $property->images;
     $isOccupied = $property->contracts->isNotEmpty();
-    $rating    = $property->reviews_avg_rating ? round((float)$property->reviews_avg_rating, 1) : null;
+    $rating     = $property->reviews_avg_rating ? round((float)$property->reviews_avg_rating, 1) : null;
+    $price      = $property->monthly_rent ?? $property->weekly_rent ?? $property->daily_rent ?? $property->yearly_rent;
+    $propType   = $property->property_type?->value ?? 'residential';
+    $currSym    = match(strtoupper($property->currency ?? 'XOF')) {
+        'EUR' => '€ ', 'GBP' => '£ ', 'USD' => '$ ',
+        'SAR' => 'SAR ', 'AED' => 'AED ',
+        default => 'XOF ',
+    };
 @endphp
 
 <div>
@@ -11,336 +16,366 @@
     <x-public.navbar />
 
     {{-- ══ BREADCRUMB ════════════════════════════════════════════════════════ --}}
-    <div class="border-b border-zinc-100 bg-white">
-        <div class="mx-auto max-w-7xl px-6 py-3 lg:px-10">
-            <nav class="flex items-center gap-1.5 text-xs text-zinc-400">
-                <a href="{{ route('home') }}" wire:navigate class="transition hover:text-amber-600">{{ __('Home') }}</a>
-                <svg class="size-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-                <a href="{{ route('properties.index') }}" wire:navigate class="transition hover:text-amber-600">{{ __('Properties') }}</a>
-                <svg class="size-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-                <span class="truncate max-w-xs text-zinc-700">{{ $property->title }}</span>
+    <div style="background: #FAFAF7; border-bottom: 1px solid #E8E2D8; padding: 14px 6%">
+        <div style="max-width: 1200px; margin: 0 auto">
+            <nav class="flex items-center gap-2" style="font-size: 0.68rem; color: rgba(30,35,48,.4); letter-spacing: .08em; text-transform: uppercase">
+                <a href="{{ route('home') }}" wire:navigate class="transition hover:opacity-70" style="color: rgba(30,35,48,.4)">{{ __('Home') }}</a>
+                <span style="color: #B8962E">/</span>
+                <a href="{{ route('properties.index') }}" wire:navigate class="transition hover:opacity-70" style="color: rgba(30,35,48,.4)">{{ __('Properties') }}</a>
+                <span style="color: #B8962E">/</span>
+                <span class="truncate max-w-xs" style="color: #1E2330">{{ $property->title }}</span>
             </nav>
         </div>
     </div>
 
-    {{-- ══ MAIN WRAPPER ══════════════════════════════════════════════════════ --}}
-    <div class="mx-auto max-w-7xl px-6 py-8 lg:px-10">
-        <div class="flex flex-col gap-8 lg:flex-row lg:items-start">
+    {{-- ══ MAIN ════════════════════════════════════════════════════════════════ --}}
+    <section style="background: #FAFAF7; padding: 50px 6% 90px">
+        <div style="max-width: 1200px; margin: 0 auto">
+            <div class="flex flex-col gap-10 lg:flex-row lg:items-start">
 
-            {{-- ══ LEFT / MAIN COLUMN ════════════════════════════════════════ --}}
-            <div class="flex-1 min-w-0 space-y-7">
+                {{-- ── LEFT COLUMN ─────────────────────────────────────────── --}}
+                <div class="flex-1 min-w-0 space-y-6">
 
-                {{-- ── TITLE + FAVORITE ──────────────────────────────────── --}}
-                <div>
+                    {{-- Title block --}}
                     <div class="flex items-start justify-between gap-4">
-                        <h1 class="text-2xl font-extrabold text-zinc-900 lg:text-3xl leading-snug">{{ $property->title }}</h1>
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="h-px w-6 shrink-0" style="background: #B8962E"></div>
+                                <span style="font-size: 0.6rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #B8962E">
+                                    {{ $propType === 'commercial' ? __('Commercial') : __('Résidentiel') }}
+                                    @if($property->city) · {{ $property->city }} @endif
+                                </span>
+                            </div>
+                            <h1 class="font-serif" style="font-size: clamp(1.6rem,3vw,2.5rem); font-weight: 300; color: #1E2330; line-height: 1.15">
+                                {{ $property->title }}
+                            </h1>
+                            <p class="flex items-center gap-1.5 mt-3" style="font-size: 0.8rem; color: rgba(30,35,48,.5)">
+                                <svg class="size-3.5 shrink-0" style="color: #B8962E" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                                {{ implode(', ', array_filter([$property->address_line_1, $property->city, $property->country])) ?: __('Location TBA') }}
+                            </p>
+                        </div>
+                        {{-- Favourite --}}
                         <button wire:click="toggleFavorite"
-                            class="flex size-9 shrink-0 items-center justify-center rounded-full border transition
-                                {{ $this->isFavorited ? 'border-rose-300 bg-rose-50 text-rose-500' : 'border-zinc-200 text-zinc-400 hover:border-rose-300 hover:text-rose-500' }}">
-                            <svg class="size-5" fill="{{ $this->isFavorited ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg>
+                                class="flex shrink-0 size-10 items-center justify-center transition"
+                                style="border: 1px solid #E8E2D8; background: white; {{ $this->isFavorited ? 'color: #B8962E' : 'color: rgba(30,35,48,.3)' }}">
+                            <svg class="size-5" fill="{{ $this->isFavorited ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+                            </svg>
                         </button>
                     </div>
-                    <p class="mt-2 flex items-center gap-1.5 text-sm text-zinc-500">
-                        <svg class="size-4 shrink-0 text-zinc-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
-                        {{ implode(', ', array_filter([$property->address_line_1, $property->city, $property->state, $property->postal_code])) ?: __('Location TBA') }}
-                    </p>
-                </div>
 
-                {{-- ── IMAGE GALLERY ─────────────────────────────────────── --}}
-                @php $price = $property->monthly_rent ?? $property->weekly_rent ?? $property->daily_rent ?? $property->yearly_rent; @endphp
-
-                {{-- Large left + 2×2 grid right --}}
-                <div class="grid grid-cols-5 gap-2 overflow-hidden rounded-2xl">
-                    {{-- Main large image --}}
-                    <div class="relative col-span-5 h-64 overflow-hidden rounded-2xl bg-gradient-to-br {{ $g }} md:col-span-3 md:h-80">
-                        @if($images->isNotEmpty())
-                            <img src="{{ $images->first()->url() }}" alt="{{ $property->title }}" class="h-full w-full object-cover" />
-                        @else
-                            <div class="flex h-full items-center justify-center">
-                                <svg class="size-16 text-white/30" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21" /></svg>
-                            </div>
-                        @endif
-                        <span class="absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-bold {{ $isOccupied ? 'bg-blue-500 text-white' : 'bg-green-500 text-white' }}">
-                            {{ $isOccupied ? __('Occupied') : __('Available') }}
-                        </span>
-                        @if($property->is_featured)
-                            <span class="absolute left-3 bottom-3 rounded-full bg-amber-500 px-2.5 py-0.5 text-xs font-bold text-white">{{ __('Featured') }}</span>
-                        @endif
-                    </div>
-
-                    {{-- 2×2 thumbnail grid --}}
-                    <div class="col-span-5 grid grid-cols-2 gap-2 md:col-span-2">
-                        @foreach(collect([1,2,3,4]) as $i)
-                            @php $thumb = $images->get($i); @endphp
-                            <div class="h-32 overflow-hidden rounded-xl bg-gradient-to-br {{ $g }} md:h-auto">
-                                @if($thumb)
-                                    <img src="{{ $thumb->url() }}" alt="" class="h-full w-full object-cover" />
+                    {{-- Gallery — 1 large + 2×2 thumbs --}}
+                    <div style="background: #E8E2D8; overflow: hidden">
+                        {{-- Desktop: side-by-side; Mobile: stacked --}}
+                        <div class="flex flex-col sm:flex-row" style="gap: 2px; height: auto; min-height: 0">
+                            {{-- Main image --}}
+                            <div class="relative overflow-hidden shrink-0" style="height: 300px; flex: 3">
+                                @if($images->isNotEmpty())
+                                    <img src="{{ $images->first()->url() }}" alt="{{ $property->title }}" class="w-full h-full object-cover" />
                                 @else
-                                    <div class="flex h-full min-h-[6rem] items-center justify-center opacity-60">
-                                        <svg class="size-8 text-white/50" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+                                    <div class="w-full h-full flex items-center justify-center" style="background: #F4EFE8">
+                                        <svg class="size-16" style="color: #E8E2D8" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+                                    </div>
+                                @endif
+                                <div class="absolute top-0 left-0 px-3.5 py-2" style="font-size: 0.6rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; background: {{ $isOccupied ? '#B8962E' : '#1E2330' }}; color: white">
+                                    {{ $isOccupied ? __('Occupied') : __('Available') }}
+                                </div>
+                                @if($property->is_featured)
+                                    <div class="absolute bottom-0 left-0 px-3.5 py-2" style="font-size: 0.6rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; background: rgba(184,150,46,.9); color: white">
+                                        {{ __('Featured') }}
                                     </div>
                                 @endif
                             </div>
-                        @endforeach
+                            {{-- 2×2 thumbnail grid --}}
+                            <div class="grid grid-cols-2 grid-rows-2 shrink-0" style="gap: 2px; flex: 2; height: 300px">
+                                @foreach(collect([1,2,3,4]) as $i)
+                                    @php $thumb = $images->get($i); @endphp
+                                    <div class="overflow-hidden" style="background: #F4EFE8">
+                                        @if($thumb)
+                                            <img src="{{ $thumb->url() }}" alt="" class="w-full h-full object-cover" />
+                                        @else
+                                            <div class="w-full h-full flex items-center justify-center">
+                                                <svg class="size-6" style="color: #E8E2D8" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/></svg>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                {{-- ── PROPERTY DETAILS CARD ──────────────────────────── --}}
-                <div class="rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm">
-                    <h2 class="mb-4 text-lg font-bold text-zinc-900">{{ __('Property Details') }}</h2>
-
-                    {{-- Feature badges --}}
-                    <div class="mb-4 flex flex-wrap gap-3">
-                        @if($property->floor)
-                            <div class="flex flex-col items-center gap-1.5 rounded-xl border border-zinc-100 bg-zinc-50 px-5 py-3 text-center">
-                                <svg class="size-5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>
-                                <span class="text-xs font-semibold text-zinc-700">{{ $property->floor }} {{ __('Floor') }}</span>
-                            </div>
-                        @endif
-                        @if($property->size_sqm)
-                            <div class="flex flex-col items-center gap-1.5 rounded-xl border border-zinc-100 bg-zinc-50 px-5 py-3 text-center">
-                                <svg class="size-5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" /></svg>
-                                <span class="text-xs font-semibold text-zinc-700">{{ number_format($property->size_sqm) }} m²</span>
-                            </div>
-                        @endif
-                        @if($property->space_number)
-                            <div class="flex flex-col items-center gap-1.5 rounded-xl border border-zinc-100 bg-zinc-50 px-5 py-3 text-center">
-                                <svg class="size-5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614" /></svg>
-                                <span class="text-xs font-semibold text-zinc-700">{{ __('Unit') }}: {{ $property->space_number }}</span>
-                            </div>
-                        @endif
-                        @if($property->traffic_score)
-                            <div class="flex flex-col items-center gap-1.5 rounded-xl border border-zinc-100 bg-zinc-50 px-5 py-3 text-center">
-                                <svg class="size-5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg>
-                                <span class="text-xs font-semibold text-zinc-700">{{ __('Traffic') }}: {{ $property->traffic_score }}</span>
-                            </div>
-                        @endif
-                    </div>
+                    {{-- Spec chips --}}
+                    @php $specs = array_filter([
+                        $property->floor       ? ['icon' => 'floor',   'label' => $property->floor . ' ' . __('Floor')] : null,
+                        $property->size_sqm    ? ['icon' => 'area',    'label' => number_format($property->size_sqm) . ' m²'] : null,
+                        $property->space_number? ['icon' => 'unit',    'label' => __('Unit') . ' ' . $property->space_number] : null,
+                        $property->traffic_score ? ['icon' => 'traffic','label' => __('Traffic') . ': ' . $property->traffic_score . '/10'] : null,
+                        $rating                ? ['icon' => 'star',    'label' => $rating . ' (' . ($property->reviews_count ?? 0) . ' ' . __('reviews') . ')'] : null,
+                    ]); @endphp
+                    @if(count($specs))
+                        <div class="flex flex-wrap gap-2">
+                            @foreach($specs as $spec)
+                                <div class="flex items-center gap-2" style="border: 1px solid #E8E2D8; background: white; padding: 8px 16px">
+                                    <span style="font-size: 0.72rem; color: #1E2330; font-weight: 500">{{ $spec['label'] }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
 
                     {{-- Description --}}
                     @if($property->description)
-                        <p class="text-sm leading-relaxed text-zinc-600">{!! nl2br(e($property->description)) !!}</p>
+                        <div style="background: white; border: 1px solid #E8E2D8; padding: 28px 32px">
+                            <div class="flex items-center gap-4 mb-5">
+                                <span style="font-size: 0.62rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #B8962E">{{ __('Description') }}</span>
+                                <div class="h-px flex-1" style="background: #E8E2D8"></div>
+                            </div>
+                            <p style="font-size: 0.88rem; line-height: 1.85; color: rgba(30,35,48,.75)">{!! nl2br(e($property->description)) !!}</p>
+                        </div>
                     @endif
 
                     {{-- Amenities --}}
                     @if($property->amenities->isNotEmpty())
-                        <div class="mt-4 pt-4 border-t border-zinc-50 flex flex-wrap gap-2">
-                            @foreach($property->amenities as $amenity)
-                                <span class="flex items-center gap-1 rounded-full border border-amber-100 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
-                                    <svg class="size-3 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
-                                    {{ $amenity->name }}
-                                </span>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
-
-                {{-- ── WRITE A REVIEW ────────────────────────────────────── --}}
-                @if($this->canWriteReview)
-                <div class="rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm">
-                    <h2 class="text-lg font-bold text-zinc-900">{{ __('Write a Review') }}</h2>
-                    <p class="mt-0.5 text-sm text-zinc-400">{{ __('Share your thoughts about this property') }}</p>
-
-                    @if($reviewSent)
-                        <div class="mt-4 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-sm font-medium text-green-700">
-                            {{ __('Thank you! Your review has been submitted.') }}
-                        </div>
-                    @else
-                        <form wire:submit="submitReview" class="mt-4">
-                            <label class="mb-2 block text-xs font-semibold text-zinc-600">{{ __('Your Rating') }}</label>
-                            <div class="mb-4 flex items-center gap-1">
-                                @for($star = 1; $star <= 5; $star++)
-                                    <button type="button" wire:click="$set('reviewRating', {{ $star }})" class="transition hover:scale-110">
-                                        <svg class="size-7 {{ $reviewRating >= $star ? 'text-amber-400' : 'text-zinc-200' }} transition" fill="currentColor" viewBox="0 0 24 24">
-                                            <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </button>
-                                @endfor
+                        <div style="background: white; border: 1px solid #E8E2D8; padding: 28px 32px">
+                            <div class="flex items-center gap-4 mb-5">
+                                <span style="font-size: 0.62rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #B8962E">{{ __('Amenities') }}</span>
+                                <div class="h-px flex-1" style="background: #E8E2D8"></div>
                             </div>
-                            @error('reviewRating') <p class="mb-2 text-xs text-red-500">{{ $message }}</p> @enderror
-                            <textarea wire:model="reviewText" rows="3" placeholder="{{ __('Optional: Share more details...') }}"
-                                class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition resize-none mb-3"></textarea>
-                            <button type="submit"
-                                class="rounded-xl bg-amber-600 px-6 py-2.5 text-sm font-bold text-white transition hover:bg-amber-700"
-                                wire:loading.attr="disabled" wire:loading.class="opacity-75">
-                                {{ __('Rate now') }}
-                            </button>
-                        </form>
-                    @endif
-                </div>
-                @endif
-
-                {{-- ── LOCATION ──────────────────────────────────────────── --}}
-                <div class="rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm">
-                    <h2 class="mb-4 text-lg font-bold text-zinc-900">{{ __('Location') }}</h2>
-
-                    @if($property->latitude && $property->longitude)
-                        <div class="overflow-hidden rounded-xl border border-zinc-100">
-                            <iframe
-                                src="https://www.openstreetmap.org/export/embed.html?bbox={{ $property->longitude - 0.01 }},{{ $property->latitude - 0.01 }},{{ $property->longitude + 0.01 }},{{ $property->latitude + 0.01 }}&layer=mapnik&marker={{ $property->latitude }},{{ $property->longitude }}"
-                                width="100%" height="240" style="border:0" loading="lazy"
-                                class="w-full"
-                            ></iframe>
-                        </div>
-                    @else
-                        <div class="flex h-48 items-center justify-center overflow-hidden rounded-xl bg-zinc-100">
-                            <div class="text-center">
-                                <svg class="mx-auto mb-2 size-10 text-zinc-300" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" /></svg>
-                                <p class="text-sm text-zinc-400">{{ implode(', ', array_filter([$property->address_line_1, $property->city])) ?: __('Location not specified') }}</p>
+                            <div class="flex flex-wrap gap-2">
+                                @foreach($property->amenities as $amenity)
+                                    <span class="flex items-center gap-1.5" style="border: 1px solid #E8E2D8; padding: 6px 14px; font-size: 0.72rem; font-weight: 500; color: #1E2330">
+                                        <svg class="size-3 shrink-0" style="color: #B8962E" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                                        {{ $amenity->name }}
+                                    </span>
+                                @endforeach
                             </div>
                         </div>
                     @endif
 
-                    {{-- POI tags from nearby_places --}}
-                    @if($property->nearby_places && count($property->nearby_places) > 0)
-                        <div class="mt-4 flex flex-wrap gap-3 text-xs text-zinc-500">
-                            @foreach($property->nearby_places as $placeName => $placeDistance)
-                                <span class="flex items-center gap-1.5">
-                                    <svg class="size-3.5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
-                                    {{ $placeName }}{{ $placeDistance ? ' · ' . $placeDistance : '' }}
-                                </span>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
-
-            </div>
-
-            {{-- ══ RIGHT / BOOKING SIDEBAR ════════════════════════════════════ --}}
-            <div class="w-full shrink-0 lg:w-80">
-                <div class="sticky top-20 rounded-2xl border border-zinc-200 bg-white p-6 shadow-md">
-
-                    {{-- Price + rating --}}
-                    <div class="flex items-start justify-between">
-                        <div>
-                            @if($price)
-                                <p class="text-3xl font-extrabold text-zinc-900">{{ $this->currencySymbol }}{{ number_format($price) }}</p>
-                                <p class="text-sm text-zinc-400">{{ $property->monthly_rent ? __('/month') : ($property->weekly_rent ? __('/week') : ($property->daily_rent ? __('/day') : __('/year'))) }}</p>
+                    {{-- Write a review --}}
+                    @if($this->canWriteReview)
+                        <div style="background: white; border: 1px solid #E8E2D8; padding: 28px 32px">
+                            <div class="flex items-center gap-4 mb-5">
+                                <span style="font-size: 0.62rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #B8962E">{{ __('Write a Review') }}</span>
+                                <div class="h-px flex-1" style="background: #E8E2D8"></div>
+                            </div>
+                            @if($reviewSent)
+                                <div style="border: 1px solid #E8E2D8; padding: 14px 18px; font-size: 0.82rem; color: #1E2330">
+                                    {{ __('Thank you! Your review has been submitted.') }}
+                                </div>
                             @else
-                                <p class="text-lg font-bold text-zinc-400">{{ __('Price on request') }}</p>
+                                <form wire:submit="submitReview">
+                                    <div class="flex items-center gap-2 mb-4">
+                                        @for($star = 1; $star <= 5; $star++)
+                                            <button type="button" wire:click="$set('reviewRating', {{ $star }})" class="transition hover:scale-110">
+                                                <svg class="size-7 transition" fill="currentColor" viewBox="0 0 24 24"
+                                                     style="color: {{ $reviewRating >= $star ? '#B8962E' : '#E8E2D8' }}">
+                                                    <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        @endfor
+                                    </div>
+                                    @error('reviewRating') <p class="mb-2 text-xs text-red-500">{{ $message }}</p> @enderror
+                                    <textarea wire:model="reviewText" rows="3" placeholder="{{ __('Optional: Share more details…') }}"
+                                        style="width: 100%; border: 1px solid #E8E2D8; padding: 10px 14px; font-size: 0.82rem; color: #1E2330; outline: none; resize: none; margin-bottom: 14px"
+                                        class="focus:border-[#B8962E] transition placeholder-opacity-50"></textarea>
+                                    <button type="submit" wire:loading.attr="disabled" wire:loading.class="opacity-70"
+                                        style="padding: 12px 32px; font-size: 0.7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; background: #1E2330; color: white; transition: opacity .2s"
+                                        class="hover:opacity-80">
+                                        {{ __('Submit Review') }}
+                                    </button>
+                                </form>
                             @endif
                         </div>
-                    </div>
-
-                    @if($rating)
-                        <div class="mt-2 flex items-center gap-1.5">
-                            <svg class="size-4 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
-                            <span class="text-sm font-bold text-zinc-800">{{ $rating }}</span>
-                            <a href="#" class="text-sm text-zinc-400 underline">({{ $property->reviews_count }} {{ __('reviews') }})</a>
-                        </div>
                     @endif
 
-                    <div class="my-4 border-t border-zinc-100"></div>
-
-                    {{-- Move-in date --}}
-                    <div class="mb-4">
-                        <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Move-in Date') }}</label>
-                        <input wire:model="moveInDate" type="date" min="{{ now()->toDateString() }}"
-                            class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
-                        @error('moveInDate') <p class="mt-0.5 text-xs text-red-500">{{ $message }}</p> @enderror
-                    </div>
-
-                    {{-- Lease duration --}}
-                    <div class="mb-4">
-                        <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Lease Duration') }}</label>
-                        <select wire:model.live="leaseDuration"
-                            class="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition">
-                            @foreach($this->leaseDurationOptions as $months)
-                                <option value="{{ $months }}">{{ $months }} {{ $months === 1 ? __('month') : __('months') }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="my-4 border-t border-zinc-100"></div>
-
-                    {{-- Cost breakdown --}}
-                    @if($this->monthlyRent > 0)
-                        <dl class="space-y-2 text-sm">
-                            <div class="flex justify-between">
-                                <dt class="text-zinc-500">{{ __('Monthly rent') }}</dt>
-                                <dd class="font-medium text-zinc-900">{{ $this->currencySymbol }}{{ number_format($this->monthlyRent) }}</dd>
+                    {{-- Location --}}
+                    <div style="background: white; border: 1px solid #E8E2D8; padding: 28px 32px">
+                        <div class="flex items-center gap-4 mb-5">
+                            <span style="font-size: 0.62rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #B8962E">{{ __('Location') }}</span>
+                            <div class="h-px flex-1" style="background: #E8E2D8"></div>
+                        </div>
+                        @if($property->latitude && $property->longitude)
+                            <div style="overflow: hidden; border: 1px solid #E8E2D8">
+                                <iframe
+                                    src="https://www.openstreetmap.org/export/embed.html?bbox={{ $property->longitude - 0.01 }},{{ $property->latitude - 0.01 }},{{ $property->longitude + 0.01 }},{{ $property->latitude + 0.01 }}&layer=mapnik&marker={{ $property->latitude }},{{ $property->longitude }}"
+                                    width="100%" height="240" style="border: 0; display: block" loading="lazy"></iframe>
                             </div>
-                            <div class="flex justify-between">
-                                <dt class="text-zinc-500">{{ __('Security deposit') }}</dt>
-                                <dd class="font-medium text-zinc-900">{{ $this->currencySymbol }}{{ number_format($this->securityDeposit) }}</dd>
-                            </div>
-                            @if($this->applicationFee > 0)
-                                <div class="flex justify-between">
-                                    <dt class="text-zinc-500">{{ __('Application fee') }}</dt>
-                                    <dd class="font-medium text-zinc-900">{{ $this->currencySymbol }}{{ number_format($this->applicationFee) }}</dd>
-                                </div>
-                            @endif
-                        </dl>
-
-                        <div class="my-4 border-t border-zinc-100"></div>
-
-                        <div class="flex justify-between">
-                            <dt class="text-sm font-semibold text-zinc-700">{{ __('Total due at signing') }}</dt>
-                            <dd class="text-base font-extrabold text-zinc-900">{{ $this->currencySymbol }}{{ number_format($this->totalDueAtSigning) }}</dd>
-                        </div>
-
-                        <div class="my-4 border-t border-zinc-100"></div>
-                    @endif
-
-                    {{-- Book Now --}}
-                    @if($bookingSent)
-                        <div class="rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-center text-sm font-medium text-green-700">
-                            {{ __('Booking inquiry sent! The landlord will contact you.') }}
-                        </div>
-                    @else
-                        <button wire:click="openBookingModal"
-                            class="w-full rounded-xl bg-amber-600 py-3 text-sm font-bold text-white transition hover:bg-amber-700">
-                            {{ __('Book Now') }}
-                        </button>
-                    @endif
-
-                    {{-- Schedule Tour --}}
-                    @if($tourSent)
-                        <div class="mt-3 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-center text-sm font-medium text-green-700">
-                            {{ __('Tour request sent! The landlord will contact you.') }}
-                        </div>
-                    @else
-                        @if(!$showTourForm)
-                            <button wire:click="$set('showTourForm', true)" class="mt-3 w-full rounded-xl border border-zinc-200 py-3 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50">
-                                {{ __('Schedule Tour') }}
-                            </button>
                         @else
-                            <div class="mt-4 space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <p class="text-xs font-semibold text-zinc-700">{{ __('Your Details') }}</p>
-                                    <button wire:click="$set('showTourForm', false)" class="text-xs text-zinc-400 hover:text-zinc-600">&times; {{ __('Cancel') }}</button>
-                                </div>
-                                <input wire:model="renterName" type="text" placeholder="{{ __('Full name') }}"
-                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
-                                @error('renterName') <p class="text-xs text-red-500">{{ $message }}</p> @enderror
-                                <input wire:model="renterEmail" type="email" placeholder="email@example.com"
-                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
-                                @error('renterEmail') <p class="text-xs text-red-500">{{ $message }}</p> @enderror
-                                <input wire:model="renterPhone" type="tel" placeholder="+1 (555) 000-0000"
-                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
-                                @error('renterPhone') <p class="text-xs text-red-500">{{ $message }}</p> @enderror
-                                <textarea wire:model="tourMessage" rows="2" placeholder="{{ __('Optional message...') }}"
-                                    class="w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none placeholder-zinc-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition resize-none"></textarea>
-                                <button wire:click="scheduleTour"
-                                    class="w-full rounded-xl bg-zinc-900 py-2.5 text-sm font-bold text-white transition hover:bg-zinc-800"
-                                    wire:loading.attr="disabled" wire:loading.class="opacity-75">
-                                    <span wire:loading.remove wire:target="scheduleTour">{{ __('Confirm Tour Request') }}</span>
-                                    <span wire:loading wire:target="scheduleTour">{{ __('Submitting...') }}</span>
-                                </button>
+                            <div class="flex h-40 items-center justify-center" style="background: #F4EFE8; border: 1px solid #E8E2D8">
+                                <p style="font-size: 0.82rem; color: rgba(30,35,48,.45)">
+                                    {{ implode(', ', array_filter([$property->address_line_1, $property->city])) ?: __('Location not specified') }}
+                                </p>
                             </div>
                         @endif
-                    @endif
-
-                    {{-- Security badge --}}
-                    <p class="mt-4 flex items-center justify-center gap-1.5 text-xs text-zinc-400">
-                        <svg class="size-3.5 text-zinc-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
-                        {{ __('Your information is protected') }}
-                    </p>
+                        @if($property->nearby_places && count($property->nearby_places) > 0)
+                            <div class="mt-4 flex flex-wrap gap-3">
+                                @foreach($property->nearby_places as $placeName => $placeDistance)
+                                    <span class="flex items-center gap-1.5" style="font-size: 0.72rem; color: rgba(30,35,48,.6)">
+                                        <svg class="size-3.5 shrink-0" style="color: #B8962E" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                                        {{ $placeName }}{{ $placeDistance ? ' · ' . $placeDistance : '' }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
 
                 </div>
+
+                {{-- ── RIGHT STICKY SIDEBAR ──────────────────────────────── --}}
+                <div class="w-full shrink-0 lg:w-[320px]">
+                    <div class="sticky top-20">
+
+                        {{-- Price card (ink) --}}
+                        <div style="background: #1E2330; padding: 32px 28px">
+                            @if($price)
+                                <span style="font-size: 0.6rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.4)">
+                                    {{ $property->monthly_rent ? __('/month') : ($property->weekly_rent ? __('/week') : ($property->daily_rent ? __('/day') : __('/year'))) }}
+                                </span>
+                                <p class="font-serif mt-1" style="font-size: 2rem; font-weight: 300; color: white; line-height: 1">
+                                    {{ $currSym }}{{ number_format($price) }}
+                                </p>
+                            @else
+                                <p class="font-serif" style="font-size: 1.2rem; font-weight: 300; color: rgba(255,255,255,.5)">{{ __('Price on request') }}</p>
+                            @endif
+
+                            @if($rating)
+                                <div class="flex items-center gap-2 mt-3">
+                                    <svg class="size-3.5" style="color: #B8962E" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg>
+                                    <span style="font-size: 0.78rem; font-weight: 600; color: white">{{ $rating }}</span>
+                                    <span style="font-size: 0.72rem; color: rgba(255,255,255,.4)">({{ $property->reviews_count }} {{ __('reviews') }})</span>
+                                </div>
+                            @endif
+
+                            <div style="height: 1px; background: rgba(255,255,255,.08); margin: 20px 0"></div>
+
+                            {{-- Move-in date --}}
+                            <div class="mb-4">
+                                <label style="display: block; font-size: 0.65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 8px">{{ __('Move-in Date') }}</label>
+                                <input wire:model="moveInDate" type="date" min="{{ now()->toDateString() }}"
+                                    style="width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: white; padding: 10px 12px; font-size: 0.82rem; outline: none"
+                                    class="transition focus:border-[#B8962E]" />
+                                @error('moveInDate') <p style="font-size: 0.7rem; color: #fca5a5; margin-top: 4px">{{ $message }}</p> @enderror
+                            </div>
+
+                            {{-- Lease duration --}}
+                            <div class="mb-4">
+                                <label style="display: block; font-size: 0.65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 8px">{{ __('Lease Duration') }}</label>
+                                <select wire:model.live="leaseDuration"
+                                    style="width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: white; padding: 10px 12px; font-size: 0.82rem; outline: none; cursor: pointer">
+                                    @foreach($this->leaseDurationOptions as $months)
+                                        <option value="{{ $months }}" style="color: #1E2330; background: white">
+                                            {{ $months }} {{ $months === 1 ? __('month') : __('months') }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            {{-- Cost breakdown --}}
+                            @if($this->monthlyRent > 0)
+                                <div style="height: 1px; background: rgba(255,255,255,.08); margin: 16px 0"></div>
+                                <dl class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <dt style="font-size: 0.76rem; color: rgba(255,255,255,.45)">{{ __('Monthly rent') }}</dt>
+                                        <dd style="font-size: 0.76rem; font-weight: 500; color: white">{{ $currSym }}{{ number_format($this->monthlyRent) }}</dd>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <dt style="font-size: 0.76rem; color: rgba(255,255,255,.45)">{{ __('Security deposit') }}</dt>
+                                        <dd style="font-size: 0.76rem; font-weight: 500; color: white">{{ $currSym }}{{ number_format($this->securityDeposit) }}</dd>
+                                    </div>
+                                    @if($this->applicationFee > 0)
+                                        <div class="flex justify-between">
+                                            <dt style="font-size: 0.76rem; color: rgba(255,255,255,.45)">{{ __('Application fee') }}</dt>
+                                            <dd style="font-size: 0.76rem; font-weight: 500; color: white">{{ $currSym }}{{ number_format($this->applicationFee) }}</dd>
+                                        </div>
+                                    @endif
+                                </dl>
+                                <div style="height: 1px; background: rgba(255,255,255,.08); margin: 16px 0"></div>
+                                <div class="flex justify-between">
+                                    <dt style="font-size: 0.72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5)">{{ __('Total at signing') }}</dt>
+                                    <dd class="font-serif" style="font-size: 1.1rem; font-weight: 300; color: white">{{ $currSym }}{{ number_format($this->totalDueAtSigning) }}</dd>
+                                </div>
+                                <div style="height: 1px; background: rgba(255,255,255,.08); margin: 20px 0"></div>
+                            @endif
+
+                            {{-- Book Now --}}
+                            @if($bookingSent)
+                                <div style="border: 1px solid rgba(255,255,255,.12); padding: 12px 16px; text-align: center; font-size: 0.78rem; color: rgba(255,255,255,.7)">
+                                    {{ __('Booking inquiry sent! The landlord will contact you.') }}
+                                </div>
+                            @else
+                                <button wire:click="openBookingModal"
+                                    style="width: 100%; padding: 14px; font-size: 0.7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; background: #B8962E; color: white; transition: opacity .2s"
+                                    class="hover:opacity-90">
+                                    {{ __('Book Now') }}
+                                </button>
+                            @endif
+
+                            {{-- Schedule Tour --}}
+                            @if($tourSent)
+                                <div style="border: 1px solid rgba(255,255,255,.12); padding: 12px 16px; text-align: center; font-size: 0.78rem; color: rgba(255,255,255,.7); margin-top: 10px">
+                                    {{ __('Tour request sent! The landlord will contact you.') }}
+                                </div>
+                            @else
+                                @if(!$showTourForm)
+                                    <button wire:click="$set('showTourForm', true)"
+                                        style="width: 100%; padding: 13px; font-size: 0.7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; background: transparent; border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.6); transition: all .2s; margin-top: 10px"
+                                        class="hover:border-white/40 hover:text-white">
+                                        {{ __('Schedule Tour') }}
+                                    </button>
+                                @else
+                                    <div style="margin-top: 14px" class="space-y-2.5">
+                                        <div class="flex items-center justify-between">
+                                            <span style="font-size: 0.65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4)">{{ __('Your Details') }}</span>
+                                            <button wire:click="$set('showTourForm', false)" style="font-size: 0.72rem; color: rgba(255,255,255,.35)" class="transition hover:text-white/60">&times; {{ __('Cancel') }}</button>
+                                        </div>
+                                        <input wire:model="renterName" type="text" placeholder="{{ __('Full name') }}"
+                                            style="width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: white; padding: 9px 12px; font-size: 0.8rem; outline: none"
+                                            class="placeholder-white/25 transition focus:border-[#B8962E]" />
+                                        @error('renterName') <p style="font-size: 0.7rem; color: #fca5a5">{{ $message }}</p> @enderror
+                                        <input wire:model="renterEmail" type="email" placeholder="email@example.com"
+                                            style="width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: white; padding: 9px 12px; font-size: 0.8rem; outline: none"
+                                            class="placeholder-white/25 transition focus:border-[#B8962E]" />
+                                        @error('renterEmail') <p style="font-size: 0.7rem; color: #fca5a5">{{ $message }}</p> @enderror
+                                        <input wire:model="renterPhone" type="tel" placeholder="+225 07 00 00 00 00"
+                                            style="width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: white; padding: 9px 12px; font-size: 0.8rem; outline: none"
+                                            class="placeholder-white/25 transition focus:border-[#B8962E]" />
+                                        @error('renterPhone') <p style="font-size: 0.7rem; color: #fca5a5">{{ $message }}</p> @enderror
+                                        <textarea wire:model="tourMessage" rows="2" placeholder="{{ __('Optional message…') }}"
+                                            style="width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: white; padding: 9px 12px; font-size: 0.8rem; outline: none; resize: none"
+                                            class="placeholder-white/25 transition focus:border-[#B8962E]"></textarea>
+                                        <button wire:click="scheduleTour" wire:loading.attr="disabled" wire:loading.class="opacity-70"
+                                            style="width: 100%; padding: 12px; font-size: 0.7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: white; transition: opacity .2s"
+                                            class="hover:opacity-80">
+                                            <span wire:loading.remove wire:target="scheduleTour">{{ __('Confirm Tour Request') }}</span>
+                                            <span wire:loading wire:target="scheduleTour">{{ __('Submitting…') }}</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            @endif
+
+                            {{-- Security note --}}
+                            <p class="flex items-center justify-center gap-1.5 mt-5" style="font-size: 0.68rem; color: rgba(255,255,255,.25)">
+                                <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg>
+                                {{ __('Your information is protected') }}
+                            </p>
+                        </div>
+
+                        {{-- Back to listings --}}
+                        <div class="mt-2">
+                            <a href="{{ route('properties.index') }}" wire:navigate
+                               class="flex items-center justify-center gap-2 transition hover:opacity-70"
+                               style="padding: 13px; border: 1px solid #E8E2D8; background: white; font-size: 0.7rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #1E2330">
+                                <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+                                {{ __('All Properties') }}
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </div>
-    </div>
+    </section>
 
     {{-- ══ BOOK NOW MODAL ═════════════════════════════════════════════════════ --}}
     @if($showBookingModal)

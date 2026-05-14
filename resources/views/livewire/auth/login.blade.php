@@ -2,8 +2,8 @@
     <div class="flex flex-col gap-7">
 
         <div>
-            <h1 class="text-2xl font-bold text-zinc-900">{{ __('Login to Your Account') }}</h1>
-            <p class="mt-1.5 text-sm text-zinc-500">{{ __('Enter your email and password below to log in') }}</p>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 300; color: #1E2330; line-height: 1.25; margin-bottom: 8px">{{ __('Welcome back') }}</h1>
+            <p style="font-size: 0.8rem; font-weight: 400; color: rgba(30,35,48,.5); line-height: 1.6">{{ __('Enter your email and password to access your account') }}</p>
         </div>
 
         <x-auth-session-status :status="session('status')" />
@@ -25,7 +25,7 @@
                 <div class="flex items-center justify-between">
                     <label class="text-sm font-medium text-zinc-700">{{ __('Password') }}</label>
                     @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}" wire:navigate class="text-xs text-amber-600 hover:text-amber-700 transition">
+                        <a href="{{ route('password.request') }}" wire:navigate class="text-xs transition hover:opacity-70" style="color: #B8962E">
                             {{ __('Forgot password?') }}
                         </a>
                     @endif
@@ -45,7 +45,7 @@
             <button
                 type="submit"
                 data-test="login-button"
-                class="mt-1 w-full rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                class="mt-1 w-full px-4 py-3 text-xs font-semibold uppercase tracking-[.14em] text-white transition hover:opacity-80 focus:outline-none" style="background: #1E2330"
             >
                 {{ __('Log in') }}
             </button>
@@ -54,7 +54,7 @@
         @if (Route::has('register'))
             <p class="text-center text-sm text-zinc-500">
                 {{ __("Don't have an account?") }}
-                <a href="{{ route('register') }}" wire:navigate class="font-semibold text-amber-600 hover:text-amber-700 transition">
+                <a href="{{ route('register') }}" wire:navigate class="font-semibold transition hover:opacity-70" style="color: #B8962E">
                     {{ __('Sign up') }}
                 </a>
             </p>

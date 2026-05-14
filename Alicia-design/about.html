@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>À propos – SAHOOME</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#B8962E;--gold-light:#D4AE52;--gold-pale:#F5EDD6;--cream:#FAFAF7;--nude:#F4EFE8;--white:#FFFFFF;--ink:#111318;--muted:#7A7D8A;--border:#E8E2D8;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Montserrat',sans-serif;background:var(--white);color:var(--ink);overflow-x:hidden;cursor:none;}
+.cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.4;transition:width .3s,height .3s;}
+.cursor.expand{width:14px;height:14px;}.cursor-ring.expand{width:52px;height:52px;opacity:.2;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:600;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;background:rgba(250,250,247,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-wordmark{font-family:'Montserrat',sans-serif;font-weight:300;font-size:.95rem;letter-spacing:.35em;text-transform:uppercase;color:var(--ink);}
+.nav-menu{display:flex;align-items:center;gap:2px;list-style:none;}
+.nav-menu a{font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--muted);padding:8px 14px;transition:color .2s;}
+.nav-menu a:hover,.nav-menu a.active{color:var(--gold);}
+.nav-divider{width:1px;height:16px;background:var(--border);margin:0 6px;}
+.nav-contact{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--gold);border:1px solid var(--gold);padding:9px 22px;transition:background .25s,color .25s;}
+.nav-contact:hover{background:var(--gold);color:var(--white);}
+
+/* ── HERO SOBRE ── */
+.hero{
+  padding:160px 6% 100px;
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:end;
+  max-width:100%;
+}
+.hero-left{}
+.hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.he-line{width:32px;height:1px;background:var(--gold);}
+.he-tag{font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
+.hero-h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.8rem,5vw,4.6rem);
+  font-weight:300;color:var(--ink);
+  line-height:1.06;
+}
+.hero-h1 em{font-style:italic;color:var(--gold);}
+.hero-right{}
+.hero-right p{
+  font-size:.9rem;font-weight:300;
+  color:var(--muted);line-height:1.95;
+  margin-bottom:20px;
+}
+.hero-right p:last-child{margin-bottom:0;}
+.hero-right strong{font-weight:500;color:var(--ink);}
+
+/* ── STATS ── */
+.stats-band{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--ink);
+}
+.sb-item{
+  padding:52px 32px;text-align:center;
+  border-right:1px solid rgba(255,255,255,.08);
+  transition:background .3s;
+}
+.sb-item:last-child{border-right:none;}
+.sb-item:hover{background:rgba(184,150,46,.1);}
+.sb-val{
+  font-family:'Playfair Display',serif;
+  font-size:2.8rem;font-weight:300;
+  color:var(--gold-light);line-height:1;
+}
+.sb-lbl{
+  font-size:.58rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,255,255,.38);margin-top:9px;
+}
+
+/* ── VISION ── */
+.vision-sec{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;
+  border-bottom:1px solid var(--border);
+}
+.vision-img{
+  height:520px;overflow:hidden;
+  position:relative;
+}
+.vision-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease;}
+.vision-img:hover img{transform:scale(1.03);}
+.vision-year{
+  position:absolute;bottom:28px;left:28px;
+  background:var(--white);
+  padding:18px 22px;
+}
+.vy-num{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:300;color:var(--gold);}
+.vy-txt{font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.vision-text{
+  padding:80px 70px;
+  display:flex;flex-direction:column;justify-content:center;
+  background:var(--cream);
+}
+.sec-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.sey-line{width:26px;height:1px;background:var(--gold);}
+.sey-text{font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);}
+.sec-h2{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,2.8vw,2.6rem);font-weight:300;color:var(--ink);line-height:1.15;margin-bottom:22px;}
+.sec-h2 em{font-style:italic;}
+.vision-text p{font-size:.87rem;font-weight:300;color:var(--muted);line-height:1.95;margin-bottom:16px;}
+.vision-text p:last-child{margin-bottom:0;}
+
+/* ── POSITIONNEMENT ── */
+.position-sec{padding:90px 6%;background:var(--white);border-bottom:1px solid var(--border);}
+.position-inner{max-width:1100px;margin:0 auto;}
+.position-intro{max-width:640px;margin-bottom:64px;}
+.position-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.pos-item{background:var(--white);padding:42px 34px;transition:background .3s;}
+.pos-item:hover{background:var(--nude);}
+.pos-line{width:32px;height:2px;background:var(--gold);margin-bottom:22px;transition:width .3s;}
+.pos-item:hover .pos-line{width:56px;}
+.pos-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:400;color:var(--ink);margin-bottom:12px;}
+.pos-title em{font-style:italic;}
+.pos-desc{font-size:.82rem;font-weight:300;color:var(--muted);line-height:1.8;}
+
+/* ── SERVICES ── */
+.services-sec{padding:90px 6%;background:var(--nude);border-bottom:1px solid var(--border);}
+.services-inner{max-width:1100px;margin:0 auto;}
+.services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--border);margin-top:52px;}
+.svc{background:var(--nude);padding:44px 38px;transition:background .3s;display:flex;gap:28px;align-items:flex-start;}
+.svc:hover{background:var(--white);}
+.svc-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:300;color:var(--gold-pale);line-height:1;flex-shrink:0;transition:color .3s;}
+.svc:hover .svc-num{color:var(--gold-light);}
+.svc-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:400;color:var(--ink);margin-bottom:8px;}
+.svc-title em{font-style:italic;}
+.svc-desc{font-size:.82rem;font-weight:300;color:var(--muted);line-height:1.78;}
+
+/* ── AMBITION ── */
+.ambition-sec{
+  background:var(--ink);
+  padding:100px 6%;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+.amb-left{}
+.amb-left .sey-line{background:var(--gold-light);}
+.amb-left .sey-text{color:var(--gold-light);}
+.amb-h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;color:var(--white);line-height:1.15;margin-bottom:22px;}
+.amb-h2 em{font-style:italic;color:var(--gold-light);}
+.amb-p{font-size:.88rem;font-weight:300;color:rgba(255,255,255,.5);line-height:1.9;}
+.amb-right{display:flex;flex-direction:column;gap:2px;}
+.amb-item{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  padding:28px 30px;
+  transition:background .3s,border-color .3s;
+  display:flex;align-items:flex-start;gap:18px;
+}
+.amb-item:hover{background:rgba(184,150,46,.1);border-color:rgba(184,150,46,.25);}
+.amb-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px;}
+.amb-item-title{font-size:.8rem;font-weight:600;letter-spacing:.06em;color:var(--white);margin-bottom:5px;}
+.amb-item-desc{font-size:.78rem;font-weight:300;color:rgba(255,255,255,.42);line-height:1.7;}
+
+/* ── ENGAGEMENT ── */
+.engage-sec{padding:90px 6%;background:var(--white);border-top:1px solid var(--border);}
+.engage-inner{max-width:1100px;margin:0 auto;}
+.engage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:44px;margin-top:56px;}
+.eg-item{border-top:2px solid var(--border);padding-top:28px;transition:border-color .3s;}
+.eg-item:hover{border-color:var(--gold);}
+.eg-num{font-family:'Playfair Display',serif;font-size:.72rem;font-weight:300;color:var(--gold);letter-spacing:.2em;margin-bottom:14px;}
+.eg-title{font-size:.84rem;font-weight:600;letter-spacing:.04em;color:var(--ink);margin-bottom:10px;}
+.eg-desc{font-size:.82rem;font-weight:300;color:var(--muted);line-height:1.78;}
+
+/* ── TESTI ── */
+.testi-sec{background:var(--cream);overflow:hidden;padding:90px 0;}
+.testi-header{padding:0 6%;margin-bottom:48px;}
+.testi-track{display:flex;gap:2px;background:var(--border);animation:slide 40s linear infinite;width:max-content;}
+.testi-track:hover{animation-play-state:paused;}
+@keyframes slide{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.tcard{background:var(--white);padding:36px 32px;width:320px;flex-shrink:0;}
+.tcard-stars{color:var(--gold);font-size:.8rem;margin-bottom:12px;letter-spacing:.1em;}
+.tcard-text{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:300;font-style:italic;color:var(--ink);line-height:1.7;margin-bottom:16px;}
+.tcard-author{font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+
+/* ── CTA ── */
+.cta-sec{
+  position:relative;height:380px;
+  overflow:hidden;display:flex;align-items:center;
+}
+.cta-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=85');background-size:cover;background-position:center;}
+.cta-overlay{position:absolute;inset:0;background:rgba(17,19,24,.72);}
+.cta-content{position:relative;z-index:2;padding:0 6%;}
+.cta-h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,3rem);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:30px;}
+.cta-h2 em{font-style:italic;color:var(--gold-light);}
+.cta-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-gold{background:var(--gold);color:var(--white);padding:14px 30px;font-size:.65rem;font-weight:600;letter-spacing:.18em;text-decoration:none;text-transform:uppercase;transition:background .25s;}
+.btn-gold:hover{background:var(--white);color:var(--ink);}
+.btn-ghost{color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.3);padding:14px 28px;font-size:.65rem;font-weight:600;letter-spacing:.16em;text-decoration:none;text-transform:uppercase;transition:all .25s;}
+.btn-ghost:hover{background:rgba(255,255,255,.1);color:var(--white);border-color:var(--white);}
+
+/* WA */
+.wa-btn{position:fixed;bottom:28px;right:28px;z-index:400;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .25s;text-decoration:none;}
+.wa-btn:hover{transform:scale(1.08);}
+.wa-btn svg{width:25px;height:25px;fill:#fff;}
+
+/* FOOTER */
+footer{background:var(--ink);padding:58px 6% 26px;}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:22px;}
+.footer-logo-text{font-family:'Montserrat',sans-serif;font-weight:300;font-size:.88rem;letter-spacing:.35em;text-transform:uppercase;color:var(--white);margin-bottom:12px;display:block;}
+.footer-brand-text{font-size:.8rem;font-weight:300;line-height:1.8;color:rgba(255,255,255,.35);max-width:220px;}
+.fcol h4{font-size:.58rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:14px;}
+.fcol ul{list-style:none;}
+.fcol li{margin-bottom:8px;}
+.fcol a{font-size:.78rem;font-weight:300;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;}
+.fcol a:hover{color:var(--gold-light);}
+.footer-bottom{display:flex;justify-content:space-between;font-size:.66rem;font-weight:300;color:rgba(255,255,255,.22);flex-wrap:wrap;gap:8px;}
+
+/* ANIM */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}
+
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr;gap:40px;padding-top:130px;}
+  .vision-sec{grid-template-columns:1fr;}
+  .vision-img{height:300px;}
+  .vision-text{padding:52px 40px;}
+  .stats-band{grid-template-columns:repeat(2,1fr);}
+  .ambition-sec{grid-template-columns:1fr;}
+  .position-grid{grid-template-columns:1fr 1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:768px){
+  .nav-menu{display:none;}
+  .position-grid,.services-grid,.engage-grid{grid-template-columns:1fr;}
+  .stats-band{grid-template-columns:1fr 1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  body{cursor:auto;}
+  .cursor,.cursor-ring{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">
+    <svg width="28" height="32" viewBox="0 0 80 90" fill="none"><path d="M40 5C25 5 13 17.5 13 33C13 53 40 85 40 85C40 85 67 53 67 33C67 17.5 55 5 40 5Z" fill="none" stroke="#B8962E" stroke-width="5" stroke-linejoin="round"/><path d="M40 16L24 29V47H33V37H47V47H56V29L40 16Z" fill="none" stroke="#B8962E" stroke-width="4.5" stroke-linejoin="round"/><rect x="36.5" y="37" width="7" height="10" rx="1" fill="#B8962E"/></svg>
+    <span class="logo-wordmark">Sahoome</span>
+  </a>
+  <ul class="nav-menu">
+    <li><a href="location.html">Location</a></li>
+    <li><a href="vente.html">Vente</a></li>
+    <li><a href="ephemere.html">Location courte durée</a></li>
+    <li><a href="conseils.html">Conseils</a></li>
+    <li><a href="about.html" class="active">À propos</a></li>
+    <div class="nav-divider"></div>
+    <li><a href="contact.html" class="nav-contact">Nous contacter</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-left reveal">
+    <div class="hero-eyebrow"><div class="he-line"></div><span class="he-tag">À propos de Sahoome</span></div>
+    <h1 class="hero-h1">
+      Une nouvelle<br>référence<br>immobilière<br>pour <em>Abidjan</em>
+    </h1>
+  </div>
+  <div class="hero-right reveal rd1">
+    <p>Sahoome est une plateforme immobilière digitale fondée à Abidjan en 2024. Notre mission est de <strong>simplifier et sécuriser</strong> l'accès à l'immobilier pour les particuliers, les investisseurs et les professionnels en Côte d'Ivoire.</p>
+    <p>Dans un marché en pleine croissance mais encore peu digitalisé, Sahoome apporte <strong>transparence, rigueur et accessibilité</strong> à chaque transaction — qu'il s'agisse d'une location résidentielle, d'un achat immobilier ou d'un espace espaces courte durée.</p>
+    <p>Nous construisons la plateforme immobilière que mérite Abidjan.</p>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-band">
+  <div class="sb-item reveal"><div class="sb-val">350+</div><div class="sb-lbl">Biens disponibles</div></div>
+  <div class="sb-item reveal rd1"><div class="sb-val">8</div><div class="sb-lbl">Communes couvertes</div></div>
+  <div class="sb-item reveal rd2"><div class="sb-val">1 200+</div><div class="sb-lbl">Transactions réalisées</div></div>
+  <div class="sb-item reveal rd3"><div class="sb-val">98%</div><div class="sb-lbl">Taux de satisfaction</div></div>
+</div>
+
+<!-- ── VISION ── -->
+<section class="vision-sec">
+  <div class="vision-img reveal">
+    <img src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=900&q=85" alt="Sahoome Vision">
+    <div class="vision-year">
+      <div class="vy-num">2024</div>
+      <div class="vy-txt">Fondée à Abidjan</div>
+    </div>
+  </div>
+  <div class="vision-text reveal rd1">
+    <div class="sec-eyebrow"><div class="sey-line"></div><span class="sey-text">Notre vision</span></div>
+    <h2 class="sec-h2">Transformer le marché<br>immobilier <em>ivoirien</em></h2>
+    <p>Le marché immobilier d'Abidjan est l'un des plus dynamiques d'Afrique de l'Ouest. Portée par une croissance démographique soutenue et une classe moyenne en expansion, la demande immobilière ne cesse d'augmenter.</p>
+    <p>Pourtant, ce marché reste marqué par un manque de transparence, une faible digitalisation et des transactions souvent complexes pour les particuliers. Sahoome est née pour répondre à ce défi.</p>
+    <p>Notre vision est celle d'un marché immobilier ivoirien moderne, transparent et accessible à tous — où chaque transaction est simple, sécurisée et fiable.</p>
+  </div>
+</section>
+
+<!-- ── POSITIONNEMENT ── -->
+<section class="position-sec">
+  <div class="position-inner">
+    <div class="position-intro reveal">
+      <div class="sec-eyebrow"><div class="sey-line"></div><span class="sey-text">Notre positionnement</span></div>
+      <h2 class="sec-h2">Ce qui nous<br><em>distingue</em></h2>
+      <p style="font-size:.88rem;font-weight:300;color:var(--muted);line-height:1.9;">Sahoome n'est pas une simple vitrine d'annonces. Nous sommes une plateforme d'accompagnement immobilier intégral — de la recherche à la signature.</p>
+    </div>
+    <div class="position-grid">
+      <div class="pos-item reveal rd1">
+        <div class="pos-line"></div>
+        <div class="pos-title">Biens <em>vérifiés</em></div>
+        <p class="pos-desc">Chaque bien publié sur Sahoome est inspecté physiquement par notre équipe. Nous garantissons l'authenticité et la conformité de chaque annonce.</p>
+      </div>
+      <div class="pos-item reveal rd2">
+        <div class="pos-line"></div>
+        <div class="pos-title">Transactions <em>sécurisées</em></div>
+        <p class="pos-desc">Paiements protégés, contrats vérifiés, accompagnement notarial pour les ventes. Chaque étape est encadrée pour protéger toutes les parties.</p>
+      </div>
+      <div class="pos-item reveal rd3">
+        <div class="pos-line"></div>
+        <div class="pos-title">Ancrage <em>local</em></div>
+        <p class="pos-desc">Conçu pour la réalité ivoirienne — Mobile Money, droit OHADA, communes d'Abidjan. Une plateforme qui comprend son marché et ses utilisateurs.</p>
+      </div>
+      <div class="pos-item reveal rd1">
+        <div class="pos-line"></div>
+        <div class="pos-title">Offre <em>complète</em></div>
+        <p class="pos-desc">Location longue durée, vente, location courte durée, espaces courte durée — Sahoome couvre l'ensemble des besoins immobiliers en un seul endroit.</p>
+      </div>
+      <div class="pos-item reveal rd2">
+        <div class="pos-line"></div>
+        <div class="pos-title">Accompagnement <em>intégral</em></div>
+        <p class="pos-desc">De la première recherche à la remise des clés, notre équipe guide chaque client avec expertise et disponibilité. Réponse garantie sous 24 heures.</p>
+      </div>
+      <div class="pos-item reveal rd3">
+        <div class="pos-line"></div>
+        <div class="pos-title">Expérience <em>digitale</em></div>
+        <p class="pos-desc">Interface intuitive, recherche avancée, formulaires en ligne, contrats digitaux — une expérience fluide pensée pour les standards actuels.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section class="services-sec">
+  <div class="services-inner">
+    <div class="reveal">
+      <div class="sec-eyebrow"><div class="sey-line"></div><span class="sey-text">Nos activités</span></div>
+      <h2 class="sec-h2">Quatre segments,<br>une seule <em>plateforme</em></h2>
+    </div>
+    <div class="services-grid">
+      <div class="svc reveal rd1">
+        <div class="svc-num">01</div>
+        <div>
+          <div class="svc-title"><em>Location</em> résidentielle</div>
+          <p class="svc-desc">Appartements, villas, studios et locaux commerciaux en location longue durée. Biens vérifiés, processus sécurisé, dans toutes les communes d'Abidjan.</p>
+        </div>
+      </div>
+      <div class="svc reveal rd2">
+        <div class="svc-num">02</div>
+        <div>
+          <div class="svc-title"><em>Vente</em> immobilière</div>
+          <p class="svc-desc">Appartements, villas, terrains et locaux commerciaux à l'achat. Accompagnement complet incluant notaire partenaire et conseil en investissement.</p>
+        </div>
+      </div>
+      <div class="svc reveal rd1">
+        <div class="svc-num">03</div>
+        <div>
+          <div class="svc-title">Résidentiel <em>courte durée</em></div>
+          <p class="svc-desc">Logements meublés courte durée pour expatriés et séjours temporaires. Flexibilité maximale avec des standards de qualité élevés.</p>
+        </div>
+      </div>
+      <div class="svc reveal rd2">
+        <div class="svc-num">04</div>
+        <div>
+          <div class="svc-title">Commercial <em>courte durée</em></div>
+          <p class="svc-desc">Locaux commerciaux flexibles pour pop-up stores, showrooms et événements professionnels. Un concept unique et innovant sur le marché abidjanais.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AMBITION ── -->
+<section class="ambition-sec">
+  <div class="amb-left reveal">
+    <div class="sec-eyebrow"><div class="sey-line" style="background:var(--gold-light);"></div><span class="sey-text" style="color:var(--gold-light);">Notre ambition</span></div>
+    <h2 class="amb-h2">Devenir la référence<br>immobilière de<br>l'<em>Afrique de l'Ouest</em></h2>
+    <p class="amb-p">Nous construisons aujourd'hui les fondations d'une plateforme qui demain s'étendra à Dakar, Lomé, Cotonou et au-delà. Abidjan est notre point de départ, l'Afrique de l'Ouest est notre horizon.</p>
+  </div>
+  <div class="amb-right reveal rd1">
+    <div class="amb-item">
+      <div class="amb-icon">🏙️</div>
+      <div>
+        <div class="amb-item-title">Abidjan — Phase 1</div>
+        <p class="amb-item-desc">Consolidation sur toutes les communes d'Abidjan et développement de notre base propriétaires.</p>
+      </div>
+    </div>
+    <div class="amb-item">
+      <div class="amb-icon">🇨🇮</div>
+      <div>
+        <div class="amb-item-title">Côte d'Ivoire — Phase 2</div>
+        <p class="amb-item-desc">Extension vers Bouaké, San Pedro, Yamoussoukro et les principales villes secondaires.</p>
+      </div>
+    </div>
+    <div class="amb-item">
+      <div class="amb-icon">🌍</div>
+      <div>
+        <div class="amb-item-title">UEMOA — Phase 3</div>
+        <p class="amb-item-desc">Déploiement dans les marchés immobiliers clés de l'Afrique de l'Ouest francophone.</p>
+      </div>
+    </div>
+    <div class="amb-item">
+      <div class="amb-icon">🏦</div>
+      <div>
+        <div class="amb-item-title">Services financiers — Phase 4</div>
+        <p class="amb-item-desc">Intégration de solutions de financement immobilier adaptées au contexte africain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ENGAGEMENTS ── -->
+<section class="engage-sec">
+  <div class="engage-inner">
+    <div class="reveal">
+      <div class="sec-eyebrow"><div class="sey-line"></div><span class="sey-text">Nos engagements</span></div>
+      <h2 class="sec-h2">Des standards<br><em>exigeants</em></h2>
+    </div>
+    <div class="engage-grid">
+      <div class="eg-item reveal rd1">
+        <div class="eg-num">— 01</div>
+        <div class="eg-title">Vérification systématique</div>
+        <p class="eg-desc">Chaque bien est inspecté physiquement avant publication. Nous maintenons un standard de qualité irréprochable sur l'ensemble de notre catalogue.</p>
+      </div>
+      <div class="eg-item reveal rd2">
+        <div class="eg-num">— 02</div>
+        <div class="eg-title">Réactivité garantie</div>
+        <p class="eg-desc">Toute demande reçoit une réponse de notre équipe en moins de 24 heures ouvrées. Notre disponibilité est un engagement, pas une promesse.</p>
+      </div>
+      <div class="eg-item reveal rd3">
+        <div class="eg-num">— 03</div>
+        <div class="eg-title">Sécurité totale</div>
+        <p class="eg-desc">Paiements protégés, contrats vérifiés, accompagnement notarial. Chaque transaction est encadrée pour protéger l'ensemble des parties impliquées.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testi-sec">
+  <div class="testi-header reveal">
+    <div class="sec-eyebrow"><div class="sey-line"></div><span class="sey-text">Ils nous font confiance</span></div>
+    <h2 class="sec-h2">Ce que disent<br>nos <em>clients</em></h2>
+  </div>
+  <div class="testi-track">
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« Appartement trouvé à Cocody en 3 jours. Processus transparent, propriétaire vérifié, accompagnement irréprochable. »</div><div class="tcard-author">— Aminata K., Locataire · Cocody</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« Ma villa des 2 Plateaux vendue en moins de 2 mois. Un professionnalisme rare sur le marché abidjanais. »</div><div class="tcard-author">— Jean-Marc T., Vendeur · 2 Plateaux</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« Local commercial au Plateau, contrat signé en 24h. Sahoome a transformé notre façon de trouver des espaces. »</div><div class="tcard-author">— Mariam D., Directrice · Plateau</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« Mon appartement loué dès la première semaine de mise en ligne. Des locataires sérieux et une équipe efficace. »</div><div class="tcard-author">— Kouadio F., Propriétaire · Marcory</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« La seule plateforme immobilière vraiment fiable à Abidjan. Je recommande à tous les expatriés. »</div><div class="tcard-author">— Sophie M., Directrice Régionale · Riviera</div></div>
+    <!-- Duplicate for loop -->
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« Appartement trouvé à Cocody en 3 jours. Processus transparent, propriétaire vérifié, accompagnement irréprochable. »</div><div class="tcard-author">— Aminata K., Locataire · Cocody</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« Ma villa des 2 Plateaux vendue en moins de 2 mois. Un professionnalisme rare sur le marché abidjanais. »</div><div class="tcard-author">— Jean-Marc T., Vendeur · 2 Plateaux</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« Local commercial au Plateau, contrat signé en 24h. Sahoome a transformé notre façon de trouver des espaces. »</div><div class="tcard-author">— Mariam D., Directrice · Plateau</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« Mon appartement loué dès la première semaine de mise en ligne. Des locataires sérieux et une équipe efficace. »</div><div class="tcard-author">— Kouadio F., Propriétaire · Marcory</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« La seule plateforme immobilière vraiment fiable à Abidjan. Je recommande à tous les expatriés. »</div><div class="tcard-author">— Sophie M., Directrice Régionale · Riviera</div></div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-sec">
+  <div class="cta-bg"></div>
+  <div class="cta-overlay"></div>
+  <div class="cta-content reveal">
+    <h2 class="cta-h2">Votre projet<br>commence <em>ici</em></h2>
+    <div class="cta-btns">
+      <a href="location.html" class="btn-gold">Découvrir nos biens</a>
+      <a href="contact.html" class="btn-ghost">Nous contacter</a>
+    </div>
+  </div>
+</section>
+
+<!-- WA -->
+<a class="wa-btn" href="https://wa.me/41783077079" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo-text">Sahoome</span>
+  <div class="footer-grid">
+    <div><p class="footer-brand-text">Votre plateforme immobilière de référence à Abidjan — location, vente et espaces courte durées.</p></div>
+    <div class="fcol"><h4>Services</h4><ul><li><a href="location.html">Location</a></li><li><a href="vente.html">Vente</a></li><li><a href="ephemere.html">Location courte durée</a></li><li><a href="conseils.html">Conseils</a></li></ul></div>
+    <div class="fcol"><h4>Sahoome</h4><ul><li><a href="about.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="#">Publier une annonce</a></li></ul></div>
+    <div class="fcol"><h4>Contact</h4><ul><li><a href="mailto:sahouapro@gmail.com">sahouapro@gmail.com</a></li><li><a href="tel:+41783077079">+41 78 307 70 79</a></li><li><a href="https://wa.me/41783077079">WhatsApp</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 SAHOOME — Tous droits réservés</span><span>Abidjan, Côte d'Ivoire</span></div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,button,.pos-item,.svc,.eg-item,.amb-item,.sb-item').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.classList.add('expand');ring.classList.add('expand');});el.addEventListener('mouseleave',()=>{cur.classList.remove('expand');ring.classList.remove('expand');});});
+</script>
+</body>
+</html>

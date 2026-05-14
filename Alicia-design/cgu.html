@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CGU – SAHOOME</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#B8962E;--gold-light:#D4AE52;--cream:#FAFAF7;--nude:#F4EFE8;--white:#FFFFFF;--ink:#111318;--muted:#7A7D8A;--border:#E8E2D8;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--ink);}
+nav{position:fixed;top:0;left:0;right:0;z-index:600;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;background:rgba(250,250,247,.97);border-bottom:1px solid var(--border);}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-wordmark{font-family:'Montserrat',sans-serif;font-weight:300;font-size:.95rem;letter-spacing:.35em;text-transform:uppercase;color:var(--ink);}
+.nav-back{font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--muted);padding:8px 14px;transition:color .2s;}
+.nav-back:hover{color:var(--gold);}
+.cgu-header{padding:130px 6% 60px;background:var(--ink);}
+.ch-eye{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.ch-line{width:28px;height:1px;background:var(--gold);}
+.ch-tag{font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
+.cgu-header h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:12px;}
+.cgu-header h1 em{font-style:italic;color:var(--gold-light);}
+.cgu-header p{font-size:.82rem;font-weight:300;color:rgba(255,255,255,.4);line-height:1.8;}
+.cgu-date{font-size:.65rem;font-weight:400;color:rgba(255,255,255,.25);margin-top:16px;letter-spacing:.08em;}
+.cgu-wrap{max-width:820px;margin:0 auto;padding:60px 6% 100px;}
+.art{margin-bottom:52px;padding-bottom:52px;border-bottom:1px solid var(--border);}
+.art:last-child{border-bottom:none;margin-bottom:0;}
+.art-num{font-size:.58rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:12px;}
+.art-num::after{content:'';flex:1;height:1px;background:var(--border);}
+.art h2{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:300;color:var(--ink);margin-bottom:16px;}
+.art h2 em{font-style:italic;}
+.art p{font-size:.86rem;font-weight:300;color:var(--muted);line-height:1.9;margin-bottom:12px;}
+.art p:last-child{margin-bottom:0;}
+.art strong{font-weight:600;color:var(--ink);}
+.art ul{list-style:none;margin:14px 0;}
+.art ul li{font-size:.85rem;font-weight:300;color:var(--muted);line-height:1.8;padding:7px 0 7px 20px;position:relative;border-bottom:1px solid var(--border);}
+.art ul li:last-child{border-bottom:none;}
+.art ul li::before{content:'—';color:var(--gold);position:absolute;left:0;}
+.hbox{background:var(--nude);border-left:3px solid var(--gold);padding:16px 18px;margin:16px 0;}
+.hbox p{font-size:.84rem;font-weight:400;color:var(--ink);line-height:1.8;margin:0;}
+footer{background:var(--ink);padding:50px 6% 24px;}
+.fg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:36px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:20px;}
+.fcol h4{font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:12px;}
+.fcol ul{list-style:none;}
+.fcol li{margin-bottom:7px;}
+.fcol a{font-size:.78rem;font-weight:300;color:rgba(255,255,255,.35);text-decoration:none;}
+.fcol a:hover{color:var(--gold-light);}
+.fb{display:flex;justify-content:space-between;font-size:.65rem;font-weight:300;color:rgba(255,255,255,.2);flex-wrap:wrap;gap:8px;}
+.wa-btn{position:fixed;bottom:28px;right:28px;z-index:400;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .25s;text-decoration:none;}
+.wa-btn:hover{transform:scale(1.08);}
+.wa-btn svg{width:25px;height:25px;fill:#fff;}
+@media(max-width:768px){.fg{grid-template-columns:1fr 1fr;}}
+@media(max-width:500px){nav .nav-back{display:none;}.fg{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">
+    <svg width="28" height="32" viewBox="0 0 80 90" fill="none"><path d="M40 5C25 5 13 17.5 13 33C13 53 40 85 40 85C40 85 67 53 67 33C67 17.5 55 5 40 5Z" fill="none" stroke="#B8962E" stroke-width="5" stroke-linejoin="round"/><path d="M40 16L24 29V47H33V37H47V47H56V29L40 16Z" fill="none" stroke="#B8962E" stroke-width="4.5" stroke-linejoin="round"/><rect x="36.5" y="37" width="7" height="10" rx="1" fill="#B8962E"/></svg>
+    <span class="logo-wordmark">Sahoome</span>
+  </a>
+  <a href="index.html" class="nav-back">← Retour à l'accueil</a>
+</nav>
+
+<div class="cgu-header">
+  <div class="ch-eye"><div class="ch-line"></div><span class="ch-tag">Documents légaux</span></div>
+  <h1>Conditions Générales<br>d'<em>Utilisation</em></h1>
+  <p>Ces conditions régissent l'utilisation de la plateforme Sahoome et définissent les droits et obligations de chaque partie.</p>
+  <div class="cgu-date">Dernière mise à jour : Janvier 2025</div>
+</div>
+
+<div class="cgu-wrap">
+
+  <div class="art" id="art1">
+    <div class="art-num">Article 01</div>
+    <h2>Présentation de <em>Sahoome</em></h2>
+    <p>La plateforme Sahoome est éditée par la société SAHOOME, enregistrée en République de Côte d'Ivoire, accessible à l'adresse <strong>sahoome-ci.com</strong>.</p>
+    <p>Sahoome est une plateforme de mise en relation immobilière digitale permettant aux propriétaires de publier leurs annonces et aux utilisateurs de trouver des biens immobiliers à Abidjan.</p>
+    <div class="hbox"><p><strong>Contact :</strong> sahouapro@gmail.com · WhatsApp : +41 78 307 70 79</p></div>
+  </div>
+
+  <div class="art" id="art2">
+    <div class="art-num">Article 02</div>
+    <h2>Rôle de Sahoome — <em>Intermédiaire</em></h2>
+    <p>Sahoome agit exclusivement en qualité d'<strong>intermédiaire de mise en relation</strong> entre les propriétaires et les utilisateurs. À ce titre :</p>
+    <ul>
+      <li>Sahoome ne prend pas part aux contrats conclus entre les parties</li>
+      <li>Sahoome ne gère pas les biens pour le compte des propriétaires</li>
+      <li>Sahoome ne perçoit pas les loyers ni les fonds liés aux transactions</li>
+      <li>Sahoome ne garantit pas la disponibilité des biens au-delà de la date de vérification</li>
+      <li>Sahoome ne saurait être tenu responsable de l'exécution des contrats conclus entre les parties</li>
+    </ul>
+    <div class="hbox"><p>Toute transaction est conclue directement entre le propriétaire et l'utilisateur, sous leur entière responsabilité.</p></div>
+  </div>
+
+  <div class="art" id="art3">
+    <div class="art-num">Article 03</div>
+    <h2>Accès à la <em>plateforme</em></h2>
+    <p>L'accès à la Plateforme est ouvert à toute personne physique majeure ou personne morale. L'utilisation est gratuite pour les utilisateurs recherchant un bien.</p>
+    <p>Pour soumettre une annonce, le propriétaire doit fournir des informations exactes, justifier de sa qualité de propriétaire, accepter les présentes CGU et signer un mandat de courtage avec Sahoome.</p>
+  </div>
+
+  <div class="art" id="art4">
+    <div class="art-num">Article 04</div>
+    <h2>Obligations des <em>propriétaires</em></h2>
+    <p>En publiant une annonce, le propriétaire s'engage à :</p>
+    <ul>
+      <li>Fournir des informations exactes, complètes et actualisées sur le bien</li>
+      <li>Disposer d'un titre de propriété valide (Titre Foncier ou ACD) ou être dûment mandaté</li>
+      <li>Informer Sahoome de toute modification de disponibilité dans un délai de 24 heures</li>
+      <li>Ne pas conclure de transaction avec un utilisateur présenté par Sahoome sans en informer la plateforme</li>
+      <li>Payer la commission due à Sahoome dans les délais convenus</li>
+    </ul>
+  </div>
+
+  <div class="art" id="art5">
+    <div class="art-num">Article 05</div>
+    <h2>Obligations des <em>utilisateurs</em></h2>
+    <ul>
+      <li>Fournir des informations exactes lors de toute demande de contact ou de visite</li>
+      <li>Ne pas utiliser la Plateforme à des fins frauduleuses ou illégales</li>
+      <li>Ne pas contacter directement un propriétaire en contournant la Plateforme après mise en relation</li>
+      <li>Respecter les rendez-vous de visite convenus ou les annuler dans un délai raisonnable</li>
+    </ul>
+  </div>
+
+  <div class="art" id="art6">
+    <div class="art-num">Article 06</div>
+    <h2>Limitation de <em>responsabilité</em></h2>
+    <p>Sahoome décline toute responsabilité pour les dommages directs ou indirects résultant d'une transaction conclue entre un propriétaire et un utilisateur via la Plateforme.</p>
+    <p>La responsabilité de Sahoome est limitée à son rôle d'intermédiaire et ne peut en aucun cas excéder le montant de la commission perçue pour la transaction concernée.</p>
+  </div>
+
+  <div class="art" id="art7">
+    <div class="art-num">Article 07</div>
+    <h2>Commissions et <em>tarification</em></h2>
+    <ul>
+      <li><strong>Location longue durée :</strong> 1 mois de loyer partagé à 50/50 (décret n°2024-1115)</li>
+      <li><strong>Vente immobilière :</strong> 3% à 5% du prix de vente selon mandat signé</li>
+      <li><strong>Location espaces courte duréee :</strong> 10 à 15% du montant de la location</li>
+      <li><strong>Location courte durée :</strong> 10% du montant du séjour</li>
+    </ul>
+    <p>Toute commission est due dès la conclusion effective d'un contrat entre les parties mises en relation par Sahoome.</p>
+  </div>
+
+  <div class="art" id="art8">
+    <div class="art-num">Article 08</div>
+    <h2>Données <em>personnelles</em></h2>
+    <p>Sahoome collecte et traite les données personnelles conformément à la loi ivoirienne n°2013-450 du 19 juin 2013. Vos données ne sont jamais vendues ni cédées à des tiers.</p>
+    <p>Pour exercer vos droits d'accès, rectification ou suppression : <strong>sahouapro@gmail.com</strong></p>
+  </div>
+
+  <div class="art" id="art9">
+    <div class="art-num">Article 09</div>
+    <h2>Propriété <em>intellectuelle</em></h2>
+    <p>L'ensemble des éléments de la Plateforme Sahoome est protégé par le droit de la propriété intellectuelle. Toute reproduction non autorisée est strictement interdite.</p>
+  </div>
+
+  <div class="art" id="art10">
+    <div class="art-num">Article 10</div>
+    <h2>Droit applicable et <em>litiges</em></h2>
+    <p>Les présentes CGU sont régies par le <strong>droit ivoirien</strong>. En cas de litige, les parties s'engagent à rechercher une solution amiable sous 30 jours. À défaut, la juridiction compétente est celle d'<strong>Abidjan, Côte d'Ivoire</strong>.</p>
+    <div class="hbox"><p>Pour tout litige, contactez-nous : <strong>sahouapro@gmail.com</strong>. Réponse sous 5 jours ouvrés.</p></div>
+  </div>
+
+  <div class="art" id="art11">
+    <div class="art-num">Article 11</div>
+    <h2>Nous <em>contacter</em></h2>
+    <ul>
+      <li><strong>Email :</strong> sahouapro@gmail.com</li>
+      <li><strong>WhatsApp :</strong> +41 78 307 70 79</li>
+      <li><strong>Site :</strong> sahoome-ci.com</li>
+      <li><strong>Localisation :</strong> Abidjan, Côte d'Ivoire</li>
+    </ul>
+  </div>
+
+</div>
+
+<a class="wa-btn" href="https://wa.me/41783077079" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<footer>
+  <div class="fg">
+    <div class="fcol"><h4>Services</h4><ul><li><a href="location.html">Location</a></li><li><a href="vente.html">Vente</a></li><li><a href="ephemere.html">Location courte durée</a></li></ul></div>
+    <div class="fcol"><h4>Sahoome</h4><ul><li><a href="about.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="cgu.html">CGU</a></li></ul></div>
+    <div class="fcol"><h4>Contact</h4><ul><li><a href="mailto:sahouapro@gmail.com">sahouapro@gmail.com</a></li><li><a href="tel:+41783077079">+41 78 307 70 79</a></li></ul></div>
+  </div>
+  <div class="fb"><span>© 2025 SAHOOME — Tous droits réservés</span><span>Abidjan, Côte d'Ivoire</span></div>
+</footer>
+</body>
+</html>

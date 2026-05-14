@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Location courte durée – SAHOOME Abidjan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#B8962E;--gold-light:#D4AE52;--gold-pale:#F5EDD6;--cream:#FAFAF7;--nude:#F4EFE8;--white:#FFFFFF;--ink:#111318;--ink2:#1E2330;--muted:#7A7D8A;--border:#E8E2D8;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;cursor:none;}
+.cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.4;transition:width .3s,height .3s;}
+.cursor.expand{width:14px;height:14px;}.cursor-ring.expand{width:52px;height:52px;opacity:.2;}
+nav{position:fixed;top:0;left:0;right:0;z-index:600;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;background:rgba(250,250,247,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-wordmark{font-family:'Montserrat',sans-serif;font-weight:300;font-size:.95rem;letter-spacing:.35em;text-transform:uppercase;color:var(--ink);}
+.nav-menu{display:flex;align-items:center;gap:2px;list-style:none;}
+.nav-menu a{font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--muted);padding:8px 14px;transition:color .2s;}
+.nav-menu a:hover,.nav-menu a.active{color:var(--gold);}
+.nav-divider{width:1px;height:16px;background:var(--border);margin:0 6px;}
+.nav-contact{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--gold);border:1px solid var(--gold);padding:9px 22px;transition:background .25s,color .25s;}
+.nav-contact:hover{background:var(--gold);color:var(--white);}
+.page-header{padding:120px 6% 60px;background:var(--ink2);}
+.ph-eye{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+.ph-line{width:32px;height:1px;background:var(--gold);}
+.ph-tag{font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
+.page-header h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:300;color:var(--white);line-height:1.08;margin-bottom:14px;}
+.page-header h1 em{font-style:italic;color:var(--gold-light);}
+.page-header p{font-size:.88rem;font-weight:300;color:rgba(255,255,255,.5);max-width:500px;line-height:1.85;}
+.service-badges{background:var(--ink);padding:18px 6%;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid rgba(255,255,255,.08);}
+.service-badges::-webkit-scrollbar{display:none;}
+.sb-item{font-size:.62rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap;padding:0 22px 0 0;border-right:1px solid rgba(255,255,255,.1);margin-right:22px;flex-shrink:0;}
+.sb-item:last-child{border-right:none;}
+.sb-item strong{color:var(--gold-light);font-weight:600;}
+.res-sec{padding:60px 6%;background:var(--cream);}
+.res-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;}
+.res-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:300;color:var(--ink);}
+.res-header h2 em{font-style:italic;}
+.res-count{font-size:.72rem;font-weight:300;color:var(--muted);}
+.filter-pills{display:flex;gap:7px;margin-bottom:28px;flex-wrap:wrap;}
+.pill{padding:8px 16px;border:1px solid var(--border);background:var(--white);font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .2s;}
+.pill:hover{border-color:var(--gold);color:var(--ink);}
+.pill.active{background:var(--ink);border-color:var(--ink);color:var(--white);}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);}
+.rcard{background:var(--white);overflow:hidden;text-decoration:none;display:block;transition:transform .3s;}
+.rcard:hover{transform:scale(.985);z-index:2;box-shadow:0 16px 48px rgba(0,0,0,.1);}
+.rcard-img{position:relative;height:210px;overflow:hidden;}
+.rcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.rcard:hover .rcard-img img{transform:scale(1.05);}
+.rcard-badge{position:absolute;top:0;left:0;padding:8px 13px;font-size:.54rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(17,19,24,.85);color:var(--gold);}
+.rcard-svcs{position:absolute;bottom:9px;left:9px;display:flex;gap:4px;flex-wrap:wrap;}
+.rcard-svc{font-size:.52rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:rgba(17,19,24,.7);color:rgba(255,255,255,.8);padding:3px 7px;}
+.rcard-body{padding:18px 18px 22px;}
+.rcard-cat{font-size:.54rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.rcard-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:400;color:var(--ink);margin-bottom:4px;line-height:1.25;}
+.rcard-loc{font-size:.68rem;font-weight:300;color:var(--muted);margin-bottom:10px;}
+.rcard-specs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.rspec{font-size:.6rem;font-weight:500;color:var(--muted);}
+.rcard-footer{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border);}
+.rcard-price{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:400;color:var(--ink);}
+.rcard-price sub{font-family:'Montserrat',sans-serif;font-size:.58rem;font-weight:300;color:var(--muted);}
+.rcard-ref{font-size:.56rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;}
+.accordion-sec{padding:0 6% 70px;background:var(--cream);}
+.accordion-wrap{max-width:820px;margin:0 auto;}
+.acc-title-outer{text-align:center;margin-bottom:28px;}
+.acc-title-outer p{font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.acc-title-outer h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:300;color:var(--ink);}
+.acc-title-outer h3 em{font-style:italic;}
+.acc-item{border-top:1px solid var(--border);overflow:hidden;}
+.acc-item:last-child{border-bottom:1px solid var(--border);}
+.acc-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:18px 0;background:none;border:none;cursor:pointer;text-align:left;gap:14px;}
+.acc-btn-left{display:flex;align-items:center;gap:14px;}
+.acc-num{font-family:'Playfair Display',serif;font-size:.7rem;font-weight:300;color:var(--gold);letter-spacing:.14em;flex-shrink:0;}
+.acc-btn-title{font-size:.85rem;font-weight:600;color:var(--ink);letter-spacing:.02em;}
+.acc-icon{width:26px;height:26px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--muted);flex-shrink:0;transition:transform .3s,border-color .3s,color .3s;}
+.acc-item.open .acc-icon{transform:rotate(45deg);border-color:var(--gold);color:var(--gold);}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+.acc-item.open .acc-body{max-height:700px;}
+.acc-content{padding:0 0 22px 40px;}
+.acc-content p{font-size:.84rem;font-weight:300;color:var(--muted);line-height:1.85;margin-bottom:12px;}
+.acc-content p:last-child{margin-bottom:0;}
+.acc-steps{display:flex;flex-direction:column;gap:8px;}
+.acc-step{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;background:var(--white);border:1px solid var(--border);}
+.as-num{font-family:'Playfair Display',serif;font-size:.66rem;color:var(--gold);font-weight:300;letter-spacing:.12em;flex-shrink:0;margin-top:2px;}
+.as-title{font-size:.76rem;font-weight:600;color:var(--ink);margin-bottom:2px;}
+.as-desc{font-size:.72rem;font-weight:300;color:var(--muted);line-height:1.6;}
+.cta-band{background:var(--ink);padding:44px 6%;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;}
+.cta-band h3{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:300;color:var(--white);}
+.cta-band h3 em{font-style:italic;color:var(--gold-light);}
+.cta-band p{font-size:.8rem;font-weight:300;color:rgba(255,255,255,.45);margin-top:5px;}
+.cta-btns{display:flex;gap:9px;flex-wrap:wrap;flex-shrink:0;}
+.btn-gold{background:var(--gold);color:var(--white);padding:12px 24px;font-size:.65rem;font-weight:600;letter-spacing:.16em;text-decoration:none;text-transform:uppercase;transition:background .25s;}
+.btn-gold:hover{background:var(--white);color:var(--ink);}
+.btn-wa{background:rgba(37,211,102,.12);color:#25D366;border:1px solid #25D366;padding:12px 22px;font-size:.65rem;font-weight:600;letter-spacing:.14em;text-decoration:none;text-transform:uppercase;transition:background .25s;}
+.btn-wa:hover{background:#25D366;color:var(--white);}
+.wa-btn{position:fixed;bottom:28px;right:28px;z-index:400;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .25s;text-decoration:none;}
+.wa-btn:hover{transform:scale(1.08);}
+.wa-btn svg{width:25px;height:25px;fill:#fff;}
+footer{background:var(--ink);padding:50px 6% 22px;}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:20px;}
+.footer-logo-text{font-family:'Montserrat',sans-serif;font-weight:300;font-size:.88rem;letter-spacing:.35em;text-transform:uppercase;color:var(--white);margin-bottom:12px;display:block;}
+.footer-brand-text{font-size:.78rem;font-weight:300;line-height:1.8;color:rgba(255,255,255,.35);max-width:200px;}
+.fcol h4{font-size:.56rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:11px;}
+.fcol ul{list-style:none;}.fcol li{margin-bottom:7px;}
+.fcol a{font-size:.75rem;font-weight:300;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;}
+.fcol a:hover{color:var(--gold-light);}
+.footer-bottom{display:flex;justify-content:space-between;font-size:.64rem;font-weight:300;color:rgba(255,255,255,.2);flex-wrap:wrap;gap:8px;}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}
+@media(max-width:1024px){.res-grid{grid-template-columns:1fr 1fr;}.footer-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){.nav-menu{display:none;}.res-grid{grid-template-columns:1fr;background:none;gap:14px;}.rcard{border:1px solid var(--border);}.acc-content{padding:0 0 18px 22px;}.cta-band{flex-direction:column;}.footer-grid{grid-template-columns:1fr;}body{cursor:auto;}.cursor,.cursor-ring{display:none;}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curRing"></div>
+<nav>
+  <a href="index.html" class="logo">
+    <svg width="28" height="32" viewBox="0 0 80 90" fill="none"><path d="M40 5C25 5 13 17.5 13 33C13 53 40 85 40 85C40 85 67 53 67 33C67 17.5 55 5 40 5Z" fill="none" stroke="#B8962E" stroke-width="5" stroke-linejoin="round"/><path d="M40 16L24 29V47H33V37H47V47H56V29L40 16Z" fill="none" stroke="#B8962E" stroke-width="4.5" stroke-linejoin="round"/><rect x="36.5" y="37" width="7" height="10" rx="1" fill="#B8962E"/></svg>
+    <span class="logo-wordmark">Sahoome</span>
+  </a>
+  <ul class="nav-menu">
+    <li><a href="location.html">Location</a></li>
+    <li><a href="vente.html">Vente</a></li>
+    <li><a href="ephemere.html">Espaces courte durée</a></li>
+    <li><a href="ephemere-residence.html" class="active">Location courte durée</a></li>
+    <li><a href="about.html">À propos</a></li>
+    <div class="nav-divider"></div>
+    <li><a href="contact.html" class="nav-contact">Nous contacter</a></li>
+  </ul>
+</nav>
+<div class="page-header">
+  <div class="ph-eye"><div class="ph-line"></div><span class="ph-tag">Service exclusif · Sahoome</span></div>
+  <h1>Location courte durée<br><em>clé en main</em></h1>
+  <p>Logements meublés premium avec transfert aéroport, chauffeur privé et conciergerie dédiée — un séjour entièrement orchestré à Abidjan.</p>
+</div>
+<div class="service-badges">
+  <div class="sb-item"><strong>Transfert aéroport</strong> inclus</div>
+  <div class="sb-item"><strong>Chauffeur privé</strong> disponible</div>
+  <div class="sb-item"><strong>Conciergerie</strong> 7j/7</div>
+  <div class="sb-item"><strong>Ménage</strong> inclus</div>
+  <div class="sb-item"><strong>Remise des clés</strong> en personne</div>
+</div>
+<section class="res-sec">
+  <div class="res-header reveal">
+    <div><h2>Nos <em>résidences</em></h2><p class="res-count" id="resCount">6 résidences disponibles</p></div>
+  </div>
+  <div class="filter-pills reveal">
+    <button class="pill active" onclick="filterRes(this,'all')">Toutes</button>
+    <button class="pill" onclick="filterRes(this,'cocody')">Cocody</button>
+    <button class="pill" onclick="filterRes(this,'plateau')">Plateau</button>
+    <button class="pill" onclick="filterRes(this,'bingerville')">Bingerville</button>
+    <button class="pill" onclick="filterRes(this,'marcory')">Marcory</button>
+  </div>
+  <div class="res-grid" id="resGrid">
+    <a href="detail-residence-ephemere.html?id=0" class="rcard" data-zone="cocody">
+      <div class="rcard-img"><img src="https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=700&q=80" alt=""><div class="rcard-badge">Location courte durée</div><div class="rcard-svcs"><span class="rcard-svc">Transfert</span><span class="rcard-svc">Chauffeur</span><span class="rcard-svc">Conciergerie</span></div></div>
+      <div class="rcard-body"><div class="rcard-cat">Appartement · Cocody Riviera</div><div class="rcard-title">Appartement 2 chambres premium</div><div class="rcard-loc">Cocody Riviera, Abidjan</div><div class="rcard-specs"><span class="rspec">2 chambres</span><span class="rspec">55 m²</span><span class="rspec">WiFi</span><span class="rspec">Clim</span></div><div class="rcard-footer"><div class="rcard-price">45 000 FCFA <sub>/nuit</sub></div><div class="rcard-ref">SAH-R01</div></div></div>
+    </a>
+    <a href="detail-residence-ephemere.html?id=1" class="rcard" data-zone="plateau">
+      <div class="rcard-img"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=700&q=80" alt=""><div class="rcard-badge">Location courte durée</div><div class="rcard-svcs"><span class="rcard-svc">Transfert</span><span class="rcard-svc">Chauffeur</span><span class="rcard-svc">Conciergerie</span></div></div>
+      <div class="rcard-body"><div class="rcard-cat">Studio · Plateau</div><div class="rcard-title">Studio business centre-ville</div><div class="rcard-loc">Plateau, Abidjan</div><div class="rcard-specs"><span class="rspec">1 chambre</span><span class="rspec">32 m²</span><span class="rspec">Vue ville</span></div><div class="rcard-footer"><div class="rcard-price">35 000 FCFA <sub>/nuit</sub></div><div class="rcard-ref">SAH-R02</div></div></div>
+    </a>
+    <a href="detail-residence-ephemere.html?id=2" class="rcard" data-zone="bingerville">
+      <div class="rcard-img"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=700&q=80" alt=""><div class="rcard-badge">Location courte durée</div><div class="rcard-svcs"><span class="rcard-svc">Transfert</span><span class="rcard-svc">Chauffeur</span><span class="rcard-svc">Conciergerie</span><span class="rcard-svc">Personnel</span></div></div>
+      <div class="rcard-body"><div class="rcard-cat">Villa · Bingerville</div><div class="rcard-title">Villa premium piscine privée</div><div class="rcard-loc">Bingerville, Abidjan</div><div class="rcard-specs"><span class="rspec">4 chambres</span><span class="rspec">Piscine</span><span class="rspec">Jardin</span></div><div class="rcard-footer"><div class="rcard-price">120 000 FCFA <sub>/nuit</sub></div><div class="rcard-ref">SAH-R03</div></div></div>
+    </a>
+    <a href="detail-residence-ephemere.html?id=3" class="rcard" data-zone="marcory">
+      <div class="rcard-img"><img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=700&q=80" alt=""><div class="rcard-badge">Location courte durée</div><div class="rcard-svcs"><span class="rcard-svc">Transfert</span><span class="rcard-svc">Chauffeur</span><span class="rcard-svc">Conciergerie</span></div></div>
+      <div class="rcard-body"><div class="rcard-cat">Appartement · Marcory</div><div class="rcard-title">Appartement 3 chambres Zone 4</div><div class="rcard-loc">Marcory Zone 4, Abidjan</div><div class="rcard-specs"><span class="rspec">3 chambres</span><span class="rspec">90 m²</span><span class="rspec">Parking</span></div><div class="rcard-footer"><div class="rcard-price">55 000 FCFA <sub>/nuit</sub></div><div class="rcard-ref">SAH-R04</div></div></div>
+    </a>
+    <a href="detail-residence-ephemere.html?id=4" class="rcard" data-zone="cocody">
+      <div class="rcard-img"><img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=700&q=80" alt=""><div class="rcard-badge">Location courte durée</div><div class="rcard-svcs"><span class="rcard-svc">Transfert</span><span class="rcard-svc">Chauffeur</span><span class="rcard-svc">Conciergerie</span><span class="rcard-svc">Personnel</span></div></div>
+      <div class="rcard-body"><div class="rcard-cat">Villa · 2 Plateaux</div><div class="rcard-title">Villa 5 chambres résidentielle</div><div class="rcard-loc">Cocody 2 Plateaux, Abidjan</div><div class="rcard-specs"><span class="rspec">5 chambres</span><span class="rspec">280 m²</span><span class="rspec">Jardin</span></div><div class="rcard-footer"><div class="rcard-price">95 000 FCFA <sub>/nuit</sub></div><div class="rcard-ref">SAH-R05</div></div></div>
+    </a>
+    <a href="detail-residence-ephemere.html?id=5" class="rcard" data-zone="cocody">
+      <div class="rcard-img"><img src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=700&q=80" alt=""><div class="rcard-badge">Location courte durée</div><div class="rcard-svcs"><span class="rcard-svc">Transfert</span><span class="rcard-svc">Chauffeur</span><span class="rcard-svc">Conciergerie</span></div></div>
+      <div class="rcard-body"><div class="rcard-cat">Duplex · Riviera Golf</div><div class="rcard-title">Duplex vue lagune sécurisé</div><div class="rcard-loc">Riviera Golf, Abidjan</div><div class="rcard-specs"><span class="rspec">3 chambres</span><span class="rspec">120 m²</span><span class="rspec">Vue lagune</span></div><div class="rcard-footer"><div class="rcard-price">75 000 FCFA <sub>/nuit</sub></div><div class="rcard-ref">SAH-R06</div></div></div>
+    </a>
+  </div>
+</section>
+<section class="accordion-sec">
+  <div class="accordion-wrap">
+    <div class="acc-title-outer reveal"><p>Tout savoir sur notre service</p><h3>Questions &amp; <em>détails</em></h3></div>
+    <div class="acc-item" id="acc0">
+      <button class="acc-btn" onclick="toggleAcc(0)"><div class="acc-btn-left"><span class="acc-num">01</span><span class="acc-btn-title">Nos 6 services inclus</span></div><div class="acc-icon">+</div></button>
+      <div class="acc-body"><div class="acc-content"><div class="acc-steps">
+        <div class="acc-step"><span class="as-num">01</span><div><div class="as-title">Transfert aéroport</div><p class="as-desc">Chauffeur a l'arrivee avec panneau nominatif, trajet direct vers votre residence.</p></div></div>
+        <div class="acc-step"><span class="as-num">02</span><div><div class="as-title">Chauffeur prive</div><p class="as-desc">Disponible pour tous vos deplacements a Abidjan pendant votre sejour.</p></div></div>
+        <div class="acc-step"><span class="as-num">03</span><div><div class="as-title">Residence premium verifiee</div><p class="as-desc">Logement visite, equipe et valide par notre equipe avant votre arrivee.</p></div></div>
+        <div class="acc-step"><span class="as-num">04</span><div><div class="as-title">Conciergerie dediee 7j/7</div><p class="as-desc">Un interlocuteur Sahoome sur WhatsApp pour toute demande pendant le sejour.</p></div></div>
+        <div class="acc-step"><span class="as-num">05</span><div><div class="as-title">Menage et linge</div><p class="as-desc">Menage hebdomadaire et linge change regulierement inclus dans l'offre.</p></div></div>
+        <div class="acc-step"><span class="as-num">06</span><div><div class="as-title">Remise des cles en personne</div><p class="as-desc">Notre equipe vous accueille, visite les lieux avec vous et remet officiellement les cles.</p></div></div>
+      </div></div></div>
+    </div>
+    <div class="acc-item" id="acc1">
+      <button class="acc-btn" onclick="toggleAcc(1)"><div class="acc-btn-left"><span class="acc-num">02</span><span class="acc-btn-title">De l'aeroport a votre residence — le parcours</span></div><div class="acc-icon">+</div></button>
+      <div class="acc-body"><div class="acc-content"><div class="acc-steps">
+        <div class="acc-step"><span class="as-num">1</span><div><div class="as-title">Votre vol atterrit</div><p class="as-desc">Notre chauffeur vous attend en salle d'arrivee avec votre nom.</p></div></div>
+        <div class="acc-step"><span class="as-num">2</span><div><div class="as-title">Transfert direct</div><p class="as-desc">Trajet confortable, bagages pris en charge.</p></div></div>
+        <div class="acc-step"><span class="as-num">3</span><div><div class="as-title">Remise des cles</div><p class="as-desc">Accueil en personne et visite complete de votre logement.</p></div></div>
+        <div class="acc-step"><span class="as-num">4</span><div><div class="as-title">Sejour accompagne</div><p class="as-desc">Conciergerie, chauffeur et menage geres pendant toute la duree.</p></div></div>
+        <div class="acc-step"><span class="as-num">5</span><div><div class="as-title">Depart serein</div><p class="as-desc">Transfert retour aeroport organise par nos soins.</p></div></div>
+      </div></div></div>
+    </div>
+    <div class="acc-item" id="acc2">
+      <button class="acc-btn" onclick="toggleAcc(2)"><div class="acc-btn-left"><span class="acc-num">03</span><span class="acc-btn-title">Tarifs et conditions</span></div><div class="acc-icon">+</div></button>
+      <div class="acc-body"><div class="acc-content">
+        <p>Chaque residence est disponible a la nuit, a la semaine ou au mois. Les tarifs incluent l'ensemble des services Sahoome.</p>
+        <p>Une caution est requise a la confirmation. Le montant varie selon le bien et la duree du sejour.</p>
+        <p>Le transfert aeroport, le menage hebdomadaire et la conciergerie sont inclus. Le chauffeur prive est disponible sur demande.</p>
+      </div></div>
+    </div>
+    <div class="acc-item" id="acc3">
+      <button class="acc-btn" onclick="toggleAcc(3)"><div class="acc-btn-left"><span class="acc-num">04</span><span class="acc-btn-title">Comment reserver</span></div><div class="acc-icon">+</div></button>
+      <div class="acc-body"><div class="acc-content">
+        <p>Choisissez votre residence ci-dessus, cliquez pour voir les disponibilites et selectionnez vos dates dans le calendrier.</p>
+        <p>Remplissez vos coordonnees et envoyez votre demande. Notre equipe confirme sous 24h avec le contrat de sejour.</p>
+        <p>Aucun paiement avant la confirmation. Vous pouvez aussi nous contacter sur WhatsApp pour une demande sur mesure.</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+<div class="cta-band">
+  <div><h3>Une demande <em>sur mesure</em> ?</h3><p>Dites-nous vos dates — nous vous proposons la residence ideale sous 2h.</p></div>
+  <div class="cta-btns">
+    <a href="https://wa.me/41783077079" class="btn-wa" target="_blank">WhatsApp direct</a>
+    <a href="mailto:sahouapro@gmail.com" class="btn-gold">Nous ecrire</a>
+  </div>
+</div>
+<a class="wa-btn" href="https://wa.me/41783077079" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+<footer>
+  <span class="footer-logo-text">Sahoome</span>
+  <div class="footer-grid">
+    <div><p class="footer-brand-text">Votre plateforme immobiliere de reference a Abidjan.</p></div>
+    <div class="fcol"><h4>Services</h4><ul><li><a href="location.html">Location</a></li><li><a href="vente.html">Vente</a></li><li><a href="ephemere.html">Locaux ephemeres</a></li><li><a href="ephemere-residence.html">Residence ephemere</a></li></ul></div>
+    <div class="fcol"><h4>Sahoome</h4><ul><li><a href="about.html">A propos</a></li><li><a href="cgu.html">CGU</a></li></ul></div>
+    <div class="fcol"><h4>Contact</h4><ul><li><a href="mailto:sahouapro@gmail.com">sahouapro@gmail.com</a></li><li><a href="tel:+41783077079">+41 78 307 70 79</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>2025 SAHOOME</span><span>Abidjan, Cote d'Ivoire</span></div>
+</footer>
+<script>
+function filterRes(btn,zone){document.querySelectorAll('.pill').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');var cards=document.querySelectorAll('.rcard');var count=0;cards.forEach(function(c){var show=zone==='all'||c.dataset.zone===zone;c.style.display=show?'block':'none';if(show)count++;});document.getElementById('resCount').textContent=count+' residence'+(count>1?'s':'')+' disponible'+(count>1?'s':'');}
+function toggleAcc(i){var item=document.getElementById('acc'+i);var isOpen=item.classList.contains('open');document.querySelectorAll('.acc-item').forEach(function(el){el.classList.remove('open');});if(!isOpen)item.classList.add('open');}
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+var cur=document.getElementById('cur'),ring=document.getElementById('curRing');
+var mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.rcard').forEach(function(el){el.addEventListener('mouseenter',function(){cur.classList.add('expand');ring.classList.add('expand');});el.addEventListener('mouseleave',function(){cur.classList.remove('expand');ring.classList.remove('expand');});});
+</script>
+</body>
+</html>

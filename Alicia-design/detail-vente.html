@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bien à vendre – SAHOOME</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#B8962E;--gold-light:#D4AE52;--gold-pale:#F5EDD6;--cream:#FAFAF7;--nude:#F4EFE8;--white:#FFFFFF;--ink:#111318;--muted:#7A7D8A;--border:#E8E2D8;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;cursor:none;}
+.cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.4;transition:width .3s,height .3s;}
+.cursor.expand{width:14px;height:14px;}.cursor-ring.expand{width:52px;height:52px;opacity:.2;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:600;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;background:rgba(250,250,247,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-wordmark{font-family:'Montserrat',sans-serif;font-weight:300;font-size:.95rem;letter-spacing:.35em;text-transform:uppercase;color:var(--ink);}
+.nav-menu{display:flex;align-items:center;gap:2px;list-style:none;}
+.nav-menu a{font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--muted);padding:8px 14px;transition:color .2s;}
+.nav-menu a:hover,.nav-menu a.active{color:var(--gold);}
+.nav-divider{width:1px;height:16px;background:var(--border);margin:0 6px;}
+.nav-contact{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--gold);border:1px solid var(--gold);padding:9px 22px;transition:background .25s,color .25s;}
+.nav-contact:hover{background:var(--gold);color:var(--white);}
+
+/* BREADCRUMB */
+.bread-bar{padding:96px 6% 0;background:var(--cream);}
+.bread{font-size:.6rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:16px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.bread a{color:var(--muted);text-decoration:none;transition:color .2s;}
+.bread a:hover{color:var(--gold);}
+.bread-sep{color:var(--border);}
+
+/* GALLERY */
+.gallery{display:grid;grid-template-columns:1.85fr 1fr;grid-template-rows:300px 180px;gap:4px;padding:0 6%;max-width:1280px;margin:0 auto;}
+.g-main{grid-row:1/3;overflow:hidden;position:relative;}
+.g-main img{width:100%;height:100%;object-fit:cover;transition:transform .7s;}
+.g-main:hover img{transform:scale(1.03);}
+.g-badge{position:absolute;top:0;left:0;padding:10px 16px;font-size:.58rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;}
+.g-sub{overflow:hidden;position:relative;cursor:pointer;background:var(--nude);}
+.g-sub img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.g-sub:hover img{transform:scale(1.06);}
+.g-more{position:absolute;inset:0;background:rgba(17,19,24,.4);display:flex;align-items:center;justify-content:center;}
+.g-more span{font-size:.62rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--white);}
+
+/* DETAIL LAYOUT */
+.detail-wrap{display:grid;grid-template-columns:1fr 360px;gap:52px;max-width:1280px;margin:0 auto;padding:44px 6% 90px;align-items:start;}
+
+/* LEFT CONTENT */
+.dh{padding-bottom:28px;border-bottom:1px solid var(--border);margin-bottom:28px;}
+.dh-tag{font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.dh-title{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3vw,2.6rem);font-weight:300;color:var(--ink);line-height:1.1;margin-bottom:10px;}
+.dh-loc{font-size:.8rem;font-weight:300;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.dh-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.avail-badge{display:inline-flex;align-items:center;gap:6px;font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;}
+.av-yes{background:#D1FAE5;color:#065F46;}
+.av-no{background:#FEF3C7;color:#D97706;}
+.dh-ref{font-size:.62rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+
+/* SPECS */
+.specs-band{display:grid;gap:1px;background:var(--border);margin-bottom:34px;}
+.spec-item{background:var(--white);padding:18px 14px;text-align:center;}
+.spec-icon{font-size:1.2rem;margin-bottom:6px;}
+.spec-label{font-size:.56rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.spec-val{font-size:.84rem;font-weight:500;color:var(--ink);}
+
+/* SECTIONS */
+.dsec{margin-bottom:30px;}
+.ds-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.ds-line{width:20px;height:1px;background:var(--gold);}
+.ds-label{font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);}
+.detail-desc{font-size:.86rem;font-weight:300;line-height:1.95;color:var(--muted);}
+
+/* TAGS */
+.tags-wrap{display:flex;flex-wrap:wrap;gap:7px;}
+.dtag{font-size:.68rem;font-weight:400;color:var(--ink);background:var(--white);padding:6px 13px;border:1px solid var(--border);}
+
+/* CALENDAR */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.cal-day{text-align:center;}
+.cal-name{font-size:.56rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.cal-num{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:400;}
+.d-free{background:var(--white);color:var(--ink);border:1px solid var(--border);}
+.d-busy{background:#FEE2E2;color:#B91C1C;text-decoration:line-through;}
+.d-today{background:var(--gold);color:var(--white);}
+.cal-legend{font-size:.64rem;font-weight:300;color:var(--muted);margin-top:10px;}
+
+/* RULES */
+.rules-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.rules-list li{font-size:.82rem;font-weight:300;color:var(--muted);display:flex;align-items:flex-start;gap:11px;line-height:1.65;}
+.rules-list li::before{content:'—';color:var(--gold);flex-shrink:0;}
+
+/* BOOKING CARD */
+.booking-card{background:var(--white);border:1px solid var(--border);padding:28px 24px;position:sticky;top:96px;}
+.bc-price{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:300;color:var(--ink);line-height:1;margin-bottom:4px;}
+.bc-price sub{font-family:'Montserrat',sans-serif;font-size:.74rem;font-weight:300;color:var(--muted);}
+.bc-avail{font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding-bottom:18px;border-bottom:1px solid var(--border);margin-bottom:18px;margin-top:6px;}
+
+/* TABS */
+.bc-tabs{display:flex;gap:0;margin-bottom:18px;border:1px solid var(--border);}
+.bc-tab{flex:1;padding:10px 4px;background:transparent;border:none;border-right:1px solid var(--border);font-family:'Montserrat',sans-serif;font-size:.56rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:background .2s,color .2s;}
+.bc-tab:last-child{border-right:none;}
+.bc-tab.active{background:var(--ink);color:var(--white);}
+.bc-tab:not(.active):hover{background:var(--nude);}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* FORM */
+.fl{font-size:.56rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block;margin-top:12px;}
+.fl:first-child{margin-top:0;}
+.fi{width:100%;background:var(--nude);border:1px solid var(--border);padding:11px 13px;font-family:'Montserrat',sans-serif;font-size:.82rem;font-weight:300;color:var(--ink);outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--gold);}
+textarea.fi{resize:none;}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.f2 .fl{margin-top:0;}
+
+.action-btn{width:100%;background:var(--gold);color:var(--white);border:none;padding:13px;font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .25s;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:7px;}
+.action-btn:hover{background:var(--ink);}
+.action-btn-dark{background:var(--ink);}
+.action-btn-dark:hover{background:var(--gold);}
+
+.wa-row{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:10px;padding:11px;border:1px solid #25D366;color:#25D366;font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:background .2s,color .2s;}
+.wa-row:hover{background:#25D366;color:var(--white);}
+
+.success-box{display:none;padding:12px;margin-top:12px;text-align:center;}
+.sb-green{background:#D1FAE5;border:1px solid #6EE7B7;}
+.sb-green p{font-size:.74rem;font-weight:500;color:#065F46;}
+.sb-blue{background:#EEF2FF;border:1px solid #C7D2FE;}
+.sb-blue p{font-size:.74rem;font-weight:500;color:#3730A3;}
+
+.bc-note{font-size:.64rem;font-weight:300;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6;}
+.contract-note{background:var(--gold-pale);border:1px solid #E8D5A8;padding:12px 14px;margin-top:12px;display:flex;align-items:flex-start;gap:9px;}
+.contract-note span{font-size:.74rem;font-weight:300;color:var(--ink);line-height:1.6;}
+
+/* SIMILAR */
+/* ── MAPS ── */
+.maps-sec{background:var(--white);padding:60px 6%;border-top:1px solid var(--border);}
+.maps-inner{max-width:1280px;margin:0 auto;}
+.maps-header{margin-bottom:22px;}
+.maps-frame{overflow:hidden;border:1px solid var(--border);}
+
+.similar-sec{background:var(--white);padding:64px 6%;border-top:1px solid var(--border);}
+.sim-inner{max-width:1280px;margin:0 auto;}
+.sim-head{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.sim-line{width:20px;height:1px;background:var(--gold);}
+.sim-tag{font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);}
+.sim-h2{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:300;color:var(--ink);margin-bottom:28px;}
+.sim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);}
+.sim-card{background:var(--white);overflow:hidden;text-decoration:none;display:block;transition:opacity .3s;}
+.sim-card:hover{opacity:.85;}
+.sim-img{height:170px;overflow:hidden;}
+.sim-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.sim-card:hover .sim-img img{transform:scale(1.05);}
+.sim-body{padding:16px 18px 20px;}
+.sim-cat{font-size:.56rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.sim-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:400;color:var(--ink);margin-bottom:4px;}
+.sim-loc{font-size:.7rem;font-weight:300;color:var(--muted);margin-bottom:8px;}
+.sim-price{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ink);}
+.sim-price sub{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:300;color:var(--muted);}
+
+/* WA FLOAT */
+.wa-btn{position:fixed;bottom:28px;right:28px;z-index:400;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .25s;text-decoration:none;}
+.wa-btn:hover{transform:scale(1.08);}
+.wa-btn svg{width:25px;height:25px;fill:#fff;}
+
+/* FOOTER */
+footer{background:var(--ink);padding:56px 6% 26px;}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:22px;}
+.footer-logo-text{font-family:'Montserrat',sans-serif;font-weight:300;font-size:.88rem;letter-spacing:.35em;text-transform:uppercase;color:var(--white);margin-bottom:12px;display:block;}
+.footer-brand-text{font-size:.78rem;font-weight:300;line-height:1.8;color:rgba(255,255,255,.35);max-width:220px;}
+.fcol h4{font-size:.58rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:14px;}
+.fcol ul{list-style:none;}
+.fcol li{margin-bottom:8px;}
+.fcol a{font-size:.76rem;font-weight:300;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;}
+.fcol a:hover{color:var(--gold-light);}
+.footer-bottom{display:flex;justify-content:space-between;font-size:.65rem;font-weight:300;color:rgba(255,255,255,.22);flex-wrap:wrap;gap:8px;}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}
+
+@media(max-width:1024px){.detail-wrap{grid-template-columns:1fr;}.booking-card{position:static;}.gallery{grid-template-columns:1fr;grid-template-rows:auto;}.g-main{height:280px;grid-row:auto;}.g-sub{display:none;}.sim-grid{grid-template-columns:1fr 1fr;}.footer-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){.nav-menu{display:none;}.sim-grid{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr;}.f2{grid-template-columns:1fr;} body{cursor:auto;}.cursor,.cursor-ring{display:none;}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="logo">
+    <svg width="28" height="32" viewBox="0 0 80 90" fill="none"><path d="M40 5C25 5 13 17.5 13 33C13 53 40 85 40 85C40 85 67 53 67 33C67 17.5 55 5 40 5Z" fill="none" stroke="#B8962E" stroke-width="5" stroke-linejoin="round"/><path d="M40 16L24 29V47H33V37H47V47H56V29L40 16Z" fill="none" stroke="#B8962E" stroke-width="4.5" stroke-linejoin="round"/><rect x="36.5" y="37" width="7" height="10" rx="1" fill="#B8962E"/></svg>
+    <span class="logo-wordmark">Sahoome</span>
+  </a>
+  <ul class="nav-menu">
+    <li><a href="location.html">Location</a></li>
+    <li><a href="vente.html">Vente</a></li>
+    <li><a href="vente.html" class="active">Location courte durée</a></li>
+    <li><a href="conseils.html">Conseils</a></li>
+    <li><a href="about.html">À propos</a></li>
+    <div class="nav-divider"></div>
+    <li><a href="contact.html" class="nav-contact">Nous contacter</a></li>
+  </ul>
+</nav>
+
+<div class="bread-bar">
+  <div class="bread">
+    <a href="index.html">Accueil</a><span class="bread-sep">›</span>
+    <a href="vente.html">Vente</a><span class="bread-sep">›</span>
+    <span>Villa standing · Cocody 2 Plateaux</span>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery">
+  <div class="g-main">
+    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=85" alt="Villa 2 Plateaux">
+    <div class="g-badge" style="background:var(--gold);color:var(--white);">Vente</div>
+  </div>
+  <div class="g-sub"><img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=80" alt="Intérieur"></div>
+  <div class="g-sub">
+    <img src="https://images.unsplash.com/photo-1560472355-536de3962603?w=600&q=80" alt="Vitrine">
+    <div class="g-more"><span>+ 4 photos</span></div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div class="detail-wrap">
+  <div>
+    <!-- HEADER -->
+    <div class="dh reveal">
+      <div class="dh-tag">Villa · Cocody 2 Plateaux · Vente</div>
+      <h1 class="dh-title">Villa standing<br>avec piscine</h1>
+      <div class="dh-loc">📍 Cocody 2 Plateaux, Abidjan</div>
+      <div class="dh-row">
+        <div class="avail-badge av-yes">● Disponible</div>
+        <div class="dh-ref">Réf. SAH-V02</div>
+      </div>
+    </div>
+
+    <!-- SPECS -->
+    <div class="specs-band reveal" style="grid-template-columns:repeat(4,1fr);">
+      <div class="spec-item"><div class="spec-icon">🛏</div><div class="spec-label">Chambres</div><div class="spec-val">5</div></div><div class="spec-item"><div class="spec-icon">📐</div><div class="spec-label">Superficie</div><div class="spec-val">320 m²</div></div><div class="spec-item"><div class="spec-icon">🏊</div><div class="spec-label">Piscine</div><div class="spec-val">Privée</div>
+      <div class="spec-item"><div class="spec-icon">📅</div><div class="spec-label">Disponible</div><div class="spec-val">Dès maintenant</div></div>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="dsec reveal">
+      <div class="ds-head"><div class="ds-line"></div><span class="ds-label">Description</span></div>
+      <p class="detail-desc">Somptueuse villa de standing implantée dans le quartier résidentiel sécurisé des 2 Plateaux. Cette propriété d\'exception offre un cadre de vie luxueux avec piscine privée, grand jardin arborisé et finitions haut de gamme.<br><br>La villa comprend 5 chambres dont une suite parentale de 50 m², double salon, cuisine professionnelle équipée, salle de cinéma, double garage et appartement de gardien. Groupe électrogène, domotique et sécurité renforcée.</p>
+    </div>
+
+    <!-- ÉQUIPEMENTS -->
+    <div class="dsec reveal">
+      <div class="ds-head"><div class="ds-line"></div><span class="ds-label">Équipements inclus</span></div>
+      <div class="tags-wrap">
+        <span class="dtag">Piscine privée</span><span class="dtag">5 chambres</span><span class="dtag">320 m²</span><span class="dtag">Double garage</span><span class="dtag">Groupe électrogène</span><span class="dtag">Domotique</span><span class="dtag">Jardin arborisé</span><span class="dtag">Appartement gardien</span><span class="dtag">Titre foncier</span>
+      </div>
+    </div>
+
+    <!-- DISPONIBILITÉS -->
+    <div class="dsec reveal" style="display:none">
+      <div class="cal-grid">
+        <div class="cal-day"><div class="cal-name">Lun</div><div class="cal-num d-today" id="d0"></div></div>
+        <div class="cal-day"><div class="cal-name">Mar</div><div class="cal-num d-free" id="d1"></div></div>
+        <div class="cal-day"><div class="cal-name">Mer</div><div class="cal-num d-busy" id="d2"></div></div>
+        <div class="cal-day"><div class="cal-name">Jeu</div><div class="cal-num d-free" id="d3"></div></div>
+        <div class="cal-day"><div class="cal-name">Ven</div><div class="cal-num d-free" id="d4"></div></div>
+        <div class="cal-day"><div class="cal-name">Sam</div><div class="cal-num d-busy" id="d5"></div></div>
+        <div class="cal-day"><div class="cal-name">Dim</div><div class="cal-num d-free" id="d6"></div></div>
+      </div>
+      <p class="cal-legend">🟡 Aujourd'hui &nbsp;·&nbsp; 🟢 Disponible &nbsp;·&nbsp; 🔴 Occupé</p>
+    </div>
+
+    <!-- CONDITIONS -->
+    <div class="dsec reveal">
+      <div class="ds-head"><div class="ds-line"></div><span class="ds-label">Conditions de vente</span></div>
+      <ul class="rules-list">
+        <li>Titre foncier certifié et vérifié par notaire</li><li>Visite sur rendez-vous uniquement</li><li>Offre d\'achat formalisée par écrit</li><li>Accompagnement notaire complet inclus</li><li>Frais de notaire à la charge de l\'acquereur</li><li>Possibilité de financement bancaire partenaire</li>
+      </ul>
+    </div>
+
+    <!-- LOCALISATION -->
+    <div class="dsec reveal">
+      <div class="ds-head"><div class="ds-line"></div><span class="ds-label">Localisation</span></div>
+      <p class="detail-desc" style="margin-bottom:14px;">Situé dans le quartier résidentiel des 2 Plateaux, à proximité immédiate des grandes enseignes commerciales, banques et restaurants. Zone à très fort passage piétonnier et automobile. Desserte en transport en commun excellente.</p>
+      <div style="background:var(--nude);border:1px solid var(--border);padding:16px;font-size:.82rem;font-weight:300;color:var(--muted);">
+        📍 Cocody 2 Plateaux, Abidjan · À 5 min à pied du carrefour du Plateau · Métro prévu 2026
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKING CARD -->
+  <div class="booking-card reveal">
+    <div class="bc-price">85 000 000 FCFA</div>
+    <div class="bc-avail" style="color:#15803D;">✓ Disponible à la vente</div>
+
+    <div class="bc-tabs">
+      <button class="bc-tab active" onclick="switchTab(this,'contact')">✉ Contact</button>
+      <button class="bc-tab" onclick="switchTab(this,'visit')">👁 Visite</button>
+      <button class="bc-tab" onclick="switchTab(this,'reserve')">💰 Offre</button>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="tab-pane active" id="pane-contact">
+      <p style="font-size:.76rem;font-weight:300;color:var(--muted);line-height:1.7;margin-bottom:14px;">Une question sur ce local ? Contactez-nous.</p>
+      <label class="fl">Nom complet</label>
+      <input type="text" class="fi" id="cName" placeholder="Votre nom et prénom">
+      <label class="fl">Téléphone / WhatsApp</label>
+      <input type="tel" class="fi" id="cPhone" placeholder="+225 07 00 00 00">
+      <label class="fl">Message</label>
+      <textarea class="fi" id="cMsg" rows="3" placeholder="Je suis intéressé(e) par ce local…"></textarea>
+      <button class="btn-action" onclick="submitContact()">Envoyer →</button>
+      <a class="wa-row" href="https://wa.me/41783077079" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <div class="success-box sb-green" id="sc"><p>✓ Message envoyé ! Réponse sous 24h.</p></div>
+    </div>
+
+    <!-- VISITE -->
+    <div class="tab-pane" id="pane-visit">
+      <p style="font-size:.76rem;font-weight:300;color:var(--muted);line-height:1.7;margin-bottom:14px;">Visitez ce local avant de vous décider. Visite gratuite, sans engagement.</p>
+      <label class="fl">Nom complet</label>
+      <input type="text" class="fi" id="vName" placeholder="Votre nom et prénom">
+      <label class="fl">Téléphone / WhatsApp</label>
+      <input type="tel" class="fi" id="vPhone" placeholder="+225 07 00 00 00">
+      <div class="f2">
+        <div><label class="fl">Date souhaitée</label><input type="date" class="fi" id="vDate"></div>
+        <div><label class="fl">Créneau</label>
+          <select class="fi" id="vTime">
+            <option value="">Choisir</option>
+            <option>Matin 8h–12h</option>
+            <option>Après-midi 12h–17h</option>
+            <option>Fin de journée 17h–19h</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-action btn-action-dark" onclick="submitVisit()">Demander une visite →</button>
+      <div class="success-box sb-blue" id="sv"><p>✓ Demande envoyée ! Confirmation sous 24h.</p></div>
+      <p class="bc-note">Visite gratuite · Sans engagement · Confirmation sous 24h</p>
+    </div>
+
+    <!-- RÉSERVER -->
+    <div class="tab-pane" id="pane-reserve">
+      <p style="font-size:.76rem;font-weight:300;color:var(--muted);line-height:1.7;margin-bottom:14px;">Intéressé par cette villa ? Soumettez votre offre d\'achat.</p>
+      <label class="fl">Nom complet</label>
+      <input type="text" class="fi" id="rName" placeholder="Votre nom et prénom">
+      <label class="fl">Téléphone / WhatsApp</label>
+      <input type="tel" class="fi" id="rPhone" placeholder="+225 07 00 00 00">
+      <div class="f2">
+        <div><label class="fl">Date de début</label><input type="date" class="fi" id="rFrom"></div>
+        <div><label class="fl">Date de fin</label><input type="date" class="fi" id="rTo"></div>
+      </div>
+      <label class="fl">Votre offre (FCFA)</label>
+      <input type="text" class="fi" id="rActivity" placeholder="Ex : 80 000 000">
+      <button class="btn-action" onclick="submitReserve()">Envoyer ma demande →</button>
+      <div class="success-box sb-green" id="sr"><p>✓ Demande reçue ! Contrat envoyé sous 24h.</p></div>
+      <div class="contract-note"><span>📄</span><span>Accompagnement complet avec notaire partenaire après réception de votre offre.</span></div>
+      <p class="bc-note">Confirmation sous 24h · Paiement à la remise des clés</p>
+    </div>
+  </div>
+</div>
+
+<!-- MAPS -->
+<section class="maps-sec">
+  <div class="maps-inner">
+    <div class="maps-header">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px;">
+        <div style="width:22px;height:1px;background:var(--gold);"></div>
+        <span style="font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);">Localisation</span>
+      </div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:300;color:var(--ink);" id="mapsTitle">Situé à Cocody, Abidjan</h2>
+      <p style="font-size:.84rem;font-weight:300;color:var(--muted);margin-top:6px;" id="mapsAddr">📍 Cocody 2 Plateaux, Abidjan, Côte d'Ivoire</p>
+    </div>
+    <div class="maps-frame">
+      <iframe id="mapsIframe"
+        src="https://maps.google.com/maps?q=Cocody,Abidjan,Cote+d+Ivoire&z=15&output=embed"
+        width="100%" height="420" style="border:0;display:block;" allowfullscreen="" loading="lazy">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- SIMILAR -->
+<section class="similar-sec">
+  <div class="sim-inner">
+    <div class="sim-head"><div class="sim-line"></div><span class="sim-tag">Vous aimerez aussi</span></div>
+    <h2 class="sim-h2">Biens similaires</h2>
+    <div class="sim-grid">
+      <a class="sim-card" href="detail-ephemere.html">
+        <div class="sim-img"><img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&q=80" alt=""></div>
+        <div class="sim-body"><div class="sim-cat">Terrain · Bingerville</div><div class="sim-title">Showroom lumineux & moderne</div><div class="sim-loc">📍 Bingerville · 600 m²</div><div class="sim-price">18 000 000 FCFA</div></div>
+      </a>
+      <a class="sim-card" href="detail-ephemere.html">
+        <div class="sim-img"><img src="https://images.unsplash.com/photo-1560472355-536de3962603?w=500&q=80" alt=""></div>
+        <div class="sim-body"><div class="sim-cat">Appartement · Cocody</div><div class="sim-title">Appartement moderne 3 pièces</div><div class="sim-loc">📍 Cocody Riviera · 85 m²</div><div class="sim-price">45 000 000 FCFA</div></div>
+      </a>
+      <a class="sim-card" href="detail-ephemere.html">
+        <div class="sim-img"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=500&q=80" alt=""></div>
+        <div class="sim-body"><div class="sim-cat">Local commercial · Plateau</div><div class="sim-title">Local commercial Plateau</div><div class="sim-loc">📍 Plateau · 120 m²</div><div class="sim-price">65 000 000 FCFA</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<a class="wa-btn" href="https://wa.me/41783077079" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<footer>
+  <span class="footer-logo-text">Sahoome</span>
+  <div class="footer-grid">
+    <div><p class="footer-brand-text">Votre plateforme immobilière de référence à Abidjan.</p></div>
+    <div class="fcol"><h4>Services</h4><ul><li><a href="location.html">Location</a></li><li><a href="vente.html">Vente</a></li><li><a href="vente.html">Vente</a></li></ul></div>
+    <div class="fcol"><h4>Sahoome</h4><ul><li><a href="about.html">À propos</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="fcol"><h4>Contact</h4><ul><li><a href="mailto:sahouapro@gmail.com">sahouapro@gmail.com</a></li><li><a href="tel:+41783077079">+41 78 307 70 79</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 SAHOOME</span><span>Abidjan, Côte d'Ivoire</span></div>
+</footer>
+
+<script>
+// Using JSON to avoid apostrophe issues
+const allProps = JSON.parse('[{"id":0,"title":"Appartement moderne 3 pieces","type":"Appartement - Cocody Riviera","loc":"Cocody Riviera, Abidjan","commune":"Cocody","ref":"SAH-V01","avail":true,"price":"45 000 000 FCFA","img":"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1100&q=85","desc":"Bel appartement en vente a Cocody Riviera. Idealement situe, il offre un cadre de vie agreable. Titre foncier disponible, transaction securisee avec notaire partenaire.","tags":["Titre foncier","3 chambres","85 m2","Parking","Climatisation","Gardien"],"specs":[{"icon":"\uD83D\uDECF","label":"Chambres","val":"3"},{"icon":"\uD83D\uDCB0","label":"Superficie","val":"85 m2"},{"icon":"\uD83D\uDCCB","label":"Titre foncier","val":"Disponible"},{"icon":"\uD83C\uDFDB","label":"Negociable","val":"Oui"}],"rules":["Titre foncier verifie par notaire","Visite possible sur rendez-vous","Accompagnement complet jusqu a la signature","Frais de notaire a la charge de l acquereur"]},{"id":1,"title":"Villa standing avec piscine","type":"Villa - Cocody 2 Plateaux","loc":"Cocody 2 Plateaux, Abidjan","commune":"Cocody","ref":"SAH-V02","avail":true,"price":"85 000 000 FCFA","img":"https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1100&q=85","desc":"Somptueuse villa de standing avec piscine dans le quartier prise des 2 Plateaux. 5 chambres, grand salon, cuisine professionnelle, double garage. Investissement ideal.","tags":["Piscine","5 chambres","320 m2","Double garage","Groupe electrogene","Titre foncier"],"specs":[{"icon":"\uD83D\uDECF","label":"Chambres","val":"5"},{"icon":"\uD83D\uDCB0","label":"Superficie","val":"320 m2"},{"icon":"\uD83C\uDFCA","label":"Piscine","val":"Privee"},{"icon":"\uD83D\uDCCB","label":"Titre foncier","val":"Disponible"}],"rules":["Titre foncier certifie","Visite sur rendez-vous uniquement","Offre d achat par ecrit","Accompagnement notaire inclus"]},{"id":2,"title":"Terrain viabilise 600 m2","type":"Terrain - Bingerville","loc":"Bingerville, Grand Abidjan","commune":"Bingerville","ref":"SAH-V03","avail":true,"price":"18 000 000 FCFA","img":"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1100&q=85","desc":"Terrain viabilise de 600 m2 a Bingerville, zone en forte expansion. Acces eau, electricite et voie goudronnee. Ideal pour construction d une villa ou immeuble de rapport.","tags":["600 m2","Viabilise","Eau et Electricite","Voie goudronnee","Titre foncier"],"specs":[{"icon":"\uD83D\uDCB0","label":"Superficie","val":"600 m2"},{"icon":"\u2705","label":"Viabilise","val":"Oui"},{"icon":"\uD83D\uDCCB","label":"Titre foncier","val":"Disponible"},{"icon":"\uD83C\uDFD7","label":"Constructible","val":"Oui"}],"rules":["Titre foncier verifie","Bornage effectue","Visite sur rendez-vous","Accompagnement technique disponible"]},{"id":3,"title":"Appartement standing Plateau","type":"Appartement - Plateau","loc":"Plateau, Abidjan","commune":"Plateau","ref":"SAH-V04","avail":true,"price":"55 000 000 FCFA","img":"https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=1100&q=85","desc":"Appartement de standing en vente au Plateau. Vue degagee sur la ville, finitions haut de gamme, parking securise inclus. Titre foncier disponible.","tags":["Vue ville","Parking","Climatisation","2 chambres","Titre foncier"],"specs":[{"icon":"\uD83D\uDECF","label":"Chambres","val":"2"},{"icon":"\uD83D\uDCB0","label":"Superficie","val":"65 m2"},{"icon":"\uD83C\uDFE2","label":"Etage","val":"8eme"},{"icon":"\uD83D\uDCCB","label":"Titre foncier","val":"Disponible"}],"rules":["Titre foncier verifie par notaire","Frais de notaire a la charge de l acquereur","Visite sur rendez-vous"]},{"id":4,"title":"Local commercial Marcory","type":"Local commercial - Marcory","loc":"Marcory Zone 4, Abidjan","commune":"Marcory","ref":"SAH-V05","avail":true,"price":"35 000 000 FCFA","img":"https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1100&q=85","desc":"Local commercial de 120 m2 en vente a Marcory Zone 4. Emplacement strategique avec fort passage, vitrine sur rue principale. Titre foncier disponible.","tags":["120 m2","Vitrine","Parking","Titre foncier","Zone commerciale"],"specs":[{"icon":"\uD83D\uDCB0","label":"Superficie","val":"120 m2"},{"icon":"\uD83E\uDE9F","label":"Vitrine","val":"Sur rue"},{"icon":"\uD83D\uDE97","label":"Parking","val":"Disponible"},{"icon":"\uD83D\uDCCB","label":"Titre foncier","val":"Disponible"}],"rules":["Titre foncier verifie","Usage commercial uniquement","Accompagnement notaire inclus"]},{"id":5,"title":"Villa Bingerville avec piscine","type":"Villa - Bingerville","loc":"Bingerville, Grand Abidjan","commune":"Bingerville","ref":"SAH-V06","avail":true,"price":"180 000 000 FCFA","img":"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1100&q=85","desc":"Villa d exception a Bingerville avec piscine privee et grand jardin. 6 chambres, salle de cinema, double garage. Cadre verdoyant et securise.","tags":["Piscine","6 chambres","450 m2","Jardin","Titre foncier","Groupe electrogene"],"specs":[{"icon":"\uD83D\uDECF","label":"Chambres","val":"6"},{"icon":"\uD83D\uDCB0","label":"Superficie","val":"450 m2"},{"icon":"\uD83C\uDFCA","label":"Piscine","val":"Privee"},{"icon":"\uD83D\uDCCB","label":"Titre foncier","val":"Disponible"}],"rules":["Titre foncier certifie","Visite sur rendez-vous uniquement","Offre d achat formalisee par ecrit"]}]');
+
+function loadProperty() {
+  const id = parseInt(new URLSearchParams(window.location.search).get('id')) || 0;
+  const d = allProps[id] || allProps[0];
+  document.title = d.title + ' a vendre - SAHOOME';
+  const bc = document.querySelector('.bread');
+  if(bc) bc.innerHTML = '<a href="index.html">Accueil</a><span class="bread-sep">›</span><a href="vente.html">Vente</a><span class="bread-sep">›</span><span>' + d.title + '</span>';
+  const mainImg = document.querySelector('.g-main img'); if(mainImg) mainImg.src = d.img;
+  const badge = document.querySelector('.g-badge'); if(badge){badge.textContent='Vente';badge.style.background='var(--gold)';badge.style.color='white';}
+  const dType = document.querySelector('.dh-tag'); if(dType) dType.textContent = d.type;
+  const dTitle = document.querySelector('.dh-title'); if(dTitle) dTitle.textContent = d.title;
+  const dLoc = document.querySelector('.dh-loc'); if(dLoc) dLoc.innerHTML = '📍 ' + d.loc;
+  const dRef = document.querySelector('.dh-ref'); if(dRef) dRef.textContent = 'Ref. ' + d.ref;
+  const avBadge = document.querySelector('.avail-badge'); if(avBadge){avBadge.textContent='● Disponible a la vente';avBadge.className='avail-badge av-yes';}
+  const bcPrice = document.querySelector('.bc-price'); if(bcPrice) bcPrice.innerHTML = d.price;
+  const bcAvail = document.querySelector('.bc-avail'); if(bcAvail){bcAvail.textContent='Disponible a la vente';bcAvail.style.color='#15803D';}
+  const mapQ = {'Cocody':'Cocody,Abidjan','Marcory':'Marcory,Abidjan','Plateau':'Plateau,Abidjan','Bingerville':'Bingerville,Abidjan'};
+  const mi = document.getElementById('mapsIframe'); if(mi) mi.src='https://maps.google.com/maps?q='+(mapQ[d.commune]||'Abidjan,Cote+d+Ivoire')+'&z=15&output=embed';
+  const mt = document.getElementById('mapsTitle'); if(mt) mt.textContent='Situe a '+d.commune+', Abidjan';
+  const ma = document.getElementById('mapsAddr'); if(ma) ma.textContent='📍 '+d.loc;
+  const sg = document.querySelector('.specs-band');
+  if(sg) sg.innerHTML = d.specs.map(s=>'<div class="spec-item"><div class="spec-icon">'+s.icon+'</div><div class="spec-label">'+s.label+'</div><div class="spec-val">'+s.val+'</div></div>').join('');
+  const dd = document.querySelector('.detail-desc'); if(dd) dd.textContent = d.desc;
+  const tw = document.querySelector('.tags-wrap'); if(tw) tw.innerHTML = d.tags.map(t=>'<span class="dtag">'+t+'</span>').join('');
+  const rl = document.querySelector('.rules-list'); if(rl) rl.innerHTML = d.rules.map(r=>'<li>'+r+'</li>').join('');
+}
+loadProperty();
+const ts=new Date().toISOString().split('T')[0];
+['vDate','rFrom','rTo'].forEach(function(id){var el=document.getElementById(id);if(el)el.min=ts;});
+function switchTab(btn,pane){document.querySelectorAll('.bc-tab').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');document.getElementById('pane-'+pane).classList.add('active');}
+function submitContact(){var n=document.getElementById('cName').value,p=document.getElementById('cPhone').value;if(!n||!p){alert('Veuillez remplir votre nom et telephone.');return;}var btn=document.querySelector('#pane-contact .btn-action');btn.textContent='Envoye !';btn.style.background='#15803D';document.getElementById('sc').style.display='block';}
+function submitVisit(){var n=document.getElementById('vName').value,p=document.getElementById('vPhone').value;if(!n||!p){alert('Veuillez remplir votre nom et telephone.');return;}var btn=document.querySelector('#pane-visit .btn-action');btn.textContent='Envoye !';btn.style.background='#3730A3';document.getElementById('sv').style.display='block';}
+function submitReserve(){var n=document.getElementById('rName').value,p=document.getElementById('rPhone').value;if(!n||!p){alert('Veuillez remplir votre nom et telephone.');return;}var btn=document.querySelector('#pane-reserve .btn-action');btn.textContent='Offre envoyee !';btn.style.background='#15803D';document.getElementById('sr').style.display='block';}
+const obs=new IntersectionObserver(function(e){e.forEach(function(el){if(el.isIntersecting)el.target.classList.add('visible');});},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+var cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing'),mx=0,my=0,rx=0,ry=0;
+if(cur&&ring){document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();}
+</script>
+</body>
+</html>
