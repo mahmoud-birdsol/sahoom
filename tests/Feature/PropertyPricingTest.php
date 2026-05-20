@@ -131,36 +131,123 @@ class PropertyPricingTest extends TestCase
         $this->assertSame('SAR ', $component->get('currencySymbol'));
     }
 
-    public function test_property_show_lease_duration_options_respect_min_max(): void
+    public function test_total_due_at_signing_uses_display_price_when_no_dates_selected_monthly(): void
     {
         $property = Property::factory()->approved()->create([
-            'min_lease_months' => 3,
-            'max_lease_months' => 12,
+            'pricing_type'     => 'monthly',
+            'monthly_rent'     => 3000,
+            'security_deposit' => 100,
+            'application_fee'  => 10,
         ]);
 
         $component = Livewire::test(PropertyShow::class, ['slug' => $property->slug]);
-        $options   = $component->get('leaseDurationOptions');
 
-        $this->assertContains(3, $options);
-        $this->assertContains(6, $options);
-        $this->assertContains(12, $options);
-        $this->assertNotContains(1, $options);
-        $this->assertNotContains(24, $options);
+        // displayPrice = monthly_rent = 3000; total = 3000 + 100 + 10 = 3110
+        $this->assertEqualsWithDelta(3110.0, $component->get('totalDueAtSigning'), 0.01);
     }
 
-    public function test_property_show_lease_duration_options_default_range(): void
+    public function test_total_due_at_signing_uses_daily_rent_not_derived_monthly_when_no_dates_selected(): void
     {
         $property = Property::factory()->approved()->create([
-            'min_lease_months' => null,
-            'max_lease_months' => null,
+            'pricing_type'     => 'daily',
+            'monthly_rent'     => null,
+            'daily_rent'       => 100,
+            'security_deposit' => 200,
+            'application_fee'  => 50,
         ]);
 
         $component = Livewire::test(PropertyShow::class, ['slug' => $property->slug]);
-        $options   = $component->get('leaseDurationOptions');
 
-        $this->assertNotEmpty($options);
-        $this->assertContains(1, $options);
-        $this->assertContains(24, $options);
+        // displayPrice = daily_rent = 100, NOT derived 100*30=3000
+        $this->assertEqualsWithDelta(350.0, $component->get('totalDueAtSigning'), 0.01);
+    }
+
+    public function test_tiered_calculation_days_only(): void
+    {
+        $property = Property::factory()->approved()->create([
+            'pricing_type'     => 'daily',
+            'daily_rent'       => 100,
+            'weekly_rent'      => null,
+            'monthly_rent'     => null,
+            'security_deposit' => 0,
+            'application_fee'  => 0,
+        ]);
+
+        $start = now()->addDay()->toDateString();
+        $end   = now()->addDays(6)->toDateString(); // 5 days
+
+        $component = Livewire::test(PropertyShow::class, ['slug' => $property->slug])
+            ->set('moveInDate', $start)
+            ->set('bookingEndDate', $end);
+
+        // 5 days × $100 = $500
+        $this->assertEqualsWithDelta(500.0, $component->get('totalDueAtSigning'), 0.01);
+    }
+
+    public function test_tiered_calculation_weeks_plus_days(): void
+    {
+        $property = Property::factory()->approved()->create([
+            'pricing_type'     => 'daily',
+            'daily_rent'       => 50,
+            'weekly_rent'      => 300,
+            'monthly_rent'     => null,
+            'security_deposit' => 0,
+            'application_fee'  => 0,
+        ]);
+
+        $start = now()->addDay()->toDateString();
+        $end   = now()->addDays(19)->toDateString(); // 18 days → 2 weeks + 4 days
+
+        $component = Livewire::test(PropertyShow::class, ['slug' => $property->slug])
+            ->set('moveInDate', $start)
+            ->set('bookingEndDate', $end);
+
+        // 2 weeks × $300 + 4 days × $50 = $600 + $200 = $800
+        $this->assertEqualsWithDelta(800.0, $component->get('totalDueAtSigning'), 0.01);
+    }
+
+    public function test_tiered_calculation_months_plus_days(): void
+    {
+        $property = Property::factory()->approved()->create([
+            'pricing_type'     => 'monthly',
+            'daily_rent'       => 50,
+            'weekly_rent'      => null,
+            'monthly_rent'     => 1500,
+            'security_deposit' => 0,
+            'application_fee'  => 0,
+        ]);
+
+        $start = now()->addDay()->toDateString();
+        $end   = now()->addDays(34)->toDateString(); // 33 days → 1 month + 3 days
+
+        $component = Livewire::test(PropertyShow::class, ['slug' => $property->slug])
+            ->set('moveInDate', $start)
+            ->set('bookingEndDate', $end);
+
+        // 1 month × $1500 + 3 days × $50 = $1500 + $150 = $1650
+        $this->assertEqualsWithDelta(1650.0, $component->get('totalDueAtSigning'), 0.01);
+    }
+
+    public function test_tiered_calculation_months_weeks_days(): void
+    {
+        $property = Property::factory()->approved()->create([
+            'pricing_type'     => 'monthly',
+            'daily_rent'       => 50,
+            'weekly_rent'      => 300,
+            'monthly_rent'     => 1500,
+            'security_deposit' => 0,
+            'application_fee'  => 0,
+        ]);
+
+        $start = now()->addDay()->toDateString();
+        $end   = now()->addDays(46)->toDateString(); // 45 days → 1 month + 2 weeks + 1 day
+
+        $component = Livewire::test(PropertyShow::class, ['slug' => $property->slug])
+            ->set('moveInDate', $start)
+            ->set('bookingEndDate', $end);
+
+        // 1 month × $1500 + 2 weeks × $300 + 1 day × $50 = $1500 + $600 + $50 = $2150
+        $this->assertEqualsWithDelta(2150.0, $component->get('totalDueAtSigning'), 0.01);
     }
 
     // ── Landlord form saves new fields ────────────────────────────────────────
@@ -174,21 +261,18 @@ class PropertyPricingTest extends TestCase
             ->set('formTitle', 'Test Property')
             ->set('formAddress', '123 Main St')
             ->set('formPricingType', 'monthly')
-            ->set('formPrice', 3500)
+            ->set('formMonthlyRent', 3500)
             ->set('formCurrency', 'SAR')
             ->set('formSecurityDeposit', 7000)
             ->set('formApplicationFee', 200)
-            ->set('formMinLeaseMonths', 3)
-            ->set('formMaxLeaseMonths', 12)
             ->call('saveProperty');
 
         $property = Property::where('title', 'Test Property')->firstOrFail();
 
         $this->assertSame('SAR', $property->currency);
+        $this->assertEqualsWithDelta(3500.0, $property->monthly_rent, 0.01);
         $this->assertEqualsWithDelta(7000.0, $property->security_deposit, 0.01);
         $this->assertEqualsWithDelta(200.0, $property->application_fee, 0.01);
-        $this->assertSame(3, $property->min_lease_months);
-        $this->assertSame(12, $property->max_lease_months);
     }
 
     public function test_landlord_currency_validation_rejects_unknown_currency(): void
@@ -200,7 +284,7 @@ class PropertyPricingTest extends TestCase
             ->set('formTitle', 'Test Property')
             ->set('formAddress', '123 Main St')
             ->set('formPricingType', 'monthly')
-            ->set('formPrice', 3500)
+            ->set('formMonthlyRent', 3500)
             ->set('formCurrency', 'INVALID_CURRENCY_VALUE_THAT_EXCEEDS_MAX_LENGTH_OF_10_CHARS')
             ->call('saveProperty')
             ->assertHasErrors(['formCurrency']);

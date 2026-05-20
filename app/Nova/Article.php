@@ -6,6 +6,7 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Slug;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
@@ -40,7 +41,9 @@ class Article extends Resource
                 ->nullable()
                 ->hideFromIndex(),
 
-            Text::make(__('Cover Image URL'), 'cover_image_url')
+            Image::make(__('Cover Image'), 'cover_image_path')
+                ->disk('public')
+                ->path('articles')
                 ->nullable()
                 ->hideFromIndex(),
 

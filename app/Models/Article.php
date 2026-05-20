@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Article extends Model
 {
@@ -17,7 +18,7 @@ class Article extends Model
         'category',
         'excerpt',
         'body',
-        'cover_image_url',
+        'cover_image_path',
         'author',
         'is_published',
         'published_at',
@@ -27,6 +28,15 @@ class Article extends Model
         'is_published'  => 'boolean',
         'published_at'  => 'datetime',
     ];
+
+    public function getCoverImageUrlAttribute(): ?string
+    {
+        if (!$this->cover_image_path) {
+            return null;
+        }
+
+        return Storage::disk('public')->url($this->cover_image_path);
+    }
 
     public function scopePublished(Builder $query): Builder
     {

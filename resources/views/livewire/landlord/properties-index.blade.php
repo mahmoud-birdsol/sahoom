@@ -119,19 +119,43 @@
                         <flux:error name="formAddress" />
                     </flux:field>
 
-                    {{-- Price + Pricing Type --}}
-                    <flux:field>
-                        <flux:label>{{ __('Price') }}</flux:label>
-                        <div class="flex gap-2">
-                            <flux:input wire:model="formPrice" type="number" min="0" step="0.01" placeholder="{{ __('Enter your Price') }}" class="flex-1" />
-                            <flux:select wire:model="formPricingType" class="w-32">
-                                <flux:select.option value="daily">{{ __('Day') }}</flux:select.option>
-                                <flux:select.option value="weekly">{{ __('Week') }}</flux:select.option>
-                                <flux:select.option value="monthly">{{ __('Month') }}</flux:select.option>
-                                <flux:select.option value="yearly">{{ __('Year') }}</flux:select.option>
-                            </flux:select>
+                    {{-- Pricing Rates --}}
+                    <div>
+                        <flux:label class="mb-1.5 block">{{ __('Pricing Rates') }}</flux:label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <flux:field>
+                                <flux:label class="text-xs">{{ __('Daily Rate') }}</flux:label>
+                                <flux:input wire:model="formDailyRent" type="number" min="0" step="0.01" placeholder="0.00" />
+                                <flux:error name="formDailyRent" />
+                            </flux:field>
+                            <flux:field>
+                                <flux:label class="text-xs">{{ __('Weekly Rate') }}</flux:label>
+                                <flux:input wire:model="formWeeklyRent" type="number" min="0" step="0.01" placeholder="0.00" />
+                                <flux:error name="formWeeklyRent" />
+                            </flux:field>
+                            <flux:field>
+                                <flux:label class="text-xs">{{ __('Monthly Rate') }}</flux:label>
+                                <flux:input wire:model="formMonthlyRent" type="number" min="0" step="0.01" placeholder="0.00" />
+                                <flux:error name="formMonthlyRent" />
+                            </flux:field>
+                            <flux:field>
+                                <flux:label class="text-xs">{{ __('Yearly Rate') }}</flux:label>
+                                <flux:input wire:model="formYearlyRent" type="number" min="0" step="0.01" placeholder="0.00" />
+                                <flux:error name="formYearlyRent" />
+                            </flux:field>
                         </div>
-                        <flux:error name="formPrice" />
+                    </div>
+
+                    {{-- Display As --}}
+                    <flux:field>
+                        <flux:label>{{ __('Display price as') }}</flux:label>
+                        <flux:select wire:model="formPricingType">
+                            <flux:select.option value="daily">{{ __('Daily') }}</flux:select.option>
+                            <flux:select.option value="weekly">{{ __('Weekly') }}</flux:select.option>
+                            <flux:select.option value="monthly">{{ __('Monthly') }}</flux:select.option>
+                            <flux:select.option value="yearly">{{ __('Yearly') }}</flux:select.option>
+                        </flux:select>
+                        <flux:error name="formPricingType" />
                     </flux:field>
 
                     {{-- Property Type --}}
@@ -195,23 +219,6 @@
                                 <flux:label class="text-xs">{{ __('Application Fee') }}</flux:label>
                                 <flux:input wire:model="formApplicationFee" type="number" min="0" step="0.01" placeholder="{{ __('0') }}" />
                                 <flux:error name="formApplicationFee" />
-                            </flux:field>
-                        </div>
-                    </div>
-
-                    {{-- Min / Max Lease --}}
-                    <div>
-                        <flux:label class="mb-1.5 block">{{ __('Lease Duration (months)') }}</flux:label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <flux:field>
-                                <flux:label class="text-xs">{{ __('Min') }}</flux:label>
-                                <flux:input wire:model="formMinLeaseMonths" type="number" min="1" max="120" placeholder="{{ __('e.g. 1') }}" />
-                                <flux:error name="formMinLeaseMonths" />
-                            </flux:field>
-                            <flux:field>
-                                <flux:label class="text-xs">{{ __('Max') }}</flux:label>
-                                <flux:input wire:model="formMaxLeaseMonths" type="number" min="1" max="120" placeholder="{{ __('e.g. 24') }}" />
-                                <flux:error name="formMaxLeaseMonths" />
                             </flux:field>
                         </div>
                     </div>

@@ -2,7 +2,6 @@
     $images     = $property->images;
     $isOccupied = $property->contracts->isNotEmpty();
     $rating     = $property->reviews_avg_rating ? round((float)$property->reviews_avg_rating, 1) : null;
-    $price      = $property->monthly_rent ?? $property->weekly_rent ?? $property->daily_rent ?? $property->yearly_rent;
     $propType   = $property->property_type?->value ?? 'residential';
     $currSym    = match(strtoupper($property->currency ?? 'XOF')) {
         'EUR' => '€ ', 'GBP' => '£ ', 'USD' => '$ ',
@@ -227,12 +226,12 @@
 
                         {{-- Price card (ink) --}}
                         <div style="background: #1E2330; padding: 32px 28px">
-                            @if($price)
+                            @if($this->displayPrice > 0)
                                 <span style="font-size: 0.6rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.4)">
-                                    {{ $property->monthly_rent ? __('/month') : ($property->weekly_rent ? __('/week') : ($property->daily_rent ? __('/day') : __('/year'))) }}
+                                    /{{ __($this->displayPriceUnit) }}
                                 </span>
                                 <p class="font-serif mt-1" style="font-size: 2rem; font-weight: 300; color: white; line-height: 1">
-                                    {{ $currSym }}{{ number_format($price) }}
+                                    {{ $currSym }}{{ number_format($this->displayPrice) }}
                                 </p>
                             @else
                                 <p class="font-serif" style="font-size: 1.2rem; font-weight: 300; color: rgba(255,255,255,.5)">{{ __('Price on request') }}</p>
@@ -248,35 +247,29 @@
 
                             <div style="height: 1px; background: rgba(255,255,255,.08); margin: 20px 0"></div>
 
-                            {{-- Move-in date --}}
+                            {{-- Date range --}}
                             <div class="mb-4">
-                                <label style="display: block; font-size: 0.65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 8px">{{ __('Move-in Date') }}</label>
+                                <label style="display: block; font-size: 0.65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 8px">{{ __('Start Date') }}</label>
                                 <input wire:model="moveInDate" type="date" min="{{ now()->toDateString() }}"
                                     style="width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: white; padding: 10px 12px; font-size: 0.82rem; outline: none"
                                     class="transition focus:border-[#B8962E]" />
                                 @error('moveInDate') <p style="font-size: 0.7rem; color: #fca5a5; margin-top: 4px">{{ $message }}</p> @enderror
                             </div>
-
-                            {{-- Lease duration --}}
                             <div class="mb-4">
-                                <label style="display: block; font-size: 0.65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 8px">{{ __('Lease Duration') }}</label>
-                                <select wire:model.live="leaseDuration"
-                                    style="width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: white; padding: 10px 12px; font-size: 0.82rem; outline: none; cursor: pointer">
-                                    @foreach($this->leaseDurationOptions as $months)
-                                        <option value="{{ $months }}" style="color: #1E2330; background: white">
-                                            {{ $months }} {{ $months === 1 ? __('month') : __('months') }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <label style="display: block; font-size: 0.65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 8px">{{ __('End Date') }}</label>
+                                <input wire:model="bookingEndDate" type="date" min="{{ now()->toDateString() }}"
+                                    style="width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: white; padding: 10px 12px; font-size: 0.82rem; outline: none"
+                                    class="transition focus:border-[#B8962E]" />
+                                @error('bookingEndDate') <p style="font-size: 0.7rem; color: #fca5a5; margin-top: 4px">{{ $message }}</p> @enderror
                             </div>
 
                             {{-- Cost breakdown --}}
-                            @if($this->monthlyRent > 0)
+                            @if($this->displayPrice > 0)
                                 <div style="height: 1px; background: rgba(255,255,255,.08); margin: 16px 0"></div>
                                 <dl class="space-y-2">
                                     <div class="flex justify-between">
-                                        <dt style="font-size: 0.76rem; color: rgba(255,255,255,.45)">{{ __('Monthly rent') }}</dt>
-                                        <dd style="font-size: 0.76rem; font-weight: 500; color: white">{{ $currSym }}{{ number_format($this->monthlyRent) }}</dd>
+                                        <dt style="font-size: 0.76rem; color: rgba(255,255,255,.45)">{{ $this->firstPeriodRentLabel }}</dt>
+                                        <dd style="font-size: 0.76rem; font-weight: 500; color: white">{{ $currSym }}{{ number_format($this->firstPeriodRent) }}</dd>
                                     </div>
                                     <div class="flex justify-between">
                                         <dt style="font-size: 0.76rem; color: rgba(255,255,255,.45)">{{ __('Security deposit') }}</dt>
@@ -317,7 +310,7 @@
                                 </div>
                             @else
                                 @if(!$showTourForm)
-                                    <button wire:click="$set('showTourForm', true)"
+                                    <button wire:click="openTourForm"
                                         style="width: 100%; padding: 13px; font-size: 0.7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; background: transparent; border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.6); transition: all .2s; margin-top: 10px"
                                         class="hover:border-white/40 hover:text-white">
                                         {{ __('Schedule Tour') }}
@@ -419,7 +412,7 @@
                             @error('moveInDate') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                         </div>
                         <div>
-                            <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('End Date') }} <span class="text-zinc-400 font-normal">({{ __('optional') }})</span></label>
+                            <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('End Date') }}</label>
                             <input wire:model="bookingEndDate" type="date" min="{{ now()->toDateString() }}"
                                 class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
                             @error('bookingEndDate') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror

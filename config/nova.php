@@ -97,6 +97,7 @@ return [
         'web',
         \Laravel\Nova\Http\Middleware\HandleInertiaRequests::class,
         'nova:serving',
+        \Badinansoft\LanguageSwitch\Http\Middleware\LanguageSwitch::class,
     ],
 
     'api_middleware' => [

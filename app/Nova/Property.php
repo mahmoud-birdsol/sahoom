@@ -4,11 +4,10 @@ namespace App\Nova;
 
 use App\Models\States\PropertyStatus;
 use App\Models\States\PropertyType;
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
@@ -121,7 +120,7 @@ class Property extends Resource
             Select::make(__('Property Type'), 'property_type')
                 ->options([
                     PropertyType::RESIDENTIAL->value => 'Residential',
-                    PropertyType::COMMERCIAL->value  => 'Commercial',
+                    PropertyType::COMMERCIAL->value => 'Commercial',
                 ])
                 ->displayUsingLabels()
                 ->sortable()
@@ -133,11 +132,11 @@ class Property extends Resource
             Badge::make(__('Type'), 'property_type')
                 ->map([
                     PropertyType::RESIDENTIAL->value => 'success',
-                    PropertyType::COMMERCIAL->value  => 'warning',
+                    PropertyType::COMMERCIAL->value => 'warning',
                 ])
                 ->labels([
                     PropertyType::RESIDENTIAL->value => 'Residential',
-                    PropertyType::COMMERCIAL->value  => 'Commercial',
+                    PropertyType::COMMERCIAL->value => 'Commercial',
                 ])
                 ->onlyOnIndex(),
 
@@ -235,10 +234,10 @@ class Property extends Resource
             // Pricing
             Select::make(__('Pricing Type'), 'pricing_type')
                 ->options([
-                    'daily'   => __('Daily'),
-                    'weekly'  => __('Weekly'),
+                    'daily' => __('Daily'),
+                    'weekly' => __('Weekly'),
                     'monthly' => __('Monthly'),
-                    'yearly'  => __('Yearly'),
+                    'yearly' => __('Yearly'),
                 ])
                 ->displayUsingLabels()
                 ->nullable()
@@ -295,20 +294,6 @@ class Property extends Resource
                 ->nullable()
                 ->hideFromIndex()
                 ->help(__('Leave blank for no application fee.')),
-
-            Number::make(__('Min Lease (months)'), 'min_lease_months')
-                ->min(1)
-                ->max(120)
-                ->nullable()
-                ->hideFromIndex()
-                ->help(__('Minimum lease duration in months.')),
-
-            Number::make(__('Max Lease (months)'), 'max_lease_months')
-                ->min(1)
-                ->max(120)
-                ->nullable()
-                ->hideFromIndex()
-                ->help(__('Maximum lease duration in months.')),
 
             \Laravel\Nova\Fields\KeyValue::make(__('Nearby Places'), 'nearby_places')
                 ->keyLabel(__('Name'))

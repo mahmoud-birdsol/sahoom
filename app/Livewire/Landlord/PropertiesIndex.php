@@ -6,7 +6,6 @@ use App\Models\Property;
 use App\Models\PropertyImage;
 use App\Models\States\ContractStatus;
 use App\Models\States\PropertyStatus;
-use App\Models\States\PropertyType;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -24,10 +23,12 @@ class PropertiesIndex extends Component
 
     // ── Modal visibility ──────────────────────────────────────────────────────
     public bool $showPropertyForm = false;
+
     public bool $showPropertyDetails = false;
 
     // ── Form state ────────────────────────────────────────────────────────────
     public bool $isEditing = false;
+
     public ?int $editingPropertyId = null;
 
     #[Validate('required|string|max:255')]
@@ -39,8 +40,17 @@ class PropertiesIndex extends Component
     #[Validate('required|in:daily,weekly,monthly,yearly')]
     public string $formPricingType = 'monthly';
 
-    #[Validate('required|numeric|min:0')]
-    public ?float $formPrice = null;
+    #[Validate('nullable|numeric|min:0')]
+    public ?float $formDailyRent = null;
+
+    #[Validate('nullable|numeric|min:0')]
+    public ?float $formWeeklyRent = null;
+
+    #[Validate('nullable|numeric|min:0')]
+    public ?float $formMonthlyRent = null;
+
+    #[Validate('nullable|numeric|min:0')]
+    public ?float $formYearlyRent = null;
 
     #[Validate('nullable|string|max:5000')]
     public string $formDescription = '';
@@ -68,12 +78,6 @@ class PropertiesIndex extends Component
 
     #[Validate('nullable|numeric|min:0')]
     public ?float $formApplicationFee = null;
-
-    #[Validate('nullable|integer|min:1|max:120')]
-    public ?int $formMinLeaseMonths = null;
-
-    #[Validate('nullable|integer|min:1|max:120')]
-    public ?int $formMaxLeaseMonths = null;
 
     #[Validate(['formImages.*' => 'nullable|image|max:10240'])]
     public array $formImages = [];
@@ -109,31 +113,27 @@ class PropertiesIndex extends Component
         $property = Property::findOrFail($id);
 
         $this->editingPropertyId = $id;
-        $this->isEditing         = true;
-        $this->formTitle         = $property->title;
-        $this->formAddress       = $property->address_line_1 ?? '';
-        $this->formFloor         = $property->floor ?? '';
-        $this->formSpaceNumber   = $property->space_number ?? '';
-        $this->formCity          = $property->city ?? '';
-        $this->formPricingType   = $property->pricing_type ?? 'monthly';
-        $this->formPrice         = (float) match ($this->formPricingType) {
-            'daily'   => $property->daily_rent,
-            'weekly'  => $property->weekly_rent,
-            'yearly'  => $property->yearly_rent,
-            default   => $property->monthly_rent,
-        };
-        $this->formDescription   = $property->description ?? '';
-        $this->formLatitude         = $property->latitude ? (float) $property->latitude : null;
-        $this->formLongitude        = $property->longitude ? (float) $property->longitude : null;
-        $this->formCurrency         = $property->currency ?? 'USD';
-        $this->formSecurityDeposit  = $property->security_deposit ? (float) $property->security_deposit : null;
-        $this->formApplicationFee   = $property->application_fee ? (float) $property->application_fee : null;
-        $this->formMinLeaseMonths   = $property->min_lease_months;
-        $this->formMaxLeaseMonths   = $property->max_lease_months;
-        $this->formPropertyType     = $property->property_type?->value ?? 'residential';
-        $this->formIsShortTerm      = (bool) $property->is_short_term;
-        $this->formImages           = [];
-        $this->showPropertyForm     = true;
+        $this->isEditing = true;
+        $this->formTitle = $property->title;
+        $this->formAddress = $property->address_line_1 ?? '';
+        $this->formFloor = $property->floor ?? '';
+        $this->formSpaceNumber = $property->space_number ?? '';
+        $this->formCity = $property->city ?? '';
+        $this->formPricingType = $property->pricing_type ?? 'monthly';
+        $this->formDailyRent   = $property->daily_rent   !== null ? (float) $property->daily_rent   : null;
+        $this->formWeeklyRent  = $property->weekly_rent  !== null ? (float) $property->weekly_rent  : null;
+        $this->formMonthlyRent = $property->monthly_rent !== null ? (float) $property->monthly_rent : null;
+        $this->formYearlyRent  = $property->yearly_rent  !== null ? (float) $property->yearly_rent  : null;
+        $this->formDescription = $property->description ?? '';
+        $this->formLatitude = $property->latitude ? (float) $property->latitude : null;
+        $this->formLongitude = $property->longitude ? (float) $property->longitude : null;
+        $this->formCurrency = $property->currency ?? 'USD';
+        $this->formSecurityDeposit = $property->security_deposit ? (float) $property->security_deposit : null;
+        $this->formApplicationFee = $property->application_fee ? (float) $property->application_fee : null;
+        $this->formPropertyType = $property->property_type?->value ?? 'residential';
+        $this->formIsShortTerm = (bool) $property->is_short_term;
+        $this->formImages = [];
+        $this->showPropertyForm = true;
     }
 
     public function closeForm(): void
@@ -144,14 +144,14 @@ class PropertiesIndex extends Component
 
     public function openDetails(int $id): void
     {
-        $this->detailsPropertyId  = $id;
+        $this->detailsPropertyId = $id;
         $this->showPropertyDetails = true;
     }
 
     public function closeDetails(): void
     {
         $this->showPropertyDetails = false;
-        $this->detailsPropertyId   = null;
+        $this->detailsPropertyId = null;
     }
 
     // ── CRUD ──────────────────────────────────────────────────────────────────
@@ -160,30 +160,25 @@ class PropertiesIndex extends Component
     {
         $this->validate();
 
-        $landlord  = auth()->user()->landlord;
-        $rentField = match ($this->formPricingType) {
-            'daily'  => 'daily_rent',
-            'weekly' => 'weekly_rent',
-            'yearly' => 'yearly_rent',
-            default  => 'monthly_rent',
-        };
+        $landlord = auth()->user()->landlord;
 
         $data = [
-            'title'          => $this->formTitle,
-            'address_line_1' => $this->formAddress,
-            'floor'          => $this->formFloor ?: null,
-            'space_number'   => $this->formSpaceNumber ?: null,
-            'city'           => $this->formCity ?: null,
-            'latitude'       => $this->formLatitude,
-            'longitude'      => $this->formLongitude,
+            'title'            => $this->formTitle,
+            'address_line_1'   => $this->formAddress,
+            'floor'            => $this->formFloor ?: null,
+            'space_number'     => $this->formSpaceNumber ?: null,
+            'city'             => $this->formCity ?: null,
+            'latitude'         => $this->formLatitude,
+            'longitude'        => $this->formLongitude,
             'pricing_type'     => $this->formPricingType,
-            $rentField         => $this->formPrice,
+            'daily_rent'       => $this->formDailyRent,
+            'weekly_rent'      => $this->formWeeklyRent,
+            'monthly_rent'     => $this->formMonthlyRent,
+            'yearly_rent'      => $this->formYearlyRent,
             'description'      => $this->formDescription,
             'currency'         => $this->formCurrency,
             'security_deposit' => $this->formSecurityDeposit,
             'application_fee'  => $this->formApplicationFee,
-            'min_lease_months' => $this->formMinLeaseMonths,
-            'max_lease_months' => $this->formMaxLeaseMonths,
             'property_type'    => $this->formPropertyType,
             'is_short_term'    => $this->formIsShortTerm,
         ];
@@ -193,7 +188,7 @@ class PropertiesIndex extends Component
             abort_unless($property->landlord_id === $landlord->id, 403);
             $property->update($data);
         } else {
-            $data['status']      = PropertyStatus::DRAFT->value;
+            $data['status'] = PropertyStatus::DRAFT->value;
             $data['landlord_id'] = $landlord->id;
             $property = $landlord->properties()->create($data);
         }
@@ -249,7 +244,7 @@ class PropertiesIndex extends Component
         $property->delete();
         if ($this->detailsPropertyId === $id) {
             $this->showPropertyDetails = false;
-            $this->detailsPropertyId   = null;
+            $this->detailsPropertyId = null;
         }
         $this->resetPage();
     }
@@ -281,26 +276,27 @@ class PropertiesIndex extends Component
 
     private function resetForm(): void
     {
-        $this->isEditing        = false;
+        $this->isEditing = false;
         $this->editingPropertyId = null;
-        $this->formTitle        = '';
-        $this->formAddress      = '';
+        $this->formTitle = '';
+        $this->formAddress = '';
         $this->formPricingType  = 'monthly';
-        $this->formPrice        = null;
-        $this->formDescription  = '';
-        $this->formFloor        = '';
-        $this->formSpaceNumber  = '';
-        $this->formCity         = '';
-        $this->formLatitude         = null;
-        $this->formLongitude        = null;
-        $this->formCurrency         = 'USD';
-        $this->formSecurityDeposit  = null;
-        $this->formApplicationFee   = null;
-        $this->formMinLeaseMonths   = null;
-        $this->formMaxLeaseMonths   = null;
-        $this->formPropertyType     = 'residential';
-        $this->formIsShortTerm      = false;
-        $this->formImages           = [];
+        $this->formDailyRent   = null;
+        $this->formWeeklyRent  = null;
+        $this->formMonthlyRent = null;
+        $this->formYearlyRent  = null;
+        $this->formDescription = '';
+        $this->formFloor = '';
+        $this->formSpaceNumber = '';
+        $this->formCity = '';
+        $this->formLatitude = null;
+        $this->formLongitude = null;
+        $this->formCurrency = 'USD';
+        $this->formSecurityDeposit = null;
+        $this->formApplicationFee = null;
+        $this->formPropertyType = 'residential';
+        $this->formIsShortTerm = false;
+        $this->formImages = [];
         $this->resetValidation();
     }
 

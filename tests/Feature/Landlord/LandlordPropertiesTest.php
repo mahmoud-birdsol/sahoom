@@ -160,7 +160,7 @@ class LandlordPropertiesTest extends TestCase
             ->set('formTitle', 'My Retail Space')
             ->set('formAddress', '123 Main St, New York, NY')
             ->set('formPricingType', 'monthly')
-            ->set('formPrice', 2500)
+            ->set('formMonthlyRent', 2500)
             ->set('formDescription', 'A great retail space.')
             ->call('saveProperty')
             ->assertSet('showPropertyForm', false);
@@ -181,7 +181,7 @@ class LandlordPropertiesTest extends TestCase
         Livewire::test(\App\Livewire\Landlord\PropertiesIndex::class)
             ->call('openCreateForm')
             ->set('formPricingType', 'monthly')
-            ->set('formPrice', 1000)
+            ->set('formMonthlyRent', 1000)
             ->call('saveProperty')
             ->assertHasErrors(['formTitle', 'formAddress']);
     }
@@ -204,7 +204,7 @@ class LandlordPropertiesTest extends TestCase
             ->assertSet('isEditing', true)
             ->assertSet('formTitle', 'Existing Property')
             ->assertSet('formAddress', '456 Market St')
-            ->assertSet('formPrice', 1800.0);
+            ->assertSet('formMonthlyRent', 1800.0);
     }
 
     public function test_landlord_can_update_a_property(): void
@@ -221,7 +221,7 @@ class LandlordPropertiesTest extends TestCase
             ->set('formTitle', 'Updated Title')
             ->set('formAddress', 'Updated Address')
             ->set('formPricingType', 'monthly')
-            ->set('formPrice', 3000)
+            ->set('formMonthlyRent', 3000)
             ->call('saveProperty')
             ->assertSet('showPropertyForm', false);
 
