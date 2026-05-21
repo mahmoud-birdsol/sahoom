@@ -327,7 +327,6 @@ class PropertyShow extends Component
             'renterName' => 'required|string|max:100',
             'renterEmail' => 'required|email|max:150',
             'renterPhone' => 'required|string|max:30',
-            'moveInDate' => 'required|date|after_or_equal:today',
         ]);
 
         ViewingRequest::create([
@@ -336,8 +335,6 @@ class PropertyShow extends Component
             'renter_email' => $this->renterEmail,
             'renter_phone' => $this->renterPhone,
             'message' => $this->tourMessage ?: null,
-            'preferred_date' => $this->moveInDate,
-            'start_date' => $this->moveInDate,
             'status' => ViewingRequestStatus::NEW->value,
         ]);
 

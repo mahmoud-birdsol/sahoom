@@ -250,14 +250,14 @@
                             {{-- Date range --}}
                             <div class="mb-4">
                                 <label style="display: block; font-size: 0.65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 8px">{{ __('Start Date') }}</label>
-                                <input wire:model="moveInDate" type="date" min="{{ now()->toDateString() }}"
+                                <input wire:model.live="moveInDate" type="date" min="{{ now()->toDateString() }}"
                                     style="width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: white; padding: 10px 12px; font-size: 0.82rem; outline: none"
                                     class="transition focus:border-[#B8962E]" />
                                 @error('moveInDate') <p style="font-size: 0.7rem; color: #fca5a5; margin-top: 4px">{{ $message }}</p> @enderror
                             </div>
                             <div class="mb-4">
                                 <label style="display: block; font-size: 0.65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 8px">{{ __('End Date') }}</label>
-                                <input wire:model="bookingEndDate" type="date" min="{{ now()->toDateString() }}"
+                                <input wire:model.live="bookingEndDate" type="date" min="{{ now()->toDateString() }}"
                                     style="width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: white; padding: 10px 12px; font-size: 0.82rem; outline: none"
                                     class="transition focus:border-[#B8962E]" />
                                 @error('bookingEndDate') <p style="font-size: 0.7rem; color: #fca5a5; margin-top: 4px">{{ $message }}</p> @enderror
@@ -407,13 +407,13 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('Start Date') }} <span class="text-red-500">*</span></label>
-                            <input wire:model="moveInDate" type="date" min="{{ now()->toDateString() }}"
+                            <input wire:model.live="moveInDate" type="date" min="{{ now()->toDateString() }}"
                                 class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
                             @error('moveInDate') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                         </div>
                         <div>
                             <label class="mb-1 block text-xs font-semibold text-zinc-700">{{ __('End Date') }}</label>
-                            <input wire:model="bookingEndDate" type="date" min="{{ now()->toDateString() }}"
+                            <input wire:model.live="bookingEndDate" type="date" min="{{ now()->toDateString() }}"
                                 class="w-full rounded-xl border border-zinc-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition" />
                             @error('bookingEndDate') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                         </div>

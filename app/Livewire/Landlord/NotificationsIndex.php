@@ -18,6 +18,9 @@ class NotificationsIndex extends Component
         if (! auth()->user()->landlord) {
             $this->redirect(route('dashboard'), navigate: true);
         }
+
+        auth()->user()->unreadNotifications->markAsRead();
+        $this->dispatch('notifications-updated');
     }
 
     public function markAllRead(): void
