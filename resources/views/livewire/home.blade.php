@@ -111,7 +111,7 @@
             <span class="reveal block text-[0.62rem] font-semibold tracking-[.22em] uppercase text-gold mb-8">
                 {{ __('What are you looking for?') }}
             </span>
-            <div class="grid grid-cols-2 lg:grid-cols-4" style="gap: 2px; background: rgba(255,255,255,.08)">
+            <div class="grid grid-cols-1 md:grid-cols-3" style="gap: 2px; background: rgba(255,255,255,.08)">
 
                 {{-- 01 · Rental --}}
                 <a href="{{ route('properties.index') }}" wire:navigate
@@ -125,36 +125,24 @@
                     <div class="text-[0.62rem] font-semibold tracking-[.14em] uppercase text-gold group-hover:tracking-[.2em] transition-all duration-200">{{ __('Explore') }} →</div>
                 </a>
 
-                {{-- 02 · Commercial Rental --}}
-                <a href="{{ route('properties.index') }}?propertyType=commercial" wire:navigate
-                   class="group flex flex-col no-underline transition-all duration-300 border-b-[3px] border-transparent hover:border-gold"
-                   style="background: #1E2330; padding: 36px 28px; gap: 0; transition: background .3s, border-color .3s">
-                    <div class="font-serif text-[2.2rem] font-light leading-none mb-4 transition-colors duration-300 group-hover:text-gold-light"
-                         style="color: rgba(184,150,46,.25)">02</div>
-                    <div class="font-serif text-[1.3rem] font-light text-white mb-2.5 leading-[1.2]">{{ __('Commercial') }}</div>
-                    <div class="text-[0.78rem] font-light leading-[1.7] mb-[22px] flex-1"
-                         style="color: rgba(255,255,255,.38)">{{ __('Offices, showrooms, retail spaces and commercial premises for rent') }}</div>
-                    <div class="text-[0.62rem] font-semibold tracking-[.14em] uppercase text-gold group-hover:tracking-[.2em] transition-all duration-200">{{ __('Explore') }} →</div>
-                </a>
-
-                {{-- 03 · Short-term commercial --}}
+                {{-- 02 · Short-term commercial --}}
                 <a href="{{ route('properties.index') }}?isShortTerm=1&propertyType=commercial" wire:navigate
                    class="group flex flex-col no-underline transition-all duration-300 border-b-[3px] border-transparent hover:border-gold"
                    style="background: #1E2330; padding: 36px 28px; gap: 0; transition: background .3s, border-color .3s">
                     <div class="font-serif text-[2.2rem] font-light leading-none mb-4 transition-colors duration-300 group-hover:text-gold-light"
-                         style="color: rgba(184,150,46,.25)">03</div>
+                         style="color: rgba(184,150,46,.25)">02</div>
                     <div class="font-serif text-[1.3rem] font-light text-white mb-2.5 leading-[1.2]">{{ __('Short-term Spaces') }}</div>
                     <div class="text-[0.78rem] font-light leading-[1.7] mb-[22px] flex-1"
                          style="color: rgba(255,255,255,.38)">{{ __('Pop-up stores, showrooms and flexible event spaces') }}</div>
                     <div class="text-[0.62rem] font-semibold tracking-[.14em] uppercase text-gold group-hover:tracking-[.2em] transition-all duration-200">{{ __('Explore') }} →</div>
                 </a>
 
-                {{-- 04 · Short-term residential --}}
+                {{-- 03 · Short-term residential --}}
                 <a href="{{ route('properties.index') }}?isShortTerm=1" wire:navigate
                    class="group flex flex-col no-underline transition-all duration-300 border-b-[3px] border-transparent hover:border-gold"
                    style="background: #1E2330; padding: 36px 28px; gap: 0; transition: background .3s, border-color .3s">
                     <div class="font-serif text-[2.2rem] font-light leading-none mb-4 transition-colors duration-300 group-hover:text-gold-light"
-                         style="color: rgba(184,150,46,.25)">04</div>
+                         style="color: rgba(184,150,46,.25)">03</div>
                     <div class="font-serif text-[1.3rem] font-light text-white mb-2.5 leading-[1.2]">{{ __('Short-term Rental') }}</div>
                     <div class="text-[0.78rem] font-light leading-[1.7] mb-[22px] flex-1"
                          style="color: rgba(255,255,255,.38)">{{ __('Furnished accommodation for short to medium-term stays') }}</div>

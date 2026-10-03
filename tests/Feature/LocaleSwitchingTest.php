@@ -30,12 +30,23 @@ class LocaleSwitchingTest extends TestCase
         $this->assertEquals('fr', app()->getLocale());
     }
 
-    public function test_set_locale_middleware_falls_back_to_default_locale(): void
+    public function test_first_visit_uses_french_by_default(): void
     {
         $response = $this->get('/');
 
         $response->assertStatus(200);
-        $this->assertEquals(config('app.locale'), app()->getLocale());
+        $this->assertEquals('fr', app()->getLocale());
+        $response->assertSee('lang="fr"', false);
+        $response->assertSee(__('What are you looking for?'));
+    }
+
+    public function test_saved_english_locale_overrides_french_default(): void
+    {
+        $response = $this->withSession(['locale' => 'en'])->get('/');
+
+        $response->assertStatus(200);
+        $this->assertEquals('en', app()->getLocale());
+        $response->assertSee('lang="en"', false);
     }
 
     public function test_french_translation_returns_correct_string(): void
