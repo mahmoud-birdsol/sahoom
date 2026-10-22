@@ -16,19 +16,20 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_homepage_shows_three_rental_options_without_commercial_option(): void
+    public function test_homepage_shows_only_flexible_spaces_and_short_term_rentals(): void
     {
         $response = $this->withSession(['locale' => 'fr'])->get('/');
 
         $response->assertOk();
-        $response->assertDontSee(__('Offices, showrooms, retail spaces and commercial premises for rent'));
         $response->assertSeeInOrder([
             '>01</div>',
-            __('Rental'),
-            '>02</div>',
             'Espaces flexibles',
-            '>03</div>',
-            'Location courte et longue durée',
+            '>02</div>',
+            'Location courte durée',
         ], false);
+        $response->assertDontSee('>03</div>', false);
+        $response->assertDontSee('longue durée');
+        $response->assertDontSee('Nos autres services');
+        $response->assertSee('?isShortTerm=1&propertyType=commercial', false);
     }
 }

@@ -6,13 +6,13 @@
     </span>
 
     {{-- Grid --}}
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-12 pb-14 mt-9 mb-7"
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-12 pb-14 mt-9 mb-7"
          style="border-bottom: 1px solid rgba(255,255,255,.08)">
 
         {{-- Brand column --}}
         <div class="col-span-2 sm:col-span-3 lg:col-span-1">
             <p class="text-[0.8rem] font-light leading-[1.85] mt-4" style="color: rgba(255,255,255,.35); max-width: 220px">
-                {{ \App\Models\SiteSetting::get('site_description', 'Your trusted real estate platform — residential and commercial rentals for every project.') }}
+                {{ __('Flexible spaces and short-term rentals for every project.') }}
             </p>
             <div class="flex gap-2.5 mt-5">
                 <a href="{{ \App\Models\SiteSetting::get('facebook_url', '#') }}"
@@ -27,31 +27,20 @@
             </div>
         </div>
 
-        {{-- Rental --}}
-        <div>
-            <h4 class="text-[0.6rem] font-semibold tracking-[.2em] uppercase mb-4" style="color: rgba(255,255,255,.7)">{{ __('Rental') }}</h4>
-            <ul class="space-y-2.5">
-                <li><a href="{{ route('properties.index') }}" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Apartments') }}</a></li>
-                <li><a href="{{ route('properties.index') }}" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Villas') }}</a></li>
-                <li><a href="{{ route('properties.index') }}" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Studios') }}</a></li>
-                <li><a href="{{ route('properties.index') }}" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Offices') }}</a></li>
-            </ul>
-        </div>
-
         {{-- Commercial --}}
         <div>
-            <h4 class="text-[0.6rem] font-semibold tracking-[.2em] uppercase mb-4" style="color: rgba(255,255,255,.7)">{{ __('Commercial') }}</h4>
+            <h4 class="text-[0.6rem] font-semibold tracking-[.2em] uppercase mb-4" style="color: rgba(255,255,255,.7)">{{ __('Flexible Spaces') }}</h4>
             <ul class="space-y-2.5">
-                <li><a href="{{ route('properties.index') }}?propertyType=commercial" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Offices') }}</a></li>
-                <li><a href="{{ route('properties.index') }}?propertyType=commercial" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Showrooms') }}</a></li>
-                <li><a href="{{ route('properties.index') }}?propertyType=commercial&isShortTerm=1" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Short-term') }}</a></li>
-                <li><a href="{{ route('properties.index') }}?propertyType=commercial" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Retail') }}</a></li>
+                <li><a href="{{ route('properties.index') }}?isShortTerm=1&propertyType=commercial" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Offices') }}</a></li>
+                <li><a href="{{ route('properties.index') }}?isShortTerm=1&propertyType=commercial" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Showrooms') }}</a></li>
+                <li><a href="{{ route('properties.index') }}?isShortTerm=1&propertyType=commercial" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Short-term') }}</a></li>
+                <li><a href="{{ route('properties.index') }}?isShortTerm=1&propertyType=commercial" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Retail') }}</a></li>
             </ul>
         </div>
 
         {{-- Short-term --}}
         <div>
-            <h4 class="text-[0.6rem] font-semibold tracking-[.2em] uppercase mb-4" style="color: rgba(255,255,255,.7)">{{ __('Short-term') }}</h4>
+            <h4 class="text-[0.6rem] font-semibold tracking-[.2em] uppercase mb-4" style="color: rgba(255,255,255,.7)">{{ __('Short-term Rental') }}</h4>
             <ul class="space-y-2.5">
                 <li><a href="{{ route('properties.index') }}?isShortTerm=1&propertyType=commercial" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Commercial') }}</a></li>
                 <li><a href="{{ route('properties.index') }}?isShortTerm=1&propertyType=residential" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Residential') }}</a></li>

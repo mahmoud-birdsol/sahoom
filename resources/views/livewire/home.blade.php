@@ -58,12 +58,12 @@
             {{-- Paragraph --}}
             <p class="mb-12 text-sm font-light leading-[1.9] text-white/65 opacity-0 animate-fade-right"
                style="max-width: 460px; animation-delay: .8s">
-                {{ __('Residential and commercial rentals, long-term and short-term — Sahoome guides you through every step of your real estate project.') }}
+                {{ __('Flexible spaces and short-term rentals — Sahoome helps you find the right space for your project.') }}
             </p>
 
             {{-- CTAs --}}
             <div class="flex items-center gap-4 opacity-0 animate-fade-right" style="animation-delay: 1s">
-                <a href="{{ route('properties.index') }}" wire:navigate
+                <a href="{{ route('properties.index') }}?isShortTerm=1" wire:navigate
                    class="inline-block text-[0.72rem] font-semibold uppercase tracking-[.16em] text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:text-ink"
                    style="background: #B8962E; padding: 16px 36px; border-radius: 2px">
                     {{ __('Discover our properties') }}
@@ -104,48 +104,36 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════════════
-         CATEGORY BAND — dark ink2 bg, 4 service category tiles
+         CATEGORY BAND — dark ink2 bg, 2 service category tiles
     ══════════════════════════════════════════════════════════════════════════ --}}
     <div style="background: #1E2330; padding: 60px 6%">
         <div class="mx-auto" style="max-width: 1200px">
             <span class="reveal block text-[0.62rem] font-semibold tracking-[.22em] uppercase text-gold mb-8">
                 {{ __('What are you looking for?') }}
             </span>
-            <div class="grid grid-cols-1 md:grid-cols-3" style="gap: 2px; background: rgba(255,255,255,.08)">
+            <div class="grid grid-cols-1 md:grid-cols-2" style="gap: 2px; background: rgba(255,255,255,.08)">
 
-                {{-- 01 · Rental --}}
-                <a href="{{ route('properties.index') }}" wire:navigate
-                   class="group flex flex-col no-underline transition-all duration-300 border-b-[3px] border-transparent hover:border-gold"
-                   style="background: #1E2330; padding: 36px 28px; gap: 0; transition: background .3s, border-color .3s">
-                    <div class="font-serif text-[2.2rem] font-light leading-none mb-4 transition-colors duration-300 group-hover:text-gold-light"
-                         style="color: rgba(184,150,46,.25)">01</div>
-                    <div class="font-serif text-[1.3rem] font-light text-white mb-2.5 leading-[1.2]">{{ __('Rental') }}</div>
-                    <div class="text-[0.78rem] font-light leading-[1.7] mb-[22px] flex-1"
-                         style="color: rgba(255,255,255,.38)">{{ __('Apartments, villas, studios and offices for long-term rent') }}</div>
-                    <div class="text-[0.62rem] font-semibold tracking-[.14em] uppercase text-gold group-hover:tracking-[.2em] transition-all duration-200">{{ __('Explore') }} →</div>
-                </a>
-
-                {{-- 02 · Short-term commercial --}}
+                {{-- 01 · Flexible spaces --}}
                 <a href="{{ route('properties.index') }}?isShortTerm=1&propertyType=commercial" wire:navigate
                    class="group flex flex-col no-underline transition-all duration-300 border-b-[3px] border-transparent hover:border-gold"
                    style="background: #1E2330; padding: 36px 28px; gap: 0; transition: background .3s, border-color .3s">
                     <div class="font-serif text-[2.2rem] font-light leading-none mb-4 transition-colors duration-300 group-hover:text-gold-light"
-                         style="color: rgba(184,150,46,.25)">02</div>
+                         style="color: rgba(184,150,46,.25)">01</div>
                     <div class="font-serif text-[1.3rem] font-light text-white mb-2.5 leading-[1.2]">{{ __('Flexible Spaces') }}</div>
                     <div class="text-[0.78rem] font-light leading-[1.7] mb-[22px] flex-1"
                          style="color: rgba(255,255,255,.38)">{{ __('Pop-up stores, showrooms and flexible event spaces') }}</div>
                     <div class="text-[0.62rem] font-semibold tracking-[.14em] uppercase text-gold group-hover:tracking-[.2em] transition-all duration-200">{{ __('Explore') }} →</div>
                 </a>
 
-                {{-- 03 · Short-term residential --}}
+                {{-- 02 · Short-term rental --}}
                 <a href="{{ route('properties.index') }}?isShortTerm=1" wire:navigate
                    class="group flex flex-col no-underline transition-all duration-300 border-b-[3px] border-transparent hover:border-gold"
                    style="background: #1E2330; padding: 36px 28px; gap: 0; transition: background .3s, border-color .3s">
                     <div class="font-serif text-[2.2rem] font-light leading-none mb-4 transition-colors duration-300 group-hover:text-gold-light"
-                         style="color: rgba(184,150,46,.25)">03</div>
-                    <div class="font-serif text-[1.3rem] font-light text-white mb-2.5 leading-[1.2]">{{ __('Short and Long-term Rental') }}</div>
+                         style="color: rgba(184,150,46,.25)">02</div>
+                    <div class="font-serif text-[1.3rem] font-light text-white mb-2.5 leading-[1.2]">{{ __('Short-term Rental') }}</div>
                     <div class="text-[0.78rem] font-light leading-[1.7] mb-[22px] flex-1"
-                         style="color: rgba(255,255,255,.38)">{{ __('Furnished accommodation for short to medium-term stays') }}</div>
+                         style="color: rgba(255,255,255,.38)">{{ __('Furnished accommodation for short-term stays') }}</div>
                     <div class="text-[0.62rem] font-semibold tracking-[.14em] uppercase text-gold group-hover:tracking-[.2em] transition-all duration-200">{{ __('Explore') }} →</div>
                 </a>
 
@@ -170,7 +158,7 @@
                         {{ __('Featured') }} <em class="italic">{{ __('properties') }}</em>
                     </h2>
                 </div>
-                <a href="{{ route('properties.index') }}" wire:navigate
+                <a href="{{ route('properties.index') }}?isShortTerm=1" wire:navigate
                    class="group flex items-center gap-2 text-[0.65rem] font-semibold tracking-[.16em] uppercase text-gold no-underline transition-all duration-200 hover:gap-3.5 hover:text-ink">
                     {{ __('All properties') }} →
                 </a>
@@ -266,7 +254,7 @@
     </section>
 
     {{-- ══════════════════════════════════════════════════════════════════════
-         SERVICES DUO — nude bg, 2 text cards for Location + Vente
+         SERVICES — flexible spaces and short-term rentals
     ══════════════════════════════════════════════════════════════════════════ --}}
     <section style="background: #F4EFE8; border-top: 1px solid #E8E2D8; padding: 90px 6%" id="about">
         <div class="mx-auto" style="max-width: 1200px">
@@ -275,13 +263,13 @@
             <div class="reveal mb-14">
                 <div class="flex items-center gap-4 mb-4">
                     <div class="h-px w-8 bg-gold shrink-0"></div>
-                    <span class="text-[0.62rem] font-semibold tracking-[.18em] uppercase text-gold">{{ __('Our other services') }}</span>
+                    <span class="text-[0.62rem] font-semibold tracking-[.18em] uppercase text-gold">{{ __('Our services') }}</span>
                 </div>
                 <h2 class="font-serif text-[clamp(2rem,3.5vw,3.2rem)] font-light text-ink leading-[1.15] mb-4">
-                    {{ __('Rental & Property') }}<br>{{ __('services in') }} <em class="italic">{{ __('Abidjan') }}</em>
+                    {{ __('Flexible spaces & short-term rentals') }}<br>{{ __('services in') }} <em class="italic">{{ __('Abidjan') }}</em>
                 </h2>
                 <p class="text-[0.88rem] font-light text-muted leading-[1.9]" style="max-width: 480px">
-                    {{ __('Apartments, villas, studios and commercial spaces — Sahoome guides you to your ideal rental.') }}
+                    {{ __('Discover flexible spaces for your projects and furnished accommodation for your short stays.') }}
                 </p>
             </div>
 
@@ -289,13 +277,13 @@
             <div class="grid grid-cols-1 lg:grid-cols-2" style="gap: 2px; background: #E8E2D8">
 
                 {{-- Rental Card --}}
-                <a href="{{ route('properties.index') }}" wire:navigate
+                <a href="{{ route('properties.index') }}?isShortTerm=1" wire:navigate
                    class="reveal rd1 group block bg-white no-underline border-t-[3px] border-[#E8E2D8] transition-all duration-300 hover:border-gold hover:opacity-100"
                    style="padding: 28px 28px 32px; opacity: 1">
                     <div class="font-serif text-[2rem] font-light text-[#F5EDD6] leading-none mb-2.5 transition-colors duration-300 group-hover:text-gold-light">01</div>
-                    <div class="font-serif text-[1.4rem] font-light text-ink mb-2.5">{{ __('Residential') }} <em class="italic">{{ __('Rental') }}</em></div>
+                    <div class="font-serif text-[1.4rem] font-light text-ink mb-2.5">{{ __('Short-term Rental') }}</div>
                     <p class="text-[0.82rem] font-light text-muted leading-[1.8] mb-4">
-                        {{ __('Furnished apartments, villas, studios and commercial premises for long-term rent. Verified properties across all areas.') }}
+                        {{ __('Furnished apartments, villas and studios for short-term stays. Verified properties across all areas.') }}
                     </p>
                     <div class="flex flex-wrap gap-1.5 mb-5">
                         <span class="text-[0.62rem] font-medium tracking-[.08em] text-muted px-2.5 py-1 border border-[#E8E2D8]" style="background: #F4EFE8">{{ __('Apartments') }}</span>
@@ -307,13 +295,13 @@
                 </a>
 
                 {{-- Commercial Rental Card --}}
-                <a href="{{ route('properties.index') }}?propertyType=commercial" wire:navigate
+                <a href="{{ route('properties.index') }}?isShortTerm=1&propertyType=commercial" wire:navigate
                    class="reveal rd2 group block bg-white no-underline border-t-[3px] border-[#E8E2D8] transition-all duration-300 hover:border-gold hover:opacity-100"
                    style="padding: 28px 28px 32px; opacity: 1">
-                    <div class="font-serif text-[2rem] font-light text-[#F5EDD6] leading-none mb-2.5 transition-colors duration-300 group-hover:text-gold-light">02</div>
-                    <div class="font-serif text-[1.4rem] font-light text-ink mb-2.5"><em class="italic">{{ __('Commercial') }}</em> {{ __('Rental') }}</div>
+                    <div class="font-serif text-[2rem] font-light text-[#F5EDD6] leading-none mb-2.5 transition-colors duration-300 group-hover:text-gold-light">01</div>
+                    <div class="font-serif text-[1.4rem] font-light text-ink mb-2.5">{{ __('Flexible Spaces') }}</div>
                     <p class="text-[0.82rem] font-light text-muted leading-[1.8] mb-4">
-                        {{ __('Offices, showrooms, retail spaces and commercial premises available for long-term or short-term rent.') }}
+                        {{ __('Pop-up stores, showrooms and flexible event spaces') }}
                     </p>
                     <div class="flex flex-wrap gap-1.5 mb-5">
                         <span class="text-[0.62rem] font-medium tracking-[.08em] text-muted px-2.5 py-1 border border-[#E8E2D8]" style="background: #F4EFE8">{{ __('Offices') }}</span>
@@ -477,7 +465,7 @@
                     {{ __('List your property on') }} <em class="italic">{{ __('Sahoome') }}</em>
                 </h3>
                 <p class="text-[0.83rem] font-light text-muted leading-[1.8]" style="max-width: 460px">
-                    {{ __('Join our network of verified property owners. Residential, commercial, short-term or long-term — we connect you to the right clients.') }}
+                    {{ __('Join our network of verified property owners. Flexible spaces and short-term rentals — we connect you to the right clients.') }}
                 </p>
             </div>
             @auth

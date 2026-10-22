@@ -34,13 +34,13 @@
     {{-- Desktop nav links --}}
     <ul class="hidden lg:flex items-center gap-0.5 list-none m-0 p-0">
         <li>
-            <a href="{{ route('properties.index') }}" wire:navigate
+            <a href="{{ route('properties.index') }}?isShortTerm=1&propertyType=commercial" wire:navigate
                @if($transparent)
                    :class="solid ? 'text-muted' : 'text-white/75'"
                @endif
                class="text-[0.68rem] font-medium tracking-[.12em] uppercase no-underline px-3.5 py-2 transition-colors duration-200 hover:text-gold
                       {{ !$transparent ? 'text-muted' : '' }}">
-                {{ __('Rental') }}
+                {{ __('Flexible Spaces') }}
             </a>
         </li>
         <li>
@@ -50,7 +50,7 @@
                @endif
                class="text-[0.68rem] font-medium tracking-[.12em] uppercase no-underline px-3.5 py-2 transition-colors duration-200 hover:text-gold
                       {{ !$transparent ? 'text-muted' : '' }}">
-                {{ __('Short-term') }}
+                {{ __('Short-term Rental') }}
             </a>
         </li>
         <li>
