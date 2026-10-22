@@ -56,4 +56,32 @@ class ExampleTest extends TestCase
         $response->assertDontSee('Nos autres services');
         $response->assertSee('?isShortTerm=1&propertyType=commercial', false);
     }
+
+    public function test_homepage_shows_short_term_service_sections_after_the_property_selection(): void
+    {
+        $response = $this->withSession(['locale' => 'fr'])->get('/');
+
+        $response->assertOk();
+        $response->assertSeeInOrder([
+            'Notre sélection',
+            '01 — Baux commerciaux courte durées',
+            'Voir les locaux disponibles',
+            '02 — Location courte durée',
+            'Transfert aéroport inclus',
+            'Chauffeur privé disponible',
+            'Conciergerie dédiée 7j/7',
+            'Découvrir le service',
+            'Nos services',
+        ]);
+        $response->assertSee(route('properties.index', [
+            'isShortTerm' => 1,
+            'propertyType' => 'commercial',
+        ]));
+        $response->assertSee(route('properties.index', [
+            'isShortTerm' => 1,
+            'propertyType' => 'residential',
+        ]));
+        $response->assertDontSee('ephemere.html');
+        $response->assertDontSee('ephemere-residence.html');
+    }
 }

@@ -253,6 +253,91 @@
         </div>
     </section>
 
+    <section class="bg-white px-[6%] py-[90px]" id="short-term-services">
+        <div class="mx-auto max-w-[1200px]">
+            <div class="reveal mx-auto mb-20 max-w-[700px]">
+                <div class="block">
+                    <div class="mb-[22px] flex items-center gap-3.5">
+                        <div class="h-px w-8 shrink-0 bg-gold">
+                        </div>
+                        <span class="text-[0.6rem] font-semibold uppercase tracking-[.18em] text-gold">01 — Baux commerciaux courte durées</span>
+                    </div>
+                    <h2 class="mb-[22px] font-serif text-[clamp(2rem,3.5vw,3.2rem)] font-light leading-[1.12] text-ink">Un espace commercial<br>pour votre projet,<br>sans engagement <em>long terme</em>
+                </h2>
+                    <p class="mb-7 text-[0.88rem] font-light leading-[1.9] text-muted">Vous souhaitez lancer un pop-up store, organiser une vente courte durée, un showroom ou un événement professionnel à Abidjan ? Sahoome vous propose des locaux commerciaux disponibles à la journée, à la semaine ou au mois — sans bail long terme, sans contrainte.</p>
+                    <div class="mb-7 flex flex-col gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="mt-0.5 h-full min-h-[52px] w-0.5 shrink-0 bg-gold">
+                            </div>
+                            <div>
+                                <div class="mb-1 text-[0.82rem] font-semibold tracking-[.02em] text-ink">Locaux vérifiés dans les meilleures zones</div>
+                                <p class="text-[0.8rem] font-light leading-[1.7] text-muted">Plateau, Cocody, Marcory, Adjamé — des emplacements stratégiques à fort passage.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="mt-0.5 h-full min-h-[52px] w-0.5 shrink-0 bg-gold">
+                            </div>
+                            <div>
+                                <div class="mb-1 text-[0.82rem] font-semibold tracking-[.02em] text-ink">Flexibilité totale</div>
+                                <p class="text-[0.8rem] font-light leading-[1.7] text-muted">Du 1 jour au plusieurs mois. Contrat digital signé avant accès, caution à la demande.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="mt-0.5 h-full min-h-[52px] w-0.5 shrink-0 bg-gold">
+                            </div>
+                            <div>
+                                <div class="mb-1 text-[0.82rem] font-semibold tracking-[.02em] text-ink">Idéal pour</div>
+                                <p class="text-[0.8rem] font-light leading-[1.7] text-muted">Pop-up stores, showrooms, ventes privées, événements d'entreprise, lancements de marque.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ route('properties.index', ['isShortTerm' => 1, 'propertyType' => 'commercial']) }}" wire:navigate class="inline-flex items-center bg-ink px-[26px] py-[13px] text-[0.65rem] font-semibold uppercase tracking-[.16em] text-white no-underline transition-colors duration-200 hover:bg-gold">Voir les locaux disponibles →</a>
+                </div>
+            </div>
+            <div class="mb-20 h-px bg-[#E8E2D8]">
+            </div>
+            <div class="reveal mx-auto mb-20 max-w-[700px]">
+                <div class="block">
+                    <div class="mb-[22px] flex items-center gap-3.5">
+                        <div class="h-px w-8 shrink-0 bg-gold">
+                        </div>
+                        <span class="text-[0.6rem] font-semibold uppercase tracking-[.18em] text-gold">02 — Location courte durée</span>
+                    </div>
+                    <h2 class="mb-[22px] font-serif text-[clamp(2rem,3.5vw,3.2rem)] font-light leading-[1.12] text-ink">Un séjour entièrement<br>pris en charge,<br>de A à <em>Z</em>
+                </h2>
+                    <p class="mb-7 text-[0.88rem] font-light leading-[1.9] text-muted">Pour les expatriés, cadres en déplacement et familles en transit — Sahoome propose un service de location courte durée clé en main unique à Abidjan. De votre arrivée à l'aéroport à votre départ, tout est organisé.</p>
+                    <div class="mb-7 flex flex-col gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="mt-0.5 h-full min-h-[52px] w-0.5 shrink-0 bg-gold">
+                            </div>
+                            <div>
+                                <div class="mb-1 text-[0.82rem] font-semibold tracking-[.02em] text-ink">Transfert aéroport inclus</div>
+                                <p class="text-[0.8rem] font-light leading-[1.7] text-muted">Chauffeur à l'arrivée, panneau nominatif, trajet direct vers votre résidence.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="mt-0.5 h-full min-h-[52px] w-0.5 shrink-0 bg-gold">
+                            </div>
+                            <div>
+                                <div class="mb-1 text-[0.82rem] font-semibold tracking-[.02em] text-ink">Chauffeur privé disponible</div>
+                                <p class="text-[0.8rem] font-light leading-[1.7] text-muted">Pour tous vos déplacements à Abidjan pendant la durée de votre séjour.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="mt-0.5 h-full min-h-[52px] w-0.5 shrink-0 bg-gold">
+                            </div>
+                            <div>
+                                <div class="mb-1 text-[0.82rem] font-semibold tracking-[.02em] text-ink">Conciergerie dédiée 7j/7</div>
+                                <p class="text-[0.8rem] font-light leading-[1.7] text-muted">Un interlocuteur Sahoome disponible sur WhatsApp pour toute demande.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ route('properties.index', ['isShortTerm' => 1, 'propertyType' => 'residential']) }}" wire:navigate class="inline-flex items-center bg-ink px-[26px] py-[13px] text-[0.65rem] font-semibold uppercase tracking-[.16em] text-white no-underline transition-colors duration-200 hover:bg-gold">Découvrir le service →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     {{-- ══════════════════════════════════════════════════════════════════════
          SERVICES — flexible spaces and short-term rentals
     ══════════════════════════════════════════════════════════════════════════ --}}
