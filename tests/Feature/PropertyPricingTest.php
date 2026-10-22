@@ -15,6 +15,51 @@ class PropertyPricingTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_property_map_uses_address_when_coordinates_are_missing(): void
+    {
+        $property = Property::factory()->approved()->create([
+            'latitude' => null,
+            'longitude' => null,
+            'address_line_1' => 'route de Florissant 15',
+            'address_line_2' => null,
+            'city' => 'Geneva',
+            'country' => 'Switzerland',
+        ]);
+
+        Livewire::test(PropertyShow::class, ['slug' => $property->slug])
+            ->assertSee('https://maps.google.com/maps?q=route%20de%20Florissant%2015%2C%20Geneva%2C%20Switzerland&amp;output=embed', false)
+            ->assertDontSee('openstreetmap.org/export/embed.html');
+    }
+
+    public function test_property_map_accepts_zero_coordinates(): void
+    {
+        $property = Property::factory()->approved()->create([
+            'latitude' => 0,
+            'longitude' => 0,
+        ]);
+
+        Livewire::test(PropertyShow::class, ['slug' => $property->slug])
+            ->assertSee('openstreetmap.org/export/embed.html')
+            ->assertDontSee('maps.google.com/maps');
+    }
+
+    public function test_property_without_location_does_not_render_a_map(): void
+    {
+        $property = Property::factory()->approved()->create([
+            'latitude' => null,
+            'longitude' => null,
+            'address_line_1' => null,
+            'address_line_2' => null,
+            'city' => null,
+            'country' => null,
+        ]);
+
+        Livewire::test(PropertyShow::class, ['slug' => $property->slug])
+            ->assertSee(__('Location not specified'))
+            ->assertDontSee('maps.google.com/maps')
+            ->assertDontSee('openstreetmap.org/export/embed.html');
+    }
+
     // ── SiteSetting model ─────────────────────────────────────────────────────
 
     public function test_site_setting_can_be_set_and_retrieved(): void

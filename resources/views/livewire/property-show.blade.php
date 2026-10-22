@@ -193,11 +193,17 @@
                             <span style="font-size: 0.62rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #B8962E">{{ __('Location') }}</span>
                             <div class="h-px flex-1" style="background: #E8E2D8"></div>
                         </div>
-                        @if($property->latitude && $property->longitude)
+                        @if($property->latitude !== null && $property->longitude !== null)
                             <div style="overflow: hidden; border: 1px solid #E8E2D8">
                                 <iframe
                                     src="https://www.openstreetmap.org/export/embed.html?bbox={{ $property->longitude - 0.01 }},{{ $property->latitude - 0.01 }},{{ $property->longitude + 0.01 }},{{ $property->latitude + 0.01 }}&layer=mapnik&marker={{ $property->latitude }},{{ $property->longitude }}"
-                                    width="100%" height="240" style="border: 0; display: block" loading="lazy"></iframe>
+                                    title="{{ __('Location') }}" width="100%" height="240" style="border: 0; display: block" loading="lazy"></iframe>
+                            </div>
+                        @elseif($property->address_line_1 || $property->city)
+                            <div style="overflow: hidden; border: 1px solid #E8E2D8">
+                                <iframe
+                                    src="https://maps.google.com/maps?q={{ rawurlencode(implode(', ', array_filter([$property->address_line_1, $property->address_line_2, $property->city, $property->country]))) }}&amp;output=embed"
+                                    title="{{ __('Location') }}" width="100%" height="240" style="border: 0; display: block" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </div>
                         @else
                             <div class="flex h-40 items-center justify-center" style="background: #F4EFE8; border: 1px solid #E8E2D8">
