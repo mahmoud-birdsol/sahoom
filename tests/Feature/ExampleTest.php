@@ -16,6 +16,30 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_about_page_reproduces_company_presentation_with_only_current_services(): void
+    {
+        $response = $this->withSession(['locale' => 'fr'])->get('/about');
+
+        $response->assertOk();
+        $response->assertSee('À propos de Sahoome');
+        $response->assertSeeInOrder([
+            'Notre vision',
+            'Notre positionnement',
+            'Nos activités',
+            'Notre ambition',
+            'Nos engagements',
+            'Ils nous font confiance',
+        ]);
+        $response->assertSee('Location <em>courte durée</em>', false);
+        $response->assertSee('Espaces <em>flexibles</em>', false);
+        $response->assertDontSee('longue durée');
+        $response->assertDontSee('Vente');
+        $response->assertDontSee('vente');
+        $response->assertDontSee('vendue');
+        $response->assertDontSee('location.html');
+        $response->assertDontSee('contact.html');
+    }
+
     public function test_homepage_shows_only_flexible_spaces_and_short_term_rentals(): void
     {
         $response = $this->withSession(['locale' => 'fr'])->get('/');

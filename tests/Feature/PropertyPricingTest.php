@@ -162,6 +162,20 @@ class PropertyPricingTest extends TestCase
         $this->assertEqualsWithDelta(350.0, $component->get('totalDueAtSigning'), 0.01);
     }
 
+    public function test_daily_price_label_is_translated_in_french(): void
+    {
+        $property = Property::factory()->approved()->create([
+            'pricing_type' => 'daily',
+            'daily_rent' => 100,
+        ]);
+
+        $this->withSession(['locale' => 'fr']);
+
+        Livewire::test(PropertyShow::class, ['slug' => $property->slug])
+            ->assertSee('Prix journalier')
+            ->assertDontSee('Jour rent');
+    }
+
     public function test_tiered_calculation_days_only(): void
     {
         $property = Property::factory()->approved()->create([

@@ -16,6 +16,7 @@ Route::get('/articles/{slug}', App\Livewire\ArticleShow::class)->name('articles.
 Route::view('/terms', 'pages.terms')->name('terms');
 Route::view('/privacy', 'pages.privacy')->name('privacy');
 Route::view('/faq', 'pages.faq')->name('faq');
+Route::view('/about', 'pages.about')->name('about');
 
 Route::post('/locale', function () {
     session(['locale' => request('locale')]);

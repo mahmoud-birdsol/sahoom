@@ -54,7 +54,7 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('home') }}#about"
+            <a href="{{ route('about') }}"
                @if($transparent)
                    :class="solid ? 'text-muted' : 'text-white/75'"
                @endif

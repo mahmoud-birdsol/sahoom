@@ -52,7 +52,7 @@
         <div>
             <h4 class="text-[0.6rem] font-semibold tracking-[.2em] uppercase mb-4" style="color: rgba(255,255,255,.7)">{{ __('Company') }}</h4>
             <ul class="space-y-2.5">
-                <li><a href="{{ route('home') }}#about" class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('About us') }}</a></li>
+                <li><a href="{{ route('about') }}" class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('About us') }}</a></li>
                 <li><a href="{{ route('home') }}#contact" class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Contact') }}</a></li>
                 <li><a href="{{ route('faq') }}" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('FAQ') }}</a></li>
                 <li><a href="{{ route('privacy') }}" wire:navigate class="text-[0.78rem] font-light no-underline transition-colors duration-200 hover:text-gold-light" style="color: rgba(255,255,255,.35)">{{ __('Privacy') }}</a></li>

@@ -181,6 +181,10 @@ class PropertyShow extends Component
             }
         }
 
+        if ($this->displayPriceUnit === 'day') {
+            return __('Day rent');
+        }
+
         return ucfirst(__($this->displayPriceUnit)) . ' ' . __('rent');
     }
 
